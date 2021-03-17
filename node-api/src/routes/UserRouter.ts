@@ -67,47 +67,50 @@ userRouter.post("/", (req, res, next) => {
   let getUserParams = {
     $userId: req.body.userId,
   };
-  db.all(getUserSQL, getUserParams, (err: Error, rows: any[]) => {
-    if (err) {
-      console.log({
-        method: "post",
-        route: "/Users/",
-        error:
-          "error occurred while checking Users database for duplicate userId",
-      });
-      res.status(404).send({
-        error: "error occurred while querying Users table in the database",
-      });
-      return;
-    } else if (rows.length > 0) {
-      // This occurs when a user has been found with the userId submitted in the post request
-      console.log({
-        method: "post",
-        route: "/Users/",
-        error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
-      });
-      res.status(409).send({
-        error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
-      });
-      return;
-    }
-
-    let sql =
-      "insert into Users (userId, firstName, lastName, emailAddress, password) values ($userId, $firstName, $lastName, $emailAddress, $password)";
-
-    bcrypt.genSalt(saltRounds, (err: any, salt: any) => {
-      // if an error occurs while generating the salt, log the error to the console and return
+  // validate the email passed in through the request body
+  if (!validateEmailFormat(req.body.emailAddress)) {
+    let errorMsg = {
+      method: "post",
+      route: "/Users/",
+      error: `The email ${req.body.emailAddress} is not valid.`,
+    };
+    console.log(errorMsg);
+    res.status(404).send(errorMsg);
+  } else {
+    // query the Users database to see if a User with the userId passed in
+    // the request body already exists
+    db.all(getUserSQL, getUserParams, (err: Error, rows: any[]) => {
       if (err) {
-        let errorMsg = {
+        // if an error occurs, log the error and send an error code in the
+        // response
+        console.log({
           method: "post",
           route: "/Users/",
-          error: `error occurred while generating salt for user ${req.body.userId}`,
-        };
-        console.log(errorMsg);
-        res.status(404).send({ error: errorMsg });
+          error:
+            "error occurred while checking Users database for duplicate userId",
+        });
+        res.status(404).send({
+          error: "error occurred while querying Users table in the database",
+        });
+        return;
+      } else if (rows.length > 0) {
+        // This occurs when a user has been found with the userId submitted in the post request
+        console.log({
+          method: "post",
+          route: "/Users/",
+          error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
+        });
+        res.status(409).send({
+          error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
+        });
         return;
       }
-      bcrypt.hash(req.body.password, salt, (err: any, hash: any) => {
+
+      let sql =
+        "insert into Users (userId, firstName, lastName, emailAddress, password) values ($userId, $firstName, $lastName, $emailAddress, $password)";
+
+      bcrypt.genSalt(saltRounds, (err: any, salt: any) => {
+        // if an error occurs while generating the salt, log the error to the console and return
         if (err) {
           let errorMsg = {
             method: "post",
@@ -118,59 +121,82 @@ userRouter.post("/", (req, res, next) => {
           res.status(404).send({ error: errorMsg });
           return;
         }
-
-        let params = {
-          $userId: req.body.userId,
-          $firstName: req.body.firstName,
-          $lastName: req.body.lastName,
-          $emailAddress: req.body.emailAddress,
-          $password: hash,
-        };
-        db.all(sql, params, (err: any) => {
+        bcrypt.hash(req.body.password, salt, (err: any, hash: any) => {
           if (err) {
-            console.log({ error: err.message });
-            res
-              .status(409)
-              .json({ error: "User could not be added to database" });
-            return;
-          } else {
-            console.log(
-              `User ${req.body.userId} successfuly added to database`
-            );
-            let newUser = {
-              userId: req.body.userId,
-              firstName: req.body.firstName,
-              lastName: req.body.lastName,
-              emailAddress: req.body.emailAddress,
-            };
-            console.log({
+            let errorMsg = {
               method: "post",
               route: "/Users/",
-              message: `New user: ${JSON.stringify(newUser)}`,
-            });
-            console.log(`password: ${hash}`);
-            res.status(200).json({
-              message: `User successfully created`,
-              data: {
+              error: `error occurred while generating salt for user ${req.body.userId}`,
+            };
+            console.log(errorMsg);
+            res.status(404).send({ error: errorMsg });
+            return;
+          }
+
+          let params = {
+            $userId: req.body.userId,
+            $firstName: req.body.firstName,
+            $lastName: req.body.lastName,
+            $emailAddress: req.body.emailAddress,
+            $password: hash,
+          };
+          db.all(sql, params, (err: any) => {
+            if (err) {
+              console.log({ error: err.message });
+              res
+                .status(409)
+                .json({ error: "User could not be added to database" });
+              return;
+            } else {
+              console.log(
+                `User ${req.body.userId} successfuly added to database`
+              );
+              let newUser = {
                 userId: req.body.userId,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 emailAddress: req.body.emailAddress,
-              },
-            });
-            return;
-          }
+              };
+              console.log({
+                method: "post",
+                route: "/Users/",
+                message: `New user: ${JSON.stringify(newUser)}`,
+              });
+              console.log(`password: ${hash}`);
+              res.status(200).json({
+                message: `User successfully created`,
+                data: {
+                  userId: req.body.userId,
+                  firstName: req.body.firstName,
+                  lastName: req.body.lastName,
+                  emailAddress: req.body.emailAddress,
+                },
+              });
+              return;
+            }
+          });
         });
       });
     });
-  });
-
+  }
   // console.log(params);
 });
 
 function validateEmailFormat(emailString: string): boolean {
   // create regex to match email format
-  let emailRegexp = new RegExp();
+  // Email regex sourced from RFC 2822 using format that omits the usage
+  // of addresses that include double quotes and square brackets as they
+  // are very rare in use today and cause more problems for the validation
+  // program
+  let emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let regexExec = emailRegexp.exec(emailString);
+  if (regexExec === null) {
+    console.log(`email: ${emailString} did not match email regex pattern`);
+    return false;
+  } else {
+    console.log(`email: ${regexExec.toString()} is a valid email address`);
+    return true;
+  }
 }
 
 /**
