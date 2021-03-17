@@ -10,6 +10,7 @@ import { AppServiceService } from './app-service.service';
 export class AppComponent implements OnInit{
 
   title = 'angular-app';
+  // imported the service 
   constructor(private service: AppServiceService) {
 
   }
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit{
     this.getDataFromAPI();
   }
   getDataFromAPI() {
-    this.service.getData().subscribe((response: Response) => {
+    this.service.getData().subscribe((response) => {
       console.log('Response from API is ', response);
     }, (error:Error) => {
       console.log('Error is ', error);

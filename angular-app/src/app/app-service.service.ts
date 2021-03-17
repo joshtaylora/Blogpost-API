@@ -8,6 +8,6 @@ export class AppServiceService {
 
   constructor(private httpClient: HttpClient) { }
   getData() {
-    this.httpClient.get('/api/getData');
+    return this.httpClient.get('/Users/');
   }
 }
