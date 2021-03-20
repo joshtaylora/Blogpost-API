@@ -167,64 +167,160 @@ postRouter.patch("/:postId", (req, res, next) => {
   /**
    * @TODO need to add authorization verification
    */
-  let sql = "update Posts set";
-  let commaCheck: boolean = false;
-  let fieldCheck: boolean[] = [];
-  let updateParameters: string[] = [];
 
-  let params: any = {};
-
-  if (req.body.content === undefined) {
-    fieldCheck[0] = false;
-  } else {
-    let contentStr: string = "";
-    fieldCheck[0] = true;
-    if (commaCheck) {
-      contentStr += ",";
-    } else {
-      commaCheck = true;
-    }
-    contentStr += " content = $content";
-    params["$content"] = req.body.content;
-    updateParameters[0] = contentStr;
-  }
-
-  if (req.body.headerImage === undefined) {
-    fieldCheck[1] = false;
-  } else {
-    let headerImageStr: string = "";
-    fieldCheck[1] = true;
-    if (commaCheck) {
-      headerImageStr += ",";
-    }
-    headerImageStr += " headerImage = $headerImage";
-    params["$headerImage"] = req.body.headerImage;
-    updateParameters[1] = headerImageStr;
-  }
-
-  updateParameters.forEach((entry) => {
-    sql += entry;
-  });
-
-  sql += " where postId = $postId";
-  params["$postId"] = req.params.postId;
-
-  db.all(sql, params, (err: any) => {
-    if (err) {
-      console.log({ error: err.message });
-      res.status(404).send({ error: "Post could not be updated" });
-      return;
-    }
-    console.log({
+  if (req.headers.authorization === undefined) {
+    let errorMsg = {
       method: "patch",
-      route: "/Posts/:postId",
-      message: `Post with postId = ${req.params.postId} successfully updated`,
-    });
-    res.status(200).send({
-      message: `Post with postId = ${req.params.postId} successfully updated`,
-    });
+      route: "/Posts/{userId}",
+      error: `User ${req.body.userId} is not authorized to update post with postId: ${req.params.postId}`,
+    };
+    console.log(errorMsg);
+    res.status(401).send(errorMsg);
     return;
-  });
+  } else {
+    let tokenPayload = jwt.verify(
+      req.headers.authorization.toString().split(" ")[1],
+      secret
+    ) as { userId: string; exp: number; sub: string };
+    db.all(
+      "select * from Users where userId = $userID",
+      { $userID: req.body.userId },
+      (err: any, row: any[]) => {
+        if (err) {
+          let errorMsg = {
+            method: "patch",
+            route: "/Posts/{postId}",
+            error: `Authorization token for User with userId: ${tokenPayload.userId} does not reference a User in the database.`,
+          };
+          console.log(errorMsg);
+          res.status(404).send(errorMsg);
+          return;
+        } else if (row.length === 0 || row === undefined) {
+          // block executes if no row is found in the database correspoinding to the userId in the body
+          // of the request
+          let errorMsg = {
+            method: "patch",
+            route: "/Posts/{postId}",
+            error: `The User with userId = ${req.body.userId} that created the post with postId: ${req.params.postId} is not the User that is currently logged in.`,
+          };
+          console.log(errorMsg);
+          res.status(404).send(errorMsg);
+          return;
+        } else {
+          if (tokenPayload.userId === req.body.userId) {
+            // if the userId in the request body matches the one that is authenticated by the jwt token,
+            // check to see if they are the author of the post they are trying to edit
+            let sql =
+              "select * from Posts where postId = $postId and userId = $userId";
+            let params = {
+              $postId: req.params.postId,
+              $userId: req.body.userId,
+            };
+            db.all(sql, params, (err, row) => {
+              if (err) {
+                let errorMsg = {
+                  route: "/Posts/{postId}",
+                  method: "patch",
+                  error:
+                    "Error occurred while retrieving post from the database",
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+              } else if (row === undefined || row.length === 0) {
+                let errorMsg = {
+                  route: "/Posts/{postId}",
+                  method: "patch",
+                  error: `User attempting the patch is not the author of the post`,
+                };
+                console.log(errorMsg);
+                res.status(401).send(errorMsg);
+                return;
+              } else {
+                let sql = "update Posts set";
+                let commaCheck: boolean = false;
+                let fieldCheck: boolean[] = [];
+                let updateParameters: string[] = [];
+
+                let params: any = {};
+
+                if (req.body.content === undefined) {
+                  fieldCheck[0] = false;
+                } else {
+                  let contentStr: string = "";
+                  fieldCheck[0] = true;
+                  if (commaCheck) {
+                    contentStr += ",";
+                  } else {
+                    commaCheck = true;
+                  }
+                  contentStr += " content = $content";
+                  params["$content"] = req.body.content;
+                  updateParameters[0] = contentStr;
+                }
+
+                if (req.body.headerImage === undefined) {
+                  fieldCheck[1] = false;
+                } else {
+                  let headerImageStr: string = "";
+                  fieldCheck[1] = true;
+                  if (commaCheck) {
+                    headerImageStr += ",";
+                  }
+                  headerImageStr += " headerImage = $headerImage";
+                  params["$headerImage"] = req.body.headerImage;
+                  updateParameters[1] = headerImageStr;
+                }
+
+                updateParameters.forEach((entry) => {
+                  sql += entry;
+                });
+
+                sql += " where postId = $postId";
+                params["$postId"] = req.params.postId;
+
+                db.all(sql, params, (err: any) => {
+                  if (err) {
+                    console.log({ error: err.message });
+                    res
+                      .status(404)
+                      .send({ error: "Post could not be updated" });
+                    return;
+                  }
+                  console.log({
+                    method: "patch",
+                    route: "/Posts/:postId",
+                    message: `Post with postId = ${req.params.postId} successfully updated`,
+                  });
+                  res.status(200).send({
+                    message: `Post with postId = ${req.params.postId} successfully updated`,
+                  });
+                  return;
+                });
+              }
+            });
+          }
+        }
+      }
+    );
+  }
 });
+
+function verifyPostCreator(reqPostId: string, reqUserId: string) {
+  let sql = "select * from Posts where postId = $postId and userId: $userId";
+  let params = {
+    $postId: reqPostId,
+    $userId: reqUserId,
+  };
+
+  db.all(sql, params, (err: any, row: any[]) => {
+    if (err) {
+      // if an error occurred, return an error message
+    } else if (row.length === 0 || row === undefined) {
+      // if no row could be found matching the postId and userId
+    } else {
+    }
+  });
+}
 
 export { postRouter };

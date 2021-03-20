@@ -166,6 +166,48 @@ postRouter.patch("/:postId", (req, res, next) => {
     /**
      * @TODO need to add authorization verification
      */
+    if (req.headers.authorization === undefined) {
+        let errorMsg = {
+            method: "patch",
+            route: "/Posts/{userId}",
+            error: `User ${req.body.userId} is not authorized to update post with postId: ${req.params.postId}`,
+        };
+        console.log(errorMsg);
+        res.status(401).send(errorMsg);
+        return;
+    }
+    else {
+        let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+        database_1.db.all("select * from Users where userId = $userID", { $userID: req.body.userId }, (err, row) => {
+            if (err) {
+                let errorMsg = {
+                    method: "patch",
+                    route: "/Posts/{postId}",
+                    error: `Authorization token for User with userId: ${tokenPayload.userId} does not reference a User in the database.`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+            }
+            else if (row.length === 0 || row === undefined) {
+                // block executes if no row is found in the database correspoinding to the userId in the body
+                // of the request
+                let errorMsg = {
+                    method: "patch",
+                    route: "/Posts/{postId}",
+                    error: `The User with userId = ${req.body.userId} that created the post with postId: ${req.params.postId} is not the User that is currently logged in.`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+            }
+            else {
+                if (tokenPayload.userId === req.body.userId) {
+                    // call function that will verify this user is the one that created the post
+                }
+            }
+        });
+    }
     let sql = "update Posts set";
     let commaCheck = false;
     let fieldCheck = [];
@@ -222,4 +264,21 @@ postRouter.patch("/:postId", (req, res, next) => {
         return;
     });
 });
+function verifyPostCreator(reqPostId, reqUserId) {
+    let sql = "select * from Posts where postId = $postId and userId: $userId";
+    let params = {
+        $postId: reqPostId,
+        $userId: reqUserId,
+    };
+    database_1.db.all(sql, params, (err, row) => {
+        if (err) {
+            // if an error occurred, return an error message
+        }
+        else if (row.length === 0 || row === undefined) {
+            // if no row could be found matching the postId and userId
+        }
+        else {
+        }
+    });
+}
 //# sourceMappingURL=PostRouter.js.map

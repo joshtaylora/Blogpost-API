@@ -4,14 +4,17 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CIS4930 Assignment 2</title>
+    <title>CIS4930</title>
     <!-- Bootstrap -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
       integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
-    <link href="../../../../OneDrive/Desktop/cis4930/Assignment2/css/bootstrap-4.4.1.css" rel="stylesheet" />
+    <link
+      href="../../../../OneDrive/Desktop/cis4930/Assignment2/css/bootstrap-4.4.1.css"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -50,6 +53,12 @@
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Posts</a>
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -79,7 +88,7 @@
       </div>
     </nav>
     <hr />
-    <h1 class="text-center display-3 d-block p-2 ">User Routes</h1>
+    <h1 class="text-center display-3 d-block p-2">User Routes</h1>
     <section>
       <div class="container">
         <h2 id="get-method-requests">GET Requests</h2>
@@ -92,55 +101,88 @@
                     <h5 class="card-title" id="retrieve-users">
                       Retrieve Users
                     </h5>
-                    <hr>
-                      <table class="col card-text">
-                        <tr>
-                            <td><strong>Method:</strong> GET</td>
-                            <td><strong>URL:</strong> /Users/</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Description: </strong>Retrieves all of the users currently stored in the system and sends them in a response as a JSON array.</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Input: </strong><em> none</em></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Output: </strong>JSON array of all users currently
-                      in the system</td>
-                        </tr>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Users/</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Retrieves all of the
+                          users currently stored in the system and sends them in
+                          a response as a JSON array.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong><em> none</em>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>JSON array of all users
+                          currently in the system
+                        </td>
+                      </tr>
                     </table>
-                    <a href="/Users" class="btn btn-primary ">Test</a>
+                    <a href="/Users" class="btn btn-primary">Test</a>
                   </div>
                 </div>
               </div>
-                <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title" id="retrieve-user">
                       Retrieve User by ID
                     </h5>
-                    <hr>
+                    <hr />
                     <table class="col card-text">
-                        <tr>
-                            <td><strong>Method:</strong> GET</td>
-                            <td><strong>URL:</strong> /Users/{ID}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Description: </strong>Uses the UserID field to retrieve a User record from the
-                      database.</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Input: </strong>UserID passed in the URL as a
-                      parameter.</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><strong>Output: </strong>Response sends the user the JSON
-                      User object if the UserID corresponds to a User in the
-                      database. If the UserID cannot be found, a 404 error is
-                      returned.</td>
-                        </tr>
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Users/{userId}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Uses the userId field to
+                          retrieve a User record from the database.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong>UserID passed in the URL as a
+                          parameter.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>Response sends the user the
+                          JSON User object if the UserID corresponds to a User
+                          in the database. If the UserID cannot be found, a 404
+                          error is returned.
+                        </td>
+                      </tr>
                     </table>
-                      <br>
+                    <br />
+                    <a class="btn btn-primary" data-toggle="collapse" href="#usersGetAll" role="button" aria-expanded="false" aria-controls="usersGetAll">
+                      Example Request
+                    </a>
+                    <div class="collapse" id="usersGetAll">
+                      <div class="card card-body">
+                        <code style="white-space: pre-wrap">
+{ 
+  User: 
+  { 
+    userId: 'testUser1', 
+    firstName: 'test1f', 
+    lastName: 'test1L', 
+    emailAddress: 'testU1@email.com', 
+    password: 'testPass1'
+  }
+}
+                        </code>
+                      </div>
+                    </div>
                     <a href="/User/Search" class="btn btn-primary">Test</a>
                   </div>
                 </div>
@@ -162,7 +204,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title" id="create-user">Create new User</h5>
-                    <hr>
+                    <hr />
                     <p class="card-text"><strong>URL:</strong> /User</p>
                     <p class="card-text">
                       Used to create a new User record (unless a user with that
@@ -201,7 +243,7 @@
                     <h5 class="card-title" id="update-user">
                       Update existing User information
                     </h5>
-                    <hr>
+                    <hr />
                     <p class="card-text"><strong>URL:</strong> /User/{ID}</p>
                     <p class="card-text">
                       Used to update an existing User record's fields (except
@@ -243,19 +285,20 @@
                     <h5 class="card-title" id="delete-user">
                       Delete existing User information
                     </h5>
-                    <hr>
+                    <hr />
                     <p class="card-text"><strong>URL:</strong> /User{ID}</p>
                     <p class="card-text">
                       Used to delete an existing User record.
                     </p>
                     <p class="card-text">
                       <strong>Input: </strong>The UserID for a user in the
-                      database that should be deleted. This value is
-                      passed as a parameter in the URL.
+                      database that should be deleted. This value is passed as a
+                      parameter in the URL.
                     </p>
                     <p class="card-text">
-                      <strong>Output: </strong>If the user was succesfully deleted, a response with 
-                      a positive status message will be sent. Otherwise, a 404 error will be sent.
+                      <strong>Output: </strong>If the user was succesfully
+                      deleted, a response with a positive status message will be
+                      sent. Otherwise, a 404 error will be sent.
                     </p>
                     <a href="/User/Delete" class="btn btn-primary">Test</a>
                   </div>

@@ -60,7 +60,6 @@ userRouter.get("/:userId", (req, res, next) => {
 });
 /**
  * Create new User
- * @TODO add email format validation
  * @TODO add status 409 for duplicate userId
  */
 userRouter.post("/", (req, res, next) => {
@@ -198,92 +197,135 @@ function validateEmailFormat(emailString) {
 }
 /**
  * Update User
- * @TODO need to add authentication
  */
 userRouter.patch("/:userId", (req, res, next) => {
-    // Determine which values the user filled out that they want to update their User with
-    let sql = "update Users set";
-    let commaCheck = false;
-    let fieldCheck = [];
-    let updateParameters = [];
-    let params = {};
-    if (req.body.firstName === undefined) {
-        // console.log('No first name');
-        fieldCheck[0] = false;
-    }
-    else {
-        updateParameters[0] = " firstname = $firstName";
-        params["$firstName"] = req.body.firstName;
-        commaCheck = true;
-        fieldCheck[0] = true;
-    }
-    if (req.body.lastName === undefined) {
-        // console.log('No last name');
-        fieldCheck[1] = false;
-    }
-    else {
-        let lastNameStr = "";
-        fieldCheck[1] = true;
-        if (commaCheck) {
-            lastNameStr += ",";
-        }
-        lastNameStr += " lastName = $lastName";
-        params["$lastName"] = req.body.lastName;
-        updateParameters[1] = lastNameStr;
-    }
-    if (req.body.emailAddress === undefined) {
-        // console.log('No emailAddress');
-        fieldCheck[2] = false;
-    }
-    else {
-        let emailStr = "";
-        fieldCheck[2] = true;
-        if (commaCheck) {
-            emailStr += ",";
-        }
-        emailStr += " emailAddress = $emailAddress";
-        params["$emailAddress"] = req.body.emailAddress;
-        updateParameters[2] = emailStr;
-    }
-    if (req.body.password === undefined) {
-        // console.log('No password');
-        fieldCheck[3] = false;
-    }
-    else {
-        let passStr = "";
-        fieldCheck[4] = true;
-        if (commaCheck) {
-            passStr += ",";
-        }
-        passStr += " password = $password";
-        params["$password"] = req.body.password;
-        updateParameters[3] = passStr;
-    }
-    // console.log(updateParameters.toString());
-    // add all of the fields that will be updated to the sql update command
-    updateParameters.forEach((entry) => {
-        sql += entry;
-    });
-    sql += " where userId = $userId";
-    params["$userId"] = req.params.userId;
-    // console.log(sql);
-    // console.log(params);
-    database_1.db.all(sql, params, (err) => {
-        if (err) {
-            console.log({ error: err.message });
-            res.status(404).json({ error: "User could not be updated" });
-            return;
-        }
-        console.log({
+    // if the request does not contain the authorization header
+    // send an error status and return
+    if (req.headers.authorization === undefined) {
+        let errorMsg = {
             method: "patch",
             route: "/Users/:userId",
-            message: `User ${req.params.userId} successfully updated`,
-        });
-        res
-            .status(200)
-            .json({ message: `User ${req.params.userId} successfully updated` });
+            error: `User ${req.params.userId} could not be authenticated, please login first.`,
+        };
+        console.log(errorMsg);
+        res.status(401).send(errorMsg);
         return;
-    });
+    }
+    else {
+        let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+        database_1.db.all("select * from Users where userId = $userId", { $userId: req.params.userId }, (err, row) => {
+            if (err) {
+                let errorMsg = {
+                    method: "patch",
+                    route: "/Users/:userId",
+                    error: `User ${req.params.userId} could not be patched.`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+            }
+            else if (row.length === 0 || row === undefined) {
+                let errorMsg = {
+                    method: "patch",
+                    route: "/Users/:userId",
+                    error: `User ${req.params.userId} could not be patched.`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+            }
+            else {
+                let userIdQueryStr = JSON.stringify(row[0].userId);
+                let user = userIdQueryStr.replace(/['"]+/g, "");
+                // compare authorization header with user's entry in the database
+                if (tokenPayload.userId === user) {
+                    // Determine which values the user filled out that they want to update their User with
+                    let sql = "update Users set";
+                    let commaCheck = false;
+                    let fieldCheck = [];
+                    let updateParameters = [];
+                    let params = {};
+                    if (req.body.firstName === undefined) {
+                        // console.log('No first name');
+                        fieldCheck[0] = false;
+                    }
+                    else {
+                        updateParameters[0] = " firstname = $firstName";
+                        params["$firstName"] = req.body.firstName;
+                        commaCheck = true;
+                        fieldCheck[0] = true;
+                    }
+                    if (req.body.lastName === undefined) {
+                        // console.log('No last name');
+                        fieldCheck[1] = false;
+                    }
+                    else {
+                        let lastNameStr = "";
+                        fieldCheck[1] = true;
+                        if (commaCheck) {
+                            lastNameStr += ",";
+                        }
+                        lastNameStr += " lastName = $lastName";
+                        params["$lastName"] = req.body.lastName;
+                        updateParameters[1] = lastNameStr;
+                    }
+                    if (req.body.emailAddress === undefined) {
+                        // console.log('No emailAddress');
+                        fieldCheck[2] = false;
+                    }
+                    else {
+                        let emailStr = "";
+                        fieldCheck[2] = true;
+                        if (commaCheck) {
+                            emailStr += ",";
+                        }
+                        emailStr += " emailAddress = $emailAddress";
+                        params["$emailAddress"] = req.body.emailAddress;
+                        updateParameters[2] = emailStr;
+                    }
+                    if (req.body.password === undefined) {
+                        // console.log('No password');
+                        fieldCheck[3] = false;
+                    }
+                    else {
+                        let passStr = "";
+                        fieldCheck[4] = true;
+                        if (commaCheck) {
+                            passStr += ",";
+                        }
+                        passStr += " password = $password";
+                        params["$password"] = req.body.password;
+                        updateParameters[3] = passStr;
+                    }
+                    // console.log(updateParameters.toString());
+                    // add all of the fields that will be updated to the sql update command
+                    updateParameters.forEach((entry) => {
+                        sql += entry;
+                    });
+                    sql += " where userId = $userId";
+                    params["$userId"] = req.params.userId;
+                    // console.log(sql);
+                    // console.log(params);
+                    database_1.db.all(sql, params, (err) => {
+                        if (err) {
+                            console.log({ error: err.message });
+                            res.status(404).json({ error: "User could not be updated" });
+                            return;
+                        }
+                        console.log({
+                            method: "patch",
+                            route: "/Users/:userId",
+                            message: `User ${req.params.userId} successfully updated`,
+                        });
+                        res.status(200).json({
+                            message: `User ${req.params.userId} successfully updated`,
+                        });
+                        return;
+                    });
+                }
+            }
+        });
+    }
 });
 /**
  * Delete User
