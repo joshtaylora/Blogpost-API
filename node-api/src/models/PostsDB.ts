@@ -6,6 +6,18 @@ class PostDatabase {
   private tail: number;
   public constructor() {
     this.postArray = [];
+    let sql = "select MIN(postId) from Posts";
+    let params = {};
+    db.all(sql, params, (err:any, rows:any[]) => {
+        if (err) {
+            console.log({error: err.message});
+            this.tail = 0;
+        } else if (rows !== undefined){
+            // .replace(/['"]+/g, "")
+            console.log((JSON.stringify(rows[0].postId)));
+            console.log(this.tail);
+        }
+    })
     this.tail = 0;
   }
   /**
@@ -17,26 +29,74 @@ class PostDatabase {
    * @param headerImage
    * @param lastUpdated
    */
+  //   public createPost(
+  //     title: string,
+  //     content: string,
+  //     userId: string,
+  //     headerImage: string,
+  //   ) {
+  //     // create the Post object
+  //     let newPost: Post = new Post(
+  //       this.tail,
+  //       new Date(),
+  //       title,
+  //       content,
+  //       userId,
+  //       headerImage,
+  //       new Date()
+  //     );
+  //     // push the new post to the array
+  //     this.postArray.push(newPost);
+  //     // increment the tail
+  //     this.tail++;
+  //   }
+
   public createPost(
     title: string,
     content: string,
     userId: string,
-    headerImage: string,
-  ) {
-    // create the Post object
-    let newPost: Post = new Post(
-      this.tail,
-      new Date(),
-      title,
-      content,
-      userId,
-      headerImage,
-      new Date()
-    );
-    // push the new post to the array
-    this.postArray.push(newPost);
-    // increment the tail
-    this.tail++;
+    headerImage: string
+  ): Post | null {
+    let date = new Date();
+    let postId = this.tail;
+    let sql =
+      "insert into Posts (createdDate, title, content, userId, headerImage, lastUpdated) VALUES ($createdDate, $title, $content, $userId, $headerImage, $lastUpdated)";
+    let params = {
+      $createdDate: date,
+      $title: title,
+      $content: content,
+      $userId: userId,
+      $headerImage: headerImage,
+      $lastUpdated: date,
+    };
+    db.all(sql, params, (err:any, rows:any[]) => {
+        if (err) {
+            // if an error occurs, catch it, log it to the console, and return null
+            console.log({error: err.message});
+            return null;
+        } else {
+            db.all(
+                "select * from Posts where postId = $postId",
+                {$postId: this.tail},
+                (err:any, rows:any[]) => {
+                    if (err) {
+                        console.log({error: err.message});
+                        return null;
+                    } else if (rows === undefined || rows.length === 0) {
+                        console.log({error: `error, no row returned from query for row with postId = ${postId}`});
+                        return null;
+                    } else {
+                        // if no error occurred while inserting into the database, we can create the new Post and return it
+                        let successfulPost = new Post(postId, date, title, content, userId, headerImage, date);
+                        // increment the tail so we can increase the post id
+                        this.tail++;
+                        return successfulPost;
+                    }
+                }
+            )
+        }
+    });
+    return null;
   }
   /**
    * Method to retrieve a specific Post from the DB given its postId
@@ -113,30 +173,30 @@ class PostDatabase {
 
   /**
    * Method to delete a post from the database
-   * @param postId 
-   * @param userId 
-   * @returns 
+   * @param postId
+   * @param userId
+   * @returns
    */
   public deletePost(postId: number, userId: string): Post | null {
     // get post from the db
     let post: Post | null = this.retrievePostById(postId);
     // verify that we could retrieve the postId and that it's author is the currently authenticated user
     if (post !== null && post.userId === userId) {
-        // remove the post from the database and update the tail
-        this.postArray.splice(postId, 1);
-        this.tail--;
-        return post;
+      // remove the post from the database and update the tail
+      this.postArray.splice(postId, 1);
+      this.tail--;
+      return post;
     } else {
-        // return null if the post could not be deleted
-        return null
+      // return null if the post could not be deleted
+      return null;
     }
   }
   public toJSON() {
-      let stringArray =[] as JSON[];
-      this.postArray.forEach(function (entry) {
-          stringArray.push(JSON.parse(entry.toJSON()));
-      });
-      return stringArray;
+    let stringArray = [] as JSON[];
+    this.postArray.forEach(function (entry) {
+      stringArray.push(JSON.parse(entry.toJSON()));
+    });
+    return stringArray;
   }
 }
 

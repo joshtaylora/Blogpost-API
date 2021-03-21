@@ -2,9 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostDatabase = void 0;
 const Post_1 = require("./Post");
+const database_1 = require("../db/database");
 class PostDatabase {
     constructor() {
         this.postArray = [];
+        let sql = "select MIN(postId) from Posts";
+        let params = {};
+        database_1.db.all(sql, params, (err, rows) => {
+            if (err) {
+                console.log({ error: err.message });
+                this.tail = 0;
+            }
+            else if (rows !== undefined) {
+                // .replace(/['"]+/g, "")
+                console.log((JSON.stringify(rows[0].postId)));
+                console.log(this.tail);
+            }
+        });
         this.tail = 0;
     }
     /**
@@ -16,13 +30,66 @@ class PostDatabase {
      * @param headerImage
      * @param lastUpdated
      */
+    //   public createPost(
+    //     title: string,
+    //     content: string,
+    //     userId: string,
+    //     headerImage: string,
+    //   ) {
+    //     // create the Post object
+    //     let newPost: Post = new Post(
+    //       this.tail,
+    //       new Date(),
+    //       title,
+    //       content,
+    //       userId,
+    //       headerImage,
+    //       new Date()
+    //     );
+    //     // push the new post to the array
+    //     this.postArray.push(newPost);
+    //     // increment the tail
+    //     this.tail++;
+    //   }
     createPost(title, content, userId, headerImage) {
-        // create the Post object
-        let newPost = new Post_1.Post(this.tail, new Date(), title, content, userId, headerImage, new Date());
-        // push the new post to the array
-        this.postArray.push(newPost);
-        // increment the tail
-        this.tail++;
+        let date = new Date();
+        let postId = this.tail;
+        let sql = "insert into Posts (createdDate, title, content, userId, headerImage, lastUpdated) VALUES ($createdDate, $title, $content, $userId, $headerImage, $lastUpdated)";
+        let params = {
+            $createdDate: date,
+            $title: title,
+            $content: content,
+            $userId: userId,
+            $headerImage: headerImage,
+            $lastUpdated: date,
+        };
+        database_1.db.all(sql, params, (err, rows) => {
+            if (err) {
+                // if an error occurs, catch it, log it to the console, and return null
+                console.log({ error: err.message });
+                return null;
+            }
+            else {
+                database_1.db.all("select * from Posts where postId = $postId", { $postId: this.tail }, (err, rows) => {
+                    if (err) {
+                        console.log({ error: err.message });
+                        return null;
+                    }
+                    else if (rows === undefined || rows.length === 0) {
+                        console.log({ error: `error, no row returned from query for row with postId = ${postId}` });
+                        return null;
+                    }
+                    else {
+                        // if no error occurred while inserting into the database, we can create the new Post and return it
+                        let successfulPost = new Post_1.Post(postId, date, title, content, userId, headerImage, date);
+                        // increment the tail so we can increase the post id
+                        this.tail++;
+                        return successfulPost;
+                    }
+                });
+            }
+        });
+        return null;
     }
     /**
      * Method to retrieve a specific Post from the DB given its postId

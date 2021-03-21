@@ -2,13 +2,13 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 import { db } from "../db/database";
+import { PostDatabase } from "../models/PostsDB";
 import { secret } from "../index";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const postRouter = express.Router();
-
 /**
  * method: get
  * rotue: /Posts/
@@ -44,15 +44,16 @@ postRouter.get("/", (req, res, next) => {
  * description: creates a new post if the user attempting to create the post can successfully be authenticated
  */
 postRouter.post("/", (req, res, next) => {
+  let newDate = new Date().toJSON().slice(0,10);
   let sql =
     "insert into Posts (createdDate, title, content, userId, headerImage, lastUpdated) VALUES ($createdDate, $title, $content, $userId, $headerImage, $lastUpdated)";
   let params = {
-    $createdDate: req.body.createdDate,
+    $createdDate: newDate,
     $title: req.body.title,
     $content: req.body.content,
     $userId: req.body.userId,
     $headerImage: req.body.headerImage,
-    $lastUpdated: req.body.lastUpdated,
+    $lastUpdated: newDate,
   };
   // requires User to be properly authenticated
   if (req.headers.authorization) {
@@ -71,16 +72,16 @@ postRouter.post("/", (req, res, next) => {
             console.log({
               error: `User ${req.body.userId} is not authenticated and is thereby not able to create a new Post`,
             });
-            res.status(404).send({
+            res.status(401).send({
               error: `User ${req.body.userId} is not authenticated and is thereby not able to create a new Post`,
             });
             return;
           } else if (row.length === 0 || row === undefined) {
             console.log({
-              error: `User ${tokenPayload.userId} could not be located in the Users database`,
+              Status: 401, Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
             });
-            res.status(404).send({
-              error: `User ${req.body.userId} could not create post successfully`,
+            res.status(401).send({
+              Status: 401, Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
             });
             return;
           } else {
@@ -90,10 +91,10 @@ postRouter.post("/", (req, res, next) => {
               db.all(sql, params, (err: any) => {
                 if (err) {
                   console.log({
-                    error: `Error occurred while User ${req.body.userId} attempted to create a new Post`,
+                    Status: 404, Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
                   });
                   res.status(404).json({
-                    error: `User ${req.body.userId} could not create new Post successfully`,
+                    Status: 404, Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
                   });
                   return;
                 } else {
@@ -112,8 +113,8 @@ postRouter.post("/", (req, res, next) => {
               console.log({
                 error: `User ${req.body.userId} is not authorized to create a new Post`,
               });
-              res.status(404).json({
-                error: `User ${req.body.userId} is not authorized to create new Post`,
+              res.status(401).json({
+                Status: 401, Message: `User ${req.body.userId} is not authorized to create new Post`,
               });
               return;
             }
@@ -121,7 +122,7 @@ postRouter.post("/", (req, res, next) => {
         }
       );
     } catch (err) {
-      console.log({ method: "post", route: "/Posts/", error: err.message });
+      console.log({ Status: 401, Message: err.message });
       res.status(401).send({ error: "invalid web token" });
       return;
     }
@@ -131,7 +132,7 @@ postRouter.post("/", (req, res, next) => {
 /**
  * methood: get
  * route: /Posts/{postId}
- * description: 
+ * description:
  */
 postRouter.get("/:postId", (req, res, next) => {
   let sql =
@@ -147,7 +148,7 @@ postRouter.get("/:postId", (req, res, next) => {
         error: `Post with postId = ${req.params.postId} could not be retrieved`,
       });
       res.status(404).send({
-        error: `Post with postId = ${req.params.postId} could not be retrieved`,
+        Status: 404, Message: `Post with postId = ${req.params.postId} could not be retrieved`,
       });
       return;
     } else if (row.length === 0 || row === undefined) {
@@ -156,8 +157,8 @@ postRouter.get("/:postId", (req, res, next) => {
         route: "/Posts/:postId",
         error: `Post with postId = ${req.params.postId} could not be retrieved`,
       });
-      res.status(404).send({
-        error: `Post with postId = ${req.params.postId} could not be retrieved`,
+      res.status(404).send({ Status: 404,
+        Message: `Post with postId = ${req.params.postId} could not be found`,
       });
       return;
     } else {
@@ -171,14 +172,13 @@ postRouter.get("/:postId", (req, res, next) => {
 /**
  * method: patch
  * route: /Posts/{postId}
- * description: 
+ * description:
  */
 postRouter.patch("/:postId", (req, res, next) => {
   if (req.headers.authorization === undefined) {
     let errorMsg = {
-      method: "patch",
-      route: "/Posts/{userId}",
-      error: `User ${req.body.userId} is not authorized to update post with postId: ${req.params.postId}`,
+      Status: 401,
+      Message: `User ${req.body.userId} is not authorized to update post with postId: ${req.params.postId}`,
     };
     console.log(errorMsg);
     res.status(401).send(errorMsg);
@@ -194,9 +194,8 @@ postRouter.patch("/:postId", (req, res, next) => {
       (err: any, row: any[]) => {
         if (err) {
           let errorMsg = {
-            method: "patch",
-            route: "/Posts/{postId}",
-            error: `Authorization token for User with userId: ${tokenPayload.userId} does not reference a User in the database.`,
+            Status: 404,
+            Message: `Authorization token for User with userId: ${tokenPayload.userId} does not reference a User in the database.`,
           };
           console.log(errorMsg);
           res.status(404).send(errorMsg);
@@ -205,12 +204,11 @@ postRouter.patch("/:postId", (req, res, next) => {
           // block executes if no row is found in the database correspoinding to the userId in the body
           // of the request
           let errorMsg = {
-            method: "patch",
-            route: "/Posts/{postId}",
-            error: `The User with userId = ${req.body.userId} that created the post with postId: ${req.params.postId} is not the User that is currently logged in.`,
+            Status: 401,
+            Message: `The User with userId = ${req.body.userId} that created the post with postId: ${req.params.postId} is not the User that is currently logged in.`,
           };
           console.log(errorMsg);
-          res.status(404).send(errorMsg);
+          res.status(401).send(errorMsg);
           return;
         } else {
           if (tokenPayload.userId === req.body.userId) {
@@ -225,10 +223,9 @@ postRouter.patch("/:postId", (req, res, next) => {
             db.all(sql, params, (err, row) => {
               if (err) {
                 let errorMsg = {
-                  route: "/Posts/{postId}",
-                  method: "patch",
-                  error:
-                    "Error occurred while retrieving post from the database",
+                  Status: 404,
+                  Message:
+                    "The Post with the specified postId could not be found",
                 };
                 console.log(errorMsg);
                 res.status(404).send(errorMsg);
@@ -281,7 +278,8 @@ postRouter.patch("/:postId", (req, res, next) => {
                 updateParameters.forEach((entry) => {
                   sql += entry;
                 });
-
+                sql += ", lastUpdated = $lastUpdated";
+                params["$lastUpdated"] = new Date().toJSON().slice(0, 10);
                 sql += " where postId = $postId";
                 params["$postId"] = req.params.postId;
 
@@ -313,7 +311,105 @@ postRouter.patch("/:postId", (req, res, next) => {
 });
 
 postRouter.delete("/:postId", (req, res, next) => {
-  // need to add
-})
+  // check that the authorization header is not undefined
+  if (req.headers.authorization) {
+    try {
+      let tokenPayload = jwt.verify(
+        req.headers.authorization.toString().split(" ")[1],
+        secret
+      ) as { userId: string; exp: number; sub: string };
+      db.all(
+        "select * from Users where userId = $userId",
+        { $userId: tokenPayload.userId },
+        (err: Error | null, rows: any[]) => {
+          if (err) {
+            let errorMsg = {
+              Status: 401,
+              Message: `error occurred while attempting to get User with userId = |${tokenPayload.userId}| from Users DB`,
+            };
+            console.log(errorMsg);
+            res.status(401).send(errorMsg);
+            return;
+          } else if (rows === undefined || rows.length === 0) {
+            let errorMsg = {
+              Status: 401,
+              Message: `User with userId = ${tokenPayload.userId} could not be properly authenticated`,
+            };
+            console.log(errorMsg);
+            res.status(401).send(errorMsg);
+            return;
+          } else {
+            let userIdQueryStr = JSON.stringify(rows[0].userId);
+            let userIdStr = userIdQueryStr.replace(/['"]+/g, "");
+            let postsSql = "select * from Posts where postId = $postId";
+            let postsParams = {
+              $postId: req.params.postId,
+            };
+            // check that the post with the specified postId exists in the database
+            db.all(postsSql, postsParams, (err: Error | null, rows: any[]) => {
+              if (err) {
+                let errorMsg = {
+                  Status: 404,
+                  Message: `Unable to find Post with postId = ${req.params.postId}`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+              } else if (rows.length === 0 || rows === undefined) {
+                let errorMsg = {
+                  Status: 404,
+                  Message: `Unable to find post with postId = ${req.params.postId}`,
+                };
+                console.log(errorMsg);
+                res.status(404).send(errorMsg);
+                return;
+              } else {
+                let postUsrStr = JSON.stringify(rows[0].userId);
+                let postAuthor = postUsrStr.replace(/['"]+/g, "");
+                // if the post author and the userId sent in the token match, we can delete the Post
+                if (userIdStr === postAuthor) {
+                  let sql = "delete from Posts where postId = $postId";
+                  let params = {
+                    $postId: req.params.postId,
+                  };
+                  db.all(sql, params, (err: Error | null, rows: any[]) => {
+                    if (err) {
+                      let errorMsg = {
+                        Status: 404,
+                        Message: "unable to find post with the specified postId",
+                      };
+                      console.log(errorMsg);
+                      res.status(404).send(errorMsg);
+                      return;
+                    } else {
+                      let success = {
+                        route: "/Posts/{postId}",
+                        method: "delete",
+                      };
+                      console.log(success);
+                      res.status(204).send(success);
+                      return;
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      );
+    } catch (err) {
+      let errorMsg = {
+        route: "/Posts/{postId}",
+        method: "delete",
+        error: err.message,
+      };
+      console.log(errorMsg);
+      res.status(401).send(errorMsg);
+    }
+  } else {
+    res.status(401).send();
+    return;
+  }
+});
 
 export { postRouter };

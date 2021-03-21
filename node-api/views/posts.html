@@ -49,7 +49,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="help.html"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
@@ -80,13 +80,13 @@
                aria-expanded="false"
                >Posts</a>
               <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/posts.html#get-method-requests">Get</a>
+                  <a class="dropdown-item" href="#get-method-requests">Get</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/posts.html#post-method-requests">Post</a>
+                  <a class="dropdown-item" href="#post-method-requests">Post</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/posts.html#patch-method-requests">Patch</a>
+                  <a class="dropdown-item" href="#patch-method-requests">Patch</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/posts.html#delete-method-requests">Delete</a>
+                  <a class="dropdown-item" href="#delete-method-requests">Delete</a>
               </div>
           </li>
         </ul>
@@ -97,7 +97,7 @@
       </div>
     </nav>
     <hr />
-    <h1 id="UserRoutes" class="text-center display-3 d-block p-2">User Routes</h1>
+    <h1 id="UserRoutes" class="text-center display-3 d-block p-2">Post Routes</h1>
     <section>
       <div class="container">
         <h2 id="get-method-requests">GET Requests</h2>
@@ -108,18 +108,18 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title" id="retrieve-users">
-                      Retrieve Users
+                      Retrieve Posts
                     </h5>
                     <hr />
                     <table class="col card-text">
                       <tr>
                         <td><strong>Method:</strong> GET</td>
-                        <td><strong>URL:</strong> /Users/</td>
+                        <td><strong>URL:</strong> /Posts/</td>
                       </tr>
                       <tr>
                         <td colspan="2">
                           <strong>Description: </strong>Retrieves all of the
-                          users currently stored in the system and sends them in
+                          posts currently stored in the system and sends them in
                           a response as a JSON array.
                         </td>
                       </tr>
@@ -130,44 +130,43 @@
                       </tr>
                       <tr>
                         <td colspan="2">
-                          <strong>Output: </strong>JSON array of all users
+                          <strong>Output: </strong>JSON array of all posts
                           currently in the system
                         </td>
                       </tr>
                     </table>
-                    <a href="/Users" class="btn btn-primary">Test</a>
                   </div>
                 </div>
               </div>
               <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title" id="retrieve-user">
-                      Retrieve User by ID
+                    <h5 class="card-title" id="retrieve-post">
+                      Retrieve Posts by postId
                     </h5>
                     <hr />
                     <table class="col card-text">
                       <tr>
                         <td><strong>Method:</strong> GET</td>
-                        <td><strong>URL:</strong> /Users/{userId}</td>
+                        <td><strong>URL:</strong> /Posts/{postId}</td>
                       </tr>
                       <tr>
                         <td colspan="2">
-                          <strong>Description: </strong>Uses the userId field to
-                          retrieve a User record from the database.
+                          <strong>Description: </strong>Uses the postId field to
+                          retrieve a Post record from the database.
                         </td>
                       </tr>
                       <tr>
                         <td colspan="2">
-                          <strong>Input: </strong>UserID passed in the URL as a
+                          <strong>Input: </strong>postId passed in the URL as a
                           parameter.
                         </td>
                       </tr>
                       <tr>
                         <td colspan="2">
                           <strong>Output: </strong>Response sends the user the
-                          JSON User object if the UserID corresponds to a User
-                          in the database. If the UserID cannot be found, a 404
+                          JSON Post object if the postId corresponds to a Post 
+                          in the database. If the postId cannot be found, a 404
                           error is returned.
                         </td>
                       </tr>
