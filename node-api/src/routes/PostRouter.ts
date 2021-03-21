@@ -128,6 +128,11 @@ postRouter.post("/", (req, res, next) => {
   }
 });
 
+/**
+ * methood: get
+ * route: /Posts/{postId}
+ * description: 
+ */
 postRouter.get("/:postId", (req, res, next) => {
   let sql =
     "select postId, createdDate, title, content, userId, headerImage, lastUpdated from Posts where postId = $postId";
@@ -163,11 +168,12 @@ postRouter.get("/:postId", (req, res, next) => {
   });
 });
 
+/**
+ * method: patch
+ * route: /Posts/{postId}
+ * description: 
+ */
 postRouter.patch("/:postId", (req, res, next) => {
-  /**
-   * @TODO need to add authorization verification
-   */
-
   if (req.headers.authorization === undefined) {
     let errorMsg = {
       method: "patch",
@@ -306,21 +312,8 @@ postRouter.patch("/:postId", (req, res, next) => {
   }
 });
 
-function verifyPostCreator(reqPostId: string, reqUserId: string) {
-  let sql = "select * from Posts where postId = $postId and userId: $userId";
-  let params = {
-    $postId: reqPostId,
-    $userId: reqUserId,
-  };
-
-  db.all(sql, params, (err: any, row: any[]) => {
-    if (err) {
-      // if an error occurred, return an error message
-    } else if (row.length === 0 || row === undefined) {
-      // if no row could be found matching the postId and userId
-    } else {
-    }
-  });
-}
+postRouter.delete("/:postId", (req, res, next) => {
+  // need to add
+})
 
 export { postRouter };

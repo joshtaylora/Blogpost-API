@@ -127,6 +127,11 @@ postRouter.post("/", (req, res, next) => {
         }
     }
 });
+/**
+ * methood: get
+ * route: /Posts/{postId}
+ * description:
+ */
 postRouter.get("/:postId", (req, res, next) => {
     let sql = "select postId, createdDate, title, content, userId, headerImage, lastUpdated from Posts where postId = $postId";
     let params = {
@@ -162,10 +167,12 @@ postRouter.get("/:postId", (req, res, next) => {
         }
     });
 });
+/**
+ * method: patch
+ * route: /Posts/{postId}
+ * description:
+ */
 postRouter.patch("/:postId", (req, res, next) => {
-    /**
-     * @TODO need to add authorization verification
-     */
     if (req.headers.authorization === undefined) {
         let errorMsg = {
             method: "patch",
@@ -203,82 +210,100 @@ postRouter.patch("/:postId", (req, res, next) => {
             }
             else {
                 if (tokenPayload.userId === req.body.userId) {
-                    // call function that will verify this user is the one that created the post
+                    // if the userId in the request body matches the one that is authenticated by the jwt token,
+                    // check to see if they are the author of the post they are trying to edit
+                    let sql = "select * from Posts where postId = $postId and userId = $userId";
+                    let params = {
+                        $postId: req.params.postId,
+                        $userId: req.body.userId,
+                    };
+                    database_1.db.all(sql, params, (err, row) => {
+                        if (err) {
+                            let errorMsg = {
+                                route: "/Posts/{postId}",
+                                method: "patch",
+                                error: "Error occurred while retrieving post from the database",
+                            };
+                            console.log(errorMsg);
+                            res.status(404).send(errorMsg);
+                            return;
+                        }
+                        else if (row === undefined || row.length === 0) {
+                            let errorMsg = {
+                                route: "/Posts/{postId}",
+                                method: "patch",
+                                error: `User attempting the patch is not the author of the post`,
+                            };
+                            console.log(errorMsg);
+                            res.status(401).send(errorMsg);
+                            return;
+                        }
+                        else {
+                            let sql = "update Posts set";
+                            let commaCheck = false;
+                            let fieldCheck = [];
+                            let updateParameters = [];
+                            let params = {};
+                            if (req.body.content === undefined) {
+                                fieldCheck[0] = false;
+                            }
+                            else {
+                                let contentStr = "";
+                                fieldCheck[0] = true;
+                                if (commaCheck) {
+                                    contentStr += ",";
+                                }
+                                else {
+                                    commaCheck = true;
+                                }
+                                contentStr += " content = $content";
+                                params["$content"] = req.body.content;
+                                updateParameters[0] = contentStr;
+                            }
+                            if (req.body.headerImage === undefined) {
+                                fieldCheck[1] = false;
+                            }
+                            else {
+                                let headerImageStr = "";
+                                fieldCheck[1] = true;
+                                if (commaCheck) {
+                                    headerImageStr += ",";
+                                }
+                                headerImageStr += " headerImage = $headerImage";
+                                params["$headerImage"] = req.body.headerImage;
+                                updateParameters[1] = headerImageStr;
+                            }
+                            updateParameters.forEach((entry) => {
+                                sql += entry;
+                            });
+                            sql += " where postId = $postId";
+                            params["$postId"] = req.params.postId;
+                            database_1.db.all(sql, params, (err) => {
+                                if (err) {
+                                    console.log({ error: err.message });
+                                    res
+                                        .status(404)
+                                        .send({ error: "Post could not be updated" });
+                                    return;
+                                }
+                                console.log({
+                                    method: "patch",
+                                    route: "/Posts/:postId",
+                                    message: `Post with postId = ${req.params.postId} successfully updated`,
+                                });
+                                res.status(200).send({
+                                    message: `Post with postId = ${req.params.postId} successfully updated`,
+                                });
+                                return;
+                            });
+                        }
+                    });
                 }
             }
         });
     }
-    let sql = "update Posts set";
-    let commaCheck = false;
-    let fieldCheck = [];
-    let updateParameters = [];
-    let params = {};
-    if (req.body.content === undefined) {
-        fieldCheck[0] = false;
-    }
-    else {
-        let contentStr = "";
-        fieldCheck[0] = true;
-        if (commaCheck) {
-            contentStr += ",";
-        }
-        else {
-            commaCheck = true;
-        }
-        contentStr += " content = $content";
-        params["$content"] = req.body.content;
-        updateParameters[0] = contentStr;
-    }
-    if (req.body.headerImage === undefined) {
-        fieldCheck[1] = false;
-    }
-    else {
-        let headerImageStr = "";
-        fieldCheck[1] = true;
-        if (commaCheck) {
-            headerImageStr += ",";
-        }
-        headerImageStr += " headerImage = $headerImage";
-        params["$headerImage"] = req.body.headerImage;
-        updateParameters[1] = headerImageStr;
-    }
-    updateParameters.forEach((entry) => {
-        sql += entry;
-    });
-    sql += " where postId = $postId";
-    params["$postId"] = req.params.postId;
-    database_1.db.all(sql, params, (err) => {
-        if (err) {
-            console.log({ error: err.message });
-            res.status(404).send({ error: "Post could not be updated" });
-            return;
-        }
-        console.log({
-            method: "patch",
-            route: "/Posts/:postId",
-            message: `Post with postId = ${req.params.postId} successfully updated`,
-        });
-        res.status(200).send({
-            message: `Post with postId = ${req.params.postId} successfully updated`,
-        });
-        return;
-    });
 });
-function verifyPostCreator(reqPostId, reqUserId) {
-    let sql = "select * from Posts where postId = $postId and userId: $userId";
-    let params = {
-        $postId: reqPostId,
-        $userId: reqUserId,
-    };
-    database_1.db.all(sql, params, (err, row) => {
-        if (err) {
-            // if an error occurred, return an error message
-        }
-        else if (row.length === 0 || row === undefined) {
-            // if no row could be found matching the postId and userId
-        }
-        else {
-        }
-    });
-}
+postRouter.delete("/:postId", (req, res, next) => {
+    // need to add
+});
 //# sourceMappingURL=PostRouter.js.map

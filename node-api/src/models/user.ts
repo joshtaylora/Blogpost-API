@@ -19,6 +19,6 @@ export class User {
     }
 
     public toJSON() {
-        return JSON.stringify(Object.assign({}, this));
+        return JSON.stringify(Object.assign({}, {userId: this.userId, firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress}));
     }
 }

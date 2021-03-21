@@ -235,7 +235,7 @@ userRouter.patch("/:userId", (req, res, next) => {
           let errorMsg = {
             method: "patch",
             route: "/Users/:userId",
-            error: `User ${req.params.userId} could not be patched.`,
+            error: `Entry in the Users database for User ${req.params.userId} could not be found and thus the user could not be patched.`,
           };
           console.log(errorMsg);
           res.status(404).send(errorMsg);
