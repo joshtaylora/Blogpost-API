@@ -1,19 +1,19 @@
 export class Post {
     postId: number;
-    createdDate: Date;
+    createdDate: string;
     title: string;
     content: string;
     userId: string;
     headerImage: string;
-    lastUpdated: Date;
+    lastUpdated: string;
     constructor(
         postId: number,
-        createdDate: Date,
+        createdDate: string,
         title: string,
         content: string,
         userId: string,
         headerImage: string,
-        lastUpdated: Date
+        lastUpdated: string 
       ) {
           this.postId = postId;
           this.createdDate = createdDate;

@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const database_1 = require("../db/database");
 const index_1 = require("../index");
+const Post_1 = require("../models/Post");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const postRouter = express_1.default.Router();
@@ -75,10 +76,12 @@ postRouter.post("/", (req, res, next) => {
                 }
                 else if (row.length === 0 || row === undefined) {
                     console.log({
-                        Status: 401, Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
+                        Status: 401,
+                        Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
                     });
                     res.status(401).send({
-                        Status: 401, Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
+                        Status: 401,
+                        Message: `User with userId = ${tokenPayload.userId} is not authenticated`,
                     });
                     return;
                 }
@@ -89,23 +92,62 @@ postRouter.post("/", (req, res, next) => {
                         database_1.db.all(sql, params, (err) => {
                             if (err) {
                                 console.log({
-                                    Status: 404, Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                    Status: 404,
+                                    Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
                                 });
                                 res.status(404).json({
-                                    Status: 404, Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                    Status: 404,
+                                    Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
                                 });
                                 return;
                             }
                             else {
-                                console.log({
-                                    method: "post",
-                                    route: "/Posts/",
-                                    message: `User ${req.body.userId} successfully created post ${req.body.title}`,
+                                let sql = "select * from Posts order by postId DESC";
+                                let params = {};
+                                database_1.db.all(sql, params, (err, rows) => {
+                                    if (err) {
+                                        console.log({
+                                            Status: 404,
+                                            Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                        });
+                                        res.status(404).json({
+                                            Status: 404,
+                                            Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                        });
+                                    }
+                                    else if (rows === undefined || rows.length === 0) {
+                                        console.log({
+                                            Status: 404,
+                                            Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                        });
+                                        res.status(404).json({
+                                            Status: 404,
+                                            Message: `Error occurred while trying to find User with userId =  ${req.body.userId}`,
+                                        });
+                                    }
+                                    else {
+                                        let row = rows[0];
+                                        let postId = JSON.stringify(row.postId).replace(/['"]+/g, "");
+                                        let createdDate = JSON.stringify(row.createdDate).replace(/['"]+/g, "");
+                                        let title = JSON.stringify(row.title).replace(/['"]+/g, "");
+                                        let content = JSON.stringify(row.content).replace(/['"]+/g, "");
+                                        let userId = JSON.stringify(row.userId).replace(/['"]+/g, "");
+                                        let headerImage = JSON.stringify(row.headerImage).replace(/['"]+/g, "");
+                                        let lastUpdated = JSON.stringify(row.lastUpdated).replace(/['"]+/g, "");
+                                        let newPost = new Post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
+                                        console.log(JSON.parse(newPost.toJSON()));
+                                        console.log({
+                                            method: "post",
+                                            route: "/Posts/",
+                                            message: `User ${req.body.userId} successfully created post ${req.body.title}`,
+                                        });
+                                        res.status(201).send({
+                                            message: `User ${req.body.userId} successfully created post ${req.body.title}`,
+                                            data: JSON.parse(newPost.toJSON()),
+                                        });
+                                        return;
+                                    }
                                 });
-                                res.status(204).send({
-                                    message: `User ${req.body.userId} successfully created post ${req.body.title}`,
-                                });
-                                return;
                             }
                         });
                     }
@@ -114,7 +156,8 @@ postRouter.post("/", (req, res, next) => {
                             error: `User ${req.body.userId} is not authorized to create a new Post`,
                         });
                         res.status(401).json({
-                            Status: 401, Message: `User ${req.body.userId} is not authorized to create new Post`,
+                            Status: 401,
+                            Message: `User ${req.body.userId} is not authorized to create new Post`,
                         });
                         return;
                     }
@@ -128,6 +171,33 @@ postRouter.post("/", (req, res, next) => {
         }
     }
 });
+function getLastPost() {
+    let postReturn = null;
+    let sql = "select * from Posts order by postId DESC";
+    let params = {};
+    database_1.db.all(sql, params, (err, rows) => {
+        if (err) {
+            return null;
+        }
+        else if (rows === undefined || rows.length === 0) {
+            return null;
+        }
+        else {
+            let row = rows[0];
+            let postId = JSON.stringify(row.postId).replace(/['"]+/g, "");
+            let createdDate = JSON.stringify(row.createdDate).replace(/['"]+/g, "");
+            let title = JSON.stringify(row.title).replace(/['"]+/g, "");
+            let content = JSON.stringify(row.content).replace(/['"]+/g, "");
+            let userId = JSON.stringify(row.userId).replace(/['"]+/g, "");
+            let headerImage = JSON.stringify(row.headerImage).replace(/['"]+/g, "");
+            let lastUpdated = JSON.stringify(row.lastUpdated).replace(/['"]+/g, "");
+            postReturn = new Post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
+            console.log(JSON.parse(postReturn.toJSON()));
+            return postReturn;
+        }
+    });
+    return postReturn;
+}
 /**
  * methood: get
  * route: /Posts/{postId}
@@ -146,7 +216,8 @@ postRouter.get("/:postId", (req, res, next) => {
                 error: `Post with postId = ${req.params.postId} could not be retrieved`,
             });
             res.status(404).send({
-                Status: 404, Message: `Post with postId = ${req.params.postId} could not be retrieved`,
+                Status: 404,
+                Message: `Post with postId = ${req.params.postId} could not be retrieved`,
             });
             return;
         }
@@ -156,7 +227,10 @@ postRouter.get("/:postId", (req, res, next) => {
                 route: "/Posts/:postId",
                 error: `Post with postId = ${req.params.postId} could not be retrieved`,
             });
-            res.status(404).send({ Status: 404,
+            res
+                .status(404)
+                .send({
+                Status: 404,
                 Message: `Post with postId = ${req.params.postId} could not be found`,
             });
             return;

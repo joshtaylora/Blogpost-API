@@ -111,7 +111,7 @@ userRouter.get("/:userId", (req, res, next) => {
         }
         else {
             console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-            res.status(200).json({
+            res.status(201).json({
                 message: "success",
                 data: row[0],
             });
@@ -152,7 +152,7 @@ userRouter.post("/", (req, res, next) => {
                     error: "error occurred while checking Users database for duplicate userId",
                 });
                 res.status(404).send({
-                    error: "error occurred while querying Users table in the database",
+                    Status: 404, Message: "error occurred while querying Users table in the database",
                 });
                 return;
             }
@@ -164,7 +164,7 @@ userRouter.post("/", (req, res, next) => {
                     error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
                 });
                 res.status(409).send({
-                    error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
+                    Status: 409, Message: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
                 });
                 return;
             }
