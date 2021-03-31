@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CIS4930</title>
+    <!-- Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="../../../../OneDrive/Desktop/cis4930/Assignment2/css/bootstrap-4.4.1.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+      integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">CIS4930</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-t21oggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="usersDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Users</a
+            >
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#get-users"
+                >Get Users</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#get-user-by-userId"
+                >Get User by userId</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#get-users-posts"
+                >Get User's Posts</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="create-user"
+                >Create User</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#update-user"
+                >Update User</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#delete-user"
+                >Delete User</a
+              >
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="postsDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Posts</a
+            >
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#get-users"
+                >Get Posts</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#get-post-by-postId"
+                >Get Post by postId</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#create-post"
+                >Create Post</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#update-post"
+                >Update Post</a
+              >
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#delete-post"
+                >Delete Post</a
+              >
+            </div>
+          </li>
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+      </div>
+    </nav>
+    <hr />
+    <h1 id="UserRoutes" class="text-center display-3 d-block p-2">
+      Endpoints
+    </h1>
+    <section>
+      <div class="container">
+        <h2 id="get-method-requests">GET Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-4 col-4 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="get-users">
+                      Retrieve Users
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Users/</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Retrieves all of the
+                          users currently stored in the system and sends them in
+                          a response as a JSON array.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong><em> none</em>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>JSON array of all users
+                          currently in the system
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- <a href="/Users" class="btn btn-primary">Test</a> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-4 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="get-user-by-userId">
+                      Retrieve User by ID
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Users/{userId}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Uses the userId field to
+                          retrieve a User record from the database.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong>userId passed in the URL as a
+                          parameter.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>Response sends the user the
+                          JSON User object if the userId corresponds to a User
+                          in the database. If the userId cannot be found, a 404
+                          error is returned.
+                        </td>
+                      </tr>
+                    </table>
+                    <br />
+                    <!-- <a
+                      class="btn btn-primary"
+                      data-toggle="collapse"
+                      href="#usersGetAll"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="usersGetAll"
+                    >
+                      Example Request
+                    </a>
+                    <div class="collapse" id="usersGetAll">
+                      <div class="card card-body">
+                        <code style="white-space: pre-line">
+                          { User: { userId: 'testUser1', firstName: 'test1f',
+                          lastName: 'test1L', emailAddress: 'testU1@email.com',
+                          password: 'testPass1' } }
+                        </code>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 col-4 p-3 d-flex align-items-stretch">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title" id="get-users-posts">
+                    Retrieve Posts by User
+                  </h5>
+                  <hr />
+                  <table class="col card-text">
+                    <tr>
+                      <td><strong>Method:</strong> GET</td>
+                      <td><strong>URL:</strong> /Users/Posts/{userId}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <strong>Description: </strong>Retrieves all of the
+                        posts currently stored in the system that the specified User has authored and sends them in
+                        a response as a JSON array.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <strong>Input: </strong>Request with a valid authentication token in the header that 
+                        corresponds to the user specified by the userId in the parameters of the URL. 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <strong>Output: </strong>JSON array of all posts
+                        currently in the system authored by the authenticated user sent in a response with 
+                        a 200 status code. If the request does not contain a valid authentication token for the 
+                        specified User, a response with status code 401 will be sent to the client. If no Posts
+                        authored by the specififed User can be found, a response with status code 404 will be sent.
+                      </td>
+                    </tr>
+                  </table>
+                  <!-- <a href="/Users" class="btn btn-primary">Test</a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="get-posts">
+                      Retrieve Posts
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Posts/</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Retrieves all of the
+                          posts currently stored in the system and sends them in
+                          a response as a JSON array.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong><em> none</em>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>JSON array of all posts
+                          currently in the system
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- <a href="/Users" class="btn btn-primary">Test</a> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="get-post-by-postId">
+                      Retrieve Post by ID
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Posts/{PostId}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Uses the postId field to
+                          retrieve a Post record from the database.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong>postId passed in the URL as a
+                          parameter.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>Response sends the client the
+                          JSON Post object corresponding to the postId specified in the url if it could be retrieved from the database 
+                          with a status code of 200. If the Post with postId cannot be found, a 404
+                          error is returned.
+                        </td>
+                      </tr>
+                    </table>
+                    <br />
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 id="post-method-requests">POST Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="create-user">Create new User</h5>
+                    <hr />
+                    <p class="card-text"><strong>URL:</strong> /Users</p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to create a new User record (unless a user with that
+                      userId is already in the database).
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>userId passed in the URL as a
+                      parameter.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>If the userId submitted in the
+                      body of the request does not match an existing user in the
+                      database and the user was able to be succesfully created,
+                      the new User object is returned as a JSON object with a
+                      status of 200. If the userId already corresponds to an
+                      existing User in the database, an error message with
+                      status code 409 will be sent. If for any other reason a 
+                      User was unable to be successfully created and added to the 
+                      database, a response with status code 404 will be sent.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="create-post">Create new Post</h5>
+                    <hr />
+                    <p class="card-text"><strong>URL:</strong> /Posts</p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to create a new Post record.
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>postId passed in the URL as a
+                      parameter, as well as the post title, content, userId 
+                      of the user authoring the post, and the headerImage (a string representing 
+                      the url that will link to the image that will be displayed in the header of
+                      the blog post page). 
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong> If the header for the request contains a valid authentication token and the 
+                      Post was able to be created succesfully then a response with status code 201 will be sent to the client.
+                      If the request header does not contain a properly formatted authenication token then no post will be created
+                      and the client will receive a response with status code 401.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 id="patch-method-requests">PATCH Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="update-user">
+                      Update existing User information
+                    </h5>
+                    <hr />
+                    <p class="card-text">
+                      <strong>URL:</strong> /Users/{userId}
+                    </p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to update an existing User record's fields (except
+                      for the userId field).
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>the request provides the userId in
+                      the URL as a parameter for the user that should be
+                      updated. If a use matching that userId exists in the
+                      database, all of the User attributes passed in the body of
+                      the request will be updated, the rest will remain as is.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>The response is a JSON object for
+                      the User object with the updated fields if the user was
+                      able to be updated. If not, a 404 error is received
+                      instead.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="update-post">
+                      Update existing Post information
+                    </h5>
+                    <hr />
+                    <p class="card-text">
+                      <strong>URL:</strong> /Posts/{postId}
+                    </p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to update an existing Post's content or/and headerImage attributes.
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>The request should contain a valid authentication 
+                      token for the author of the Post that is being patched. The request's 
+                      postId parameter is used to query the database to find the post to be
+                      patched once the authentication token has been validated. The request's 
+                      body should contain the content and headerImage updates that the user 
+                      wishes to patch the post with (either attribute can be patched seperately 
+                      or both can be patched at once).
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>The response is a JSON object for
+                      the Post that was patched if the Posts' author was properly auhtenticated able
+                      the post was updated. In this case the client will receive a response with a 
+                      200 status code. If the user was not properly authenticated the response will be
+                      sent with a status code of 401. If the post with postId equal to the one passed
+                      in the request's URL as a paremeter is unable to be found in the database, a status
+                      code of 404 will be sent to the client instead.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 id="delete-method-requests">DELETE Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="delete-user">
+                      Delete existing User
+                    </h5>
+                    <hr />
+                    <p class="card-text">
+                      <strong>URL:</strong> /Users/{userId}
+                    </p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to delete an existing User record.
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>The userId for a user in the
+                      database that should be deleted. This value is passed as a
+                      parameter in the URL.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>If the user was succesfully
+                      deleted, a response with a positive status message will be
+                      sent. Otherwise, a 404 error will be sent.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="delete-post">
+                      Delete existing Post
+                    </h5>
+                    <hr />
+                    <p class="card-text">
+                      <strong>URL:</strong> /Posts/{postId}
+                    </p>
+                    <p class="card-text">
+                      <strong>Description: </strong>Used to delete an existing User record.
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong> The request should contain the postId that
+                      the user wishes to delete as a parameter in the url and a valid authentication
+                      token in the header of the request.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>If the user was succesfully
+                      authenticated using the authentication token and is the author of the post that
+                      they wish to delete, the post will be deleted from the database and the client
+                      will receive a response with status code 204. If the authorization token 
+                      was invalid and the user was not able to be authenticated, the client will
+                      receive a response with status code 401. If the post in question was unable
+                      to be found, the client will receive a response with status code 404.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <footer class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>Copyright © Joshua Taylor. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/jquery-3.4.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/popper.min.js"></script>
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/bootstrap-4.4.1.js"></script>
+  </body>
+</html>
