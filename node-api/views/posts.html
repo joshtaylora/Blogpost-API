@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CIS4930</title>
+    <!-- Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="../../../../OneDrive/Desktop/cis4930/Assignment2/css/bootstrap-4.4.1.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+      integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">CIS4930</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-t21oggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="help.html"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#"
+               id="usersDropdown"
+               role="button"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"
+               >Users</a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/users.html#get-method-requests">Get</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/users.html#post-method-requests">Post</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/users.html#patch-method-requests">Patch</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/users.html#delete-method-requests">Delete</a>
+              </div>
+          </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#"
+               id="postsDropdown"
+               role="button"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"
+               >Posts</a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#get-method-requests">Get</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#post-method-requests">Post</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#patch-method-requests">Patch</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#delete-method-requests">Delete</a>
+              </div>
+          </li>
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+      </div>
+    </nav>
+    <hr />
+    <h1 id="UserRoutes" class="text-center display-3 d-block p-2">Post Routes</h1>
+    <section>
+      <div class="container">
+        <h2 id="get-method-requests">GET Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="retrieve-users">
+                      Retrieve Posts
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Posts/</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Retrieves all of the
+                          posts currently stored in the system and sends them in
+                          a response as a JSON array.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong><em> none</em>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>JSON array of all posts
+                          currently in the system
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="retrieve-post">
+                      Retrieve Posts by postId
+                    </h5>
+                    <hr />
+                    <table class="col card-text">
+                      <tr>
+                        <td><strong>Method:</strong> GET</td>
+                        <td><strong>URL:</strong> /Posts/{postId}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Description: </strong>Uses the postId field to
+                          retrieve a Post record from the database.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Input: </strong>postId passed in the URL as a
+                          parameter.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <strong>Output: </strong>Response sends the user the
+                          JSON Post object if the postId corresponds to a Post 
+                          in the database. If the postId cannot be found, a 404
+                          error is returned.
+                        </td>
+                      </tr>
+                    </table>
+                    <br />
+                    <a class="btn btn-primary" data-toggle="collapse" href="#usersGetAll" role="button" aria-expanded="false" aria-controls="usersGetAll">
+                      Example Request
+                    </a>
+                    <div class="collapse" id="usersGetAll">
+                      <div class="card card-body">
+                        <code style="white-space: pre-wrap">
+{ 
+  User: 
+  { 
+    userId: 'testUser1', 
+    firstName: 'test1f', 
+    lastName: 'test1L', 
+    emailAddress: 'testU1@email.com', 
+    password: 'testPass1'
+  }
+}
+                        </code>
+                      </div>
+                    </div>
+                    <a href="/User/Search" class="btn btn-primary">Test</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 class="text-center" id="post-method-requests">POST Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="create-user">Create new User</h5>
+                    <hr />
+                    <p class="card-text"><strong>URL:</strong> /User</p>
+                    <p class="card-text">
+                      Used to create a new User record (unless a user with that
+                      UserID is already in the database).
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>UserID passed in the URL as a
+                      parameter.
+                    </p>
+                    <p class="card-text">
+                      <strong>Outut: </strong>Response sends the user the JSON
+                      User object if the UserID corresponds to a User in the
+                      database. If the UserID cannot be found, a 404 error is
+                      returned.
+                    </p>
+                    <a href="/User/Create" class="btn btn-primary">Test</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 class="text-center" id="patch-method-requests">PATCH Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="update-user">
+                      Update existing User information
+                    </h5>
+                    <hr />
+                    <p class="card-text"><strong>URL:</strong> /User/{ID}</p>
+                    <p class="card-text">
+                      Used to update an existing User record's fields (except
+                      for the UserID field).
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>the request provides the UserID in
+                      the URL as a parameter for the user that should be
+                      updated. If a use matching that UserID exists in the
+                      database, all of the User attributes passed in the body of
+                      the request will be updated, the rest will remain as is.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>The response is a JSON object for
+                      the User object with the updated fields if the user was
+                      able to be updated. If not, a 404 error is received
+                      instead.
+                    </p>
+                    <a href="#" class="btn btn-primary">Test</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <section>
+      <div class="container">
+        <h2 class="text-center" id="delete-method-requests">DELETE Requests</h2>
+        <div class="row">
+          <div class="col-lg-12 col-12 p-3">
+            <div class="row justify-content-around">
+              <div class="col-sm-6 col-6 p-3 d-flex align-items-stretch">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title" id="delete-user">
+                      Delete existing User information
+                    </h5>
+                    <hr />
+                    <p class="card-text"><strong>URL:</strong> /User{ID}</p>
+                    <p class="card-text">
+                      Used to delete an existing User record.
+                    </p>
+                    <p class="card-text">
+                      <strong>Input: </strong>The UserID for a user in the
+                      database that should be deleted. This value is passed as a
+                      parameter in the URL.
+                    </p>
+                    <p class="card-text">
+                      <strong>Output: </strong>If the user was succesfully
+                      deleted, a response with a positive status message will be
+                      sent. Otherwise, a 404 error will be sent.
+                    </p>
+                    <a href="/User/Delete" class="btn btn-primary">Test</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <hr />
+    </section>
+    <footer class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>Copyright © Joshua Taylor. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/jquery-3.4.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/popper.min.js"></script>
+    <script src="../../../../OneDrive/Desktop/cis4930/Assignment2/js/bootstrap-4.4.1.js"></script>
+  </body>
+</html>
