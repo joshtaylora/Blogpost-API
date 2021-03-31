@@ -1,6 +1,5 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { AppServiceService } from './app-service.service';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +9,9 @@ import { AppServiceService } from './app-service.service';
 export class AppComponent implements OnInit{
 
   title = 'angular-app';
-  constructor(private service: AppServiceService) {
+  constructor() {
 
   }
   ngOnInit() {
-    this.getDataFromAPI();
-  }
-  getDataFromAPI() {
-    this.service.getData().subscribe((response: Response) => {
-      console.log('Response from API is ', response);
-    }, (error:Error) => {
-      console.log('Error is ', error);
-    })
   }
 }
