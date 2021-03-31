@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="container-md">
+  <div class="form-group">
+    <label for="txtUserId">UserName</label>
+    <input
+      type="text"
+      class="form-control"
+      id="txtUserId"
+      name="txtUserId"
+      placeholder="TestUserName"
+      [(ngModel)]="userAuthInfo!.userName"
+    />
+  </div>
+  <div class="form-group">
+    <label for="pswdUserPass">Password</label>
+    <input
+      type="text"
+      class="form-control"
+      id="pswdUserPass"
+      name="pswdUserPass"
+      [(ngModel)]="userAuthInfo!.password"
+    />
+  </div>
+  <div
+    *ngIf="message !== ''"
+    [ngClass]="{ 'alert-danger': !success, 'alert-success': success }"
+    class="alert"
+    role="alert"
+  >
+    {{ message }}
+  </div>
+  <button (click)="loginUser()" class="btn btn-success">Login</button>
+</div>
