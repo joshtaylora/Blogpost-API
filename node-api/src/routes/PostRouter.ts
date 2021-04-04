@@ -29,10 +29,7 @@ postRouter.get("/", (req, res, next) => {
         route: "/Posts/",
         data: rows,
       });
-      res.status(200).send({
-        message: "success",
-        data: rows,
-      });
+      res.status(200).send(rows);
       return;
     }
   });
