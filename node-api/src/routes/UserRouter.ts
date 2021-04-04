@@ -21,10 +21,7 @@ userRouter.get("/", (req, res, next) => {
       return;
     }
     console.log({ method: "get", route: "/Users/", message: rows });
-    res.status(200).json({
-      message: "success",
-      data: rows,
-    });
+    res.status(200).json(rows);
   });
 });
 
