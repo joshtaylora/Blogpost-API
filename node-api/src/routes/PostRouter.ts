@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { db } from "../db/database";
 import { secret } from "../index";
-import { Post } from "../models/Post";
+import { Post } from "../models/post";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -165,10 +165,7 @@ postRouter.post("/", (req, res, next) => {
                         route: "/Posts/",
                         message: `User ${req.body.userId} successfully created post ${req.body.title}`,
                       });
-                      res.status(201).send({
-                        message: `User ${req.body.userId} successfully created post ${req.body.title}`,
-                        data: JSON.parse(newPost.toJSON()),
-                      });
+                      res.status(201).send(JSON.parse(newPost.toJSON()));
                       return;
                     }
                   });
@@ -258,16 +255,14 @@ postRouter.get("/:postId", (req, res, next) => {
         route: "/Posts/:postId",
         error: `Post with postId = ${req.params.postId} could not be retrieved`,
       });
-      res
-        .status(404)
-        .send({
-          Status: 404,
-          Message: `Post with postId = ${req.params.postId} could not be found`,
-        });
+      res.status(404).send({
+        Status: 404,
+        Message: `Post with postId = ${req.params.postId} could not be found`,
+      });
       return;
     } else {
       console.log({ data: row[0] });
-      res.status(200).send({ data: row[0] });
+      res.status(200).send(row[0]);
       return;
     }
   });
