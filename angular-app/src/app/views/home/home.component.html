@@ -1,0 +1,5 @@
+<div *ngIf="user !== null" class="home-body">
+  <h1 class="text-center">{{ user.userId }}</h1>
+
+  <app-posts [userId]="user.userId"></app-posts>
+</div>

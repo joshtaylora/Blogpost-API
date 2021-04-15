@@ -1,0 +1,33 @@
+<div class="container-md">
+  <div class="form-group">
+    <label for="txtUserId">UserName</label>
+    <input
+      type="text"
+      class="form-control"
+      id="txtUserId"
+      name="txtUserId"
+      placeHolder="JohnDoeUserName"
+      [(ngModel)]="userAuthInfo!.userName"
+    />
+    <div class="form-group">
+      <label for="pswdUserPassword">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="pswdUserPassword"
+        name="pswdUserPassword"
+        [(ngModel)]="userAuthInfo!.password"
+      />
+    </div>
+    <div
+      *ngIf="message != ''"
+      [ngClass]="{ 'alert-danger': !success, 'alert-success': success }"
+      class="alert"
+      role="alert"
+    >
+      {{ message }}
+    </div>
+    <button (click)="LoginUser()" class="btn btn-success">Login</button>
+    <!-- <button (click)="changeAlert()" type="submit" class="btn btn-success" routerLink="/users">Create User</button> -->
+  </div>
+</div>

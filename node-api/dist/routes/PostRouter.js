@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const database_1 = require("../db/database");
 const index_1 = require("../index");
-const Post_1 = require("../models/Post");
+const post_1 = require("../models/post");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const postRouter = express_1.default.Router();
@@ -34,10 +34,7 @@ postRouter.get("/", (req, res, next) => {
                 route: "/Posts/",
                 data: rows,
             });
-            res.status(200).send({
-                message: "success",
-                data: rows,
-            });
+            res.status(200).send(rows);
             return;
         }
     });
@@ -61,8 +58,10 @@ postRouter.post("/", (req, res, next) => {
     // requires User to be properly authenticated
     if (req.headers.authorization) {
         try {
+            let token = req.headers.authorization.split(" ")[1];
             // verify that the token passed in the authorization header can be authenticated
-            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+            let tokenVerify = jsonwebtoken_1.default.verify(token, index_1.secret);
+            let tokenPayload = tokenVerify.UserData;
             database_1.db.all("select * from Users where userId = $userId", { $userId: tokenPayload.userId }, (err, row) => {
                 if (err) {
                     // if an error occurred, log the error and send the 404 status code
@@ -134,17 +133,14 @@ postRouter.post("/", (req, res, next) => {
                                         let userId = JSON.stringify(row.userId).replace(/['"]+/g, "");
                                         let headerImage = JSON.stringify(row.headerImage).replace(/['"]+/g, "");
                                         let lastUpdated = JSON.stringify(row.lastUpdated).replace(/['"]+/g, "");
-                                        let newPost = new Post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
+                                        let newPost = new post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
                                         console.log(JSON.parse(newPost.toJSON()));
                                         console.log({
                                             method: "post",
                                             route: "/Posts/",
                                             message: `User ${req.body.userId} successfully created post ${req.body.title}`,
                                         });
-                                        res.status(201).send({
-                                            message: `User ${req.body.userId} successfully created post ${req.body.title}`,
-                                            data: JSON.parse(newPost.toJSON()),
-                                        });
+                                        res.status(201).send(JSON.parse(newPost.toJSON()));
                                         return;
                                     }
                                 });
@@ -191,7 +187,7 @@ function getLastPost() {
             let userId = JSON.stringify(row.userId).replace(/['"]+/g, "");
             let headerImage = JSON.stringify(row.headerImage).replace(/['"]+/g, "");
             let lastUpdated = JSON.stringify(row.lastUpdated).replace(/['"]+/g, "");
-            postReturn = new Post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
+            postReturn = new post_1.Post(+postId, createdDate, title, content, userId, headerImage, lastUpdated);
             console.log(JSON.parse(postReturn.toJSON()));
             return postReturn;
         }
@@ -227,9 +223,7 @@ postRouter.get("/:postId", (req, res, next) => {
                 route: "/Posts/:postId",
                 error: `Post with postId = ${req.params.postId} could not be retrieved`,
             });
-            res
-                .status(404)
-                .send({
+            res.status(404).send({
                 Status: 404,
                 Message: `Post with postId = ${req.params.postId} could not be found`,
             });
@@ -237,7 +231,7 @@ postRouter.get("/:postId", (req, res, next) => {
         }
         else {
             console.log({ data: row[0] });
-            res.status(200).send({ data: row[0] });
+            res.status(200).send(row[0]);
             return;
         }
     });
@@ -258,7 +252,10 @@ postRouter.patch("/:postId", (req, res, next) => {
         return;
     }
     else {
-        let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+        let token = req.headers.authorization.split(" ")[1];
+        // verify that the token passed in the authorization header can be authenticated
+        let tokenVerify = jsonwebtoken_1.default.verify(token, index_1.secret);
+        let tokenPayload = tokenVerify.UserData;
         database_1.db.all("select * from Users where userId = $userID", { $userID: req.body.userId }, (err, row) => {
             if (err) {
                 let errorMsg = {
@@ -380,7 +377,10 @@ postRouter.delete("/:postId", (req, res, next) => {
     // check that the authorization header is not undefined
     if (req.headers.authorization) {
         try {
-            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+            let token = req.headers.authorization.split(" ")[1];
+            // verify that the token passed in the authorization header can be authenticated
+            let tokenVerify = jsonwebtoken_1.default.verify(token, index_1.secret);
+            let tokenPayload = tokenVerify.UserData;
             database_1.db.all("select * from Users where userId = $userId", { $userId: tokenPayload.userId }, (err, rows) => {
                 if (err) {
                     let errorMsg = {

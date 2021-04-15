@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertRowResultToUser = exports.createUser = exports.retrieveUser = void 0;
 const database_1 = require("./database");
-const User_1 = require("../models/User");
+const user_1 = require("../models/user");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 function retrieveUser(userId) {
@@ -89,7 +89,7 @@ function convertRowResultToUser(row) {
     for (var i in row[0]) {
         result.push(JSON.stringify(row[0][i]).replace(/['"]+/g, ""));
     }
-    let newUser = new User_1.User(result[0], result[1], result[2], result[3], result[4]);
+    let newUser = new user_1.User(result[0], result[1], result[2], result[3], result[4]);
     return newUser;
 }
 exports.convertRowResultToUser = convertRowResultToUser;
