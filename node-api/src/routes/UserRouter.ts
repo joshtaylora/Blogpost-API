@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { secret } from "../index";
 import { db } from "../db/database";
+import { User } from "../models/user";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -21,10 +22,7 @@ userRouter.get("/", (req, res, next) => {
       return;
     }
     console.log({ method: "get", route: "/Users/", message: rows });
-    res.status(200).json({
-      message: "success",
-      data: rows,
-    });
+    res.status(200).send(rows);
   });
 });
 
@@ -33,15 +31,15 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
   // check to see if the user exists in the system first
   let userQuery = "select * from Users where userId = $userId";
   let userQueryParams = {
-    $userId: userId
+    $userId: userId,
   };
   let user;
-  db.all(userQuery, userQueryParams, (err:Error|null, rows:any[]) => {
+  db.all(userQuery, userQueryParams, (err: Error | null, rows: any[]) => {
     if (err) {
       // catch any errors
       let errorMsg = {
         Status: 404,
-        Message: 'User could not be retrieved from the database'
+        Message: "User could not be retrieved from the database",
       };
       console.log(errorMsg);
       res.status(404).send(errorMsg);
@@ -49,22 +47,23 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
     } else if (rows === undefined || rows.length !== 1) {
       let errorMsg = {
         Status: 404,
-        Message: 'User could not be retrieved from the database'
+        Message: "User could not be retrieved from the database",
       };
       console.log(errorMsg);
       res.status(404).send(errorMsg);
       return;
     } else {
       user = rows[0];
-      let postsQuery = 'select * from Posts where userId = $userId';
+      let postsQuery = "select * from Posts where userId = $userId";
       let postsQueryParams = {
-        $userId: userId
+        $userId: userId,
       };
-      db.all(postsQuery, postsQueryParams, (err:any, rows: any[]) => {
+      db.all(postsQuery, postsQueryParams, (err: any, rows: any[]) => {
         if (err) {
           let errorMsg = {
             Status: 404,
-            Message: 'Posts for the specified User could not be retrieved from the database'
+            Message:
+              "Posts for the specified User could not be retrieved from the database",
           };
           console.log(errorMsg);
           res.status(404).send(errorMsg);
@@ -72,7 +71,8 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
         } else if (rows === undefined || rows.length === 0) {
           let errorMsg = {
             Status: 404,
-            Message: 'Posts for the specified User could not be retrieved from the database'
+            Message:
+              "Posts for the specified User could not be retrieved from the database",
           };
           console.log(errorMsg);
           res.status(404).send(errorMsg);
@@ -81,10 +81,9 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
           res.status(200).send(rows);
           return;
         }
-      })
+      });
     }
   });
-
 });
 /**
  * Get User by userId
@@ -105,10 +104,7 @@ userRouter.get("/:userId", (req, res, next) => {
       return;
     } else {
       console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-      res.status(201).json({
-        message: "success",
-        data: row[0],
-      });
+      res.status(201).send(row[0]);
       return;
     }
   });
@@ -116,7 +112,6 @@ userRouter.get("/:userId", (req, res, next) => {
 
 /**
  * Create new User
- * @TODO add status 409 for duplicate userId
  */
 userRouter.post("/", (req, res, next) => {
   // check to see if a user with the userId submitted already exists
@@ -147,7 +142,8 @@ userRouter.post("/", (req, res, next) => {
             "error occurred while checking Users database for duplicate userId",
         });
         res.status(404).send({
-          Status: 404, Message: "error occurred while querying Users table in the database",
+          Status: 404,
+          Message: "error occurred while querying Users table in the database",
         });
         return;
       } else if (rows.length > 0) {
@@ -158,7 +154,8 @@ userRouter.post("/", (req, res, next) => {
           error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
         });
         res.status(409).send({
-          Status: 409, Message: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
+          Status: 409,
+          Message: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
         });
         return;
       }
@@ -220,14 +217,11 @@ userRouter.post("/", (req, res, next) => {
                 message: `New user: ${JSON.stringify(newUser)}`,
               });
               console.log(`password: ${hash}`);
-              res.status(200).json({
-                message: `User successfully created`,
-                data: {
-                  userId: req.body.userId,
-                  firstName: req.body.firstName,
-                  lastName: req.body.lastName,
-                  emailAddress: req.body.emailAddress,
-                },
+              res.status(200).send({
+                userId: req.body.userId,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                emailAddress: req.body.emailAddress,
               });
               return;
             }
@@ -492,33 +486,48 @@ userRouter.delete("/:userId", (req, res, next) => {
  * Login
  */
 userRouter.get("/:userId/:password", (req, res, next) => {
-  let sqlPassword = "select password from Users where userId=$userId";
+  let sqlPassword = "select * from Users where userId=$userId";
   let paramsPassword = { $userId: req.params.userId };
   db.all(sqlPassword, paramsPassword, (err: any, row: any) => {
     if (err) {
       console.log({
         error: `Password for user ${req.params.userId} could not be retrieved from database`,
       });
-      res.status(404).json({
+      res.status(404).send({
         error: `Password for user ${req.params.userId} could not be retrieved from database`,
       });
       return;
     } else if (row.length === 0 || row === undefined) {
       console.log({ error: `Password for user ${req.params.userId}` });
-      res.status(404).json({
+      res.status(404).send({
         error: `Password for user ${req.params.userId} unable to be retrieved`,
       });
       return;
     } else {
+      let userIdStr = JSON.stringify(row[0].userId);
+      let userId = userIdStr.replace(/['"]+/g, "");
+
+      let firstNameStr = JSON.stringify(row[0].firstName);
+      let firstName = firstNameStr.replace(/['"]+/g, "");
+
+      let lastNameStr = JSON.stringify(row[0].lastName);
+      let lastName = lastNameStr.replace(/['"]+/g, "");
+
+      let emailAddrStr = JSON.stringify(row[0].emailAddress);
+      let emailAddr = emailAddrStr.replace(/['"]+/g, "");
+
       let passString = JSON.stringify(row[0].password);
       let pass = passString.replace(/['"]+/g, "");
+
+      let user = new User(userId, firstName, lastName, emailAddr, pass);
+      let userJSON = user.toJSON();
       // if we were able to find the password, decrypt it and compare to the password passed as a request url param
       bcrypt.compare(req.params.password, pass, (err: any, result: boolean) => {
         if (err) {
           console.log({
             error: `error occurred when comparing hashed password to url parameter for user: ${req.params.userId}`,
           });
-          res.status(401).json({
+          res.status(401).send({
             error: `Password for user ${req.params.userId} could not be validated.`,
           });
           return;
@@ -527,16 +536,28 @@ userRouter.get("/:userId/:password", (req, res, next) => {
           console.log({
             error: ` hashed password did not match the url parameter for user: ${req.params.userId}`,
           });
-          res.status(401).json({
+          res.status(401).send({
             error: `Password for user ${req.params.userId} could not be validated.`,
           });
           return;
         } else {
           // enters this block if the passwords do match
-          let authorization = jwt.sign({ userId: req.params.userId }, secret, {
-            expiresIn: 60 * 60,
-            subject: req.params.userId,
-          });
+          let authorization = jwt.sign(
+            {
+              UserData: {
+                userId: user.userId,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                emailAddress: user.emailAddress,
+                password: user.password,
+              },
+            },
+            secret,
+            {
+              expiresIn: 60 * 60,
+              subject: req.params.userId,
+            }
+          );
           console.log("token successfully created");
           console.log({
             response: {
@@ -546,13 +567,12 @@ userRouter.get("/:userId/:password", (req, res, next) => {
               data: authorization,
             },
           });
-          res.status(200).send(`Authorization:Bearer ${authorization}`);
+          res.status(200).send({ Authorization: `Bearer ${authorization}` });
           return;
         }
       });
     }
   });
 });
-
 
 export { userRouter };

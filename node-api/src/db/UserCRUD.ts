@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 import { db } from "./database";
-import { User } from "../models/User";
+import { User } from "../models/user";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;

@@ -17,4 +17,4 @@ class Post {
     }
 }
 exports.Post = Post;
-//# sourceMappingURL=Post.js.map
+//# sourceMappingURL=post.js.map

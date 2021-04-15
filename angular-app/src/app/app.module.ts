@@ -1,27 +1,45 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserComponent } from './user/user.component';
-import { EndpointComponent } from './endpoint/endpoint.component';
-import { NavComponent } from './nav/nav.component';
+import { LoginComponent } from './views/login/login.component';
+import { RegisterComponent } from './views/register/register.component';
+import { HomeComponent } from './views/home/home.component';
+import { NavbarComponent } from './comp/navbar/navbar.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
+import { PostListComponent } from './views/post-list/post-list.component';
+import { UserListComponent } from './views/user-list/user-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserHomeComponent } from './views/user-home/user-home.component';
+import { PostDetailComponent } from './comp/post-detail/post-detail.component';
+import { PostsComponent } from './comp/posts/posts.component';
+import { UsersComponent } from './comp/users/users.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
-    EndpointComponent,
-    NavComponent
+    LoginComponent,
+    RegisterComponent,
+    HomeComponent,
+    NavbarComponent,
+    PostListComponent,
+    UserListComponent,
+    UserHomeComponent,
+    PostDetailComponent,
+    PostsComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, // imported the HttpClientModule
-    AppRoutingModule
+    AppRoutingModule,
+    FontAwesomeModule,
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

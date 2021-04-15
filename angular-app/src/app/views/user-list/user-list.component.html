@@ -1,0 +1,11 @@
+<h2 class="text-center">Users</h2>
+
+<div class="container-md" *ngFor="let user of users">
+    <div class="card" style="margin:15px">
+        <h5 class="card-header">{{ user.userId }}</h5>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">{{ user.firstName }} {{ user.lastName }}</h6>
+            <p class="card-text">{{user.emailAddress }}</p>
+        </div>
+    </div>
+</div>

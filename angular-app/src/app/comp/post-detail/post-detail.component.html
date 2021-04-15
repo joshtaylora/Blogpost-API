@@ -1,0 +1,16 @@
+<div *ngIf="post !== undefined">
+  <div class="card user-detail-card" style="margin: 15px">
+    <div class="card-header">
+      <span class="post-title">{{ post!.title }}</span> by
+      <a
+        class="badge userId-badge"
+        [routerLink]="['/Users', 'Posts', post.userId]"
+        >{{ post!.userId }}</a
+      >
+      <small class="text-muted m-2">created on {{ post!.createdDate }}</small>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ post!.content }}</p>
+    </div>
+  </div>
+</div>
