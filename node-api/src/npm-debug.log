@@ -1,0 +1,24 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/usr/bin/node',
+1 verbose cli   '/home/josh/.npm-global/bin/npm',
+1 verbose cli   'uninstall',
+1 verbose cli   'npm@3.10'
+1 verbose cli ]
+2 info using npm@3.10.10
+3 info using node@v15.13.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 verbose stack TypeError: cb.apply is not a function
+7 verbose stack     at /home/josh/.npm-global/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:267:18
+7 verbose stack     at FSReqCallback.oncomplete (node:fs:194:5)
+8 verbose cwd /home/josh/Desktop/cis4930/Blogpost-API/node-api/src
+9 error Linux 5.8.0-48-generic
+10 error argv "/usr/bin/node" "/home/josh/.npm-global/bin/npm" "uninstall" "npm@3.10"
+11 error node v15.13.0
+12 error npm  v3.10.10
+13 error cb.apply is not a function
+14 error If you need help, you may report this error at:
+14 error     <https://github.com/npm/npm/issues>
+15 verbose exit [ 1, true ]

@@ -1,17 +1,33 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRouter = void 0;
-const express_1 = __importDefault(require("express"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const express = __importStar(require("express"));
+const jwt = __importStar(require("jsonwebtoken"));
 const index_1 = require("../index");
 const database_1 = require("../db/database");
 const user_1 = require("../models/user");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const userRouter = express_1.default.Router();
+const userRouter = express.Router();
 exports.userRouter = userRouter;
 /**
  * Get all Users
@@ -21,7 +37,7 @@ userRouter.get("/", (req, res, next) => {
     let params = [];
     database_1.db.all(sql, params, (err, rows) => {
         if (err) {
-            res.status(400).json({ error: err.message });
+            res.status(400).send({ error: err.message });
             return;
         }
         console.log({ method: "get", route: "/Users/", message: rows });
@@ -266,7 +282,7 @@ userRouter.patch("/:userId", (req, res, next) => {
         return;
     }
     else {
-        let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+        let tokenPayload = jwt.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
         database_1.db.all("select * from Users where userId = $userId", { $userId: req.params.userId }, (err, row) => {
             if (err) {
                 let errorMsg = {
@@ -391,7 +407,7 @@ userRouter.delete("/:userId", (req, res, next) => {
     };
     if (req.headers.authorization) {
         try {
-            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
+            let tokenPayload = jwt.verify(req.headers.authorization.toString().split(" ")[1], index_1.secret);
             database_1.db.all("select * from Users where userId = $userId", { $userId: req.params.userId }, (err, row) => {
                 if (err) {
                     console.log({
@@ -528,7 +544,7 @@ userRouter.get("/:userId/:password", (req, res, next) => {
                 }
                 else {
                     // enters this block if the passwords do match
-                    let authorization = jsonwebtoken_1.default.sign({
+                    let authorization = jwt.sign({
                         UserData: {
                             userId: user.userId,
                             firstName: user.firstName,

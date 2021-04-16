@@ -1,5 +1,5 @@
-import express from "express";
-import jwt from "jsonwebtoken";
+import * as express from "express";
+import * as jwt from "jsonwebtoken";
 
 import { secret } from "../index";
 import { db } from "../db/database";
@@ -18,7 +18,7 @@ userRouter.get("/", (req, res, next) => {
   let params: any = [];
   db.all(sql, params, (err: any, rows: any) => {
     if (err) {
-      res.status(400).json({ error: err.message });
+      res.status(400).send({ error: err.message });
       return;
     }
     console.log({ method: "get", route: "/Users/", message: rows });
