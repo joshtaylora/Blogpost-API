@@ -16,7 +16,12 @@ import { UserHomeComponent } from './views/user-home/user-home.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 import { PostsComponent } from './comp/posts/posts.component';
 import { UsersComponent } from './comp/users/users.component';
-
+import { HighlightDirective } from './directives/highlight.directive';
+import { SelectPostDirective } from './directives/select-post.directive';
+import { UsersLinkDirective } from './directives/users-link.directive';
+import { PostsLinkDirective } from './directives/posts-link.directive';
+import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreatePostComponent } from './views/create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +36,11 @@ import { UsersComponent } from './comp/users/users.component';
     PostDetailComponent,
     PostsComponent,
     UsersComponent,
+    HighlightDirective,
+    SelectPostDirective,
+    UsersLinkDirective,
+    PostsLinkDirective,
+    CreatePostComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +48,8 @@ import { UsersComponent } from './comp/users/users.component';
     FontAwesomeModule,
     FormsModule,
     HttpClientModule,
+    NgbCollapseModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

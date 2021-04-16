@@ -7,6 +7,7 @@
           'selected-post-list-item': selectedPost === post,
           'post-list-item': selectedPost !== post
         }"
+        appHighlight
         *ngFor="let post of posts"
         [class.selected]="post === selectedPost"
         (click)="onSelect(post)"
@@ -16,7 +17,7 @@
             <div class="col-3">
               <a
                 class="badge userId-badge"
-                [routerLink]="['/Users', 'Posts', post.userId]"
+                [routerLink]="['/users', 'posts', post.userId]"
                 >{{ post.userId }}</a
               >
             </div>

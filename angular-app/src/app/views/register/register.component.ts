@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
@@ -8,26 +9,35 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  firstName = '';
+  lastName = '';
+  emailAddress = '';
+  userId = '';
+  password = '';
 
-  firstName: string = '';
-  lastName: string = '';
-  emailAddress: string = '';
-  userId: string = '';
-  password: string = '';
+  userInfo: {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    emailAddress: string;
+    password: string;
+  } | null = null;
 
-  userInfo: { userId: string, firstName: string, lastName: string, emailAddress:string, password: string}|null = null;
+  user: User | null = null;
 
-  user:User|null = null
+  message = '';
 
-  message:string = '';
+  success = false;
 
-  success:boolean = false;
-
-
-  constructor(private userService: UserService) {
-    this.userInfo = { userId: '', firstName: '', lastName: '', emailAddress: '', password: ''}
+  constructor(private userService: UserService, private router: Router) {
+    this.userInfo = {
+      userId: '',
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      password: '',
+    };
   }
-
 
   ngOnInit(): void {
     this.success = true;
@@ -38,16 +48,32 @@ export class RegisterComponent implements OnInit {
     this.message = 'An error has occurred';
   }
 
-  // CreateUser(): void {
-  //   if (this.user !== null) {
-  //     this.userService.CreateUser(this.userInfo);
-  //   }
-  // }
+  CreateUser(): void {
+    if (this.userInfo !== null) {
+      this.userService.CreateUser(this.userInfo).subscribe((response) => {
+        this.success = true;
+        // log in the user that was just created
+        this.userService
+          .Login(this.user.firstName, this.user.lastName)
+          .subscribe(
+            (loginResponse) => {
+              this.success = true;
+              this.userService.SetUserLoggedIn(loginResponse);
+              this.router.navigate(['/home']);
+            },
+            (error) => {
+              this.success = false;
+              this.message = error.message;
+              console.log(JSON.stringify(error.message));
+            }
+          );
+      });
+    } else {
+      this.changeAlert();
+    }
+  }
 
   onSubmit(): void {
-
-    if (this.userInfo !== null) {
-      this.userService.CreateUser(this.userInfo);
-    }
+    this.CreateUser();
   }
 }

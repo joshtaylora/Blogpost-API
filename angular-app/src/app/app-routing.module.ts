@@ -6,9 +6,9 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostsComponent } from './comp/posts/posts.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 import { PostListComponent } from './views/post-list/post-list.component';
+import { CreatePostComponent } from './views/create-post/create-post.component';
 
 const routes: Routes = [
   {
@@ -30,20 +30,24 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: 'Posts',
-    component: PostListComponent,
+    path: 'posts/:postId',
+    component: PostDetailComponent,
   },
   {
-    path: 'Posts/:postId',
-    component: PostDetailComponent,
+    path: 'posts/new',
+    component: CreatePostComponent,
+  },
+  {
+    path: 'posts',
+    component: PostListComponent,
   },
 
   {
-    path: 'Users/Posts/:userId',
+    path: 'users/Posts/:userId',
     component: UserHomeComponent,
   },
   {
-    path: 'Users',
+    path: 'users',
     component: UsersComponent,
   },
 ];

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg" id="navbar-app">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/home']">LibraryApp</a>
+    <a class="navbar-brand" [routerLink]="['/home']">Blogpost-App</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,26 +15,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['/Users']">Users</a>
+          <a appUsersLink class="nav-link users-link" [routerLink]="['/users']"
+            >Users</a
+          >
         </li>
         <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['/Posts']">Posts</a>
+          <a appPostsLink class="nav-link posts-link" [routerLink]="['/posts']"
+            >Posts</a
+          >
         </li>
       </ul>
     </div>
     <button class="btn btn secondary" type="button" data-toggle=""></button>
     <div class="nav navbar-nav navbar-right">
-      <!-- <button class="btn btn-secondary" [routerLink]="['/login']" type="button">
-        <fa-icon [icon]="faSignInIcon"></fa-icon> Login
-      </button>
-      <button
-        class="btn btn-secondary"
-        [routerLink]="['/register']"
-        type="button"
-      >
-        <fa-icon [icon]="faRegisterIcon"></fa-icon>Register
-      </button> -->
-
       <button
         *ngIf="!userIsLoggedIn"
         class="btn btn-secondary"
@@ -50,6 +43,14 @@
         type="button"
       >
         <fa-icon [icon]="faRegisterIcon"></fa-icon> Register
+      </button>
+      <button
+        *ngIf="userIsLoggedIn"
+        class="btn btn-secondary"
+        (click)="goToNewPost()"
+        type="button"
+      >
+        Create New Post
       </button>
       <button
         *ngIf="userIsLoggedIn"

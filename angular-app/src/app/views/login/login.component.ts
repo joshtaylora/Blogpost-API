@@ -9,8 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
   userAuthInfo: { userName: string; password: string } | null = null;
-  message: string = '';
-  success: boolean = false;
+  message = '';
+  success = false;
   constructor(private userService: UserService, private router: Router) {
     this.userAuthInfo = { userName: '', password: '' };
   }

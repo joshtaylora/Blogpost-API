@@ -9,3 +9,11 @@ a {
 button {
   margin: 5px;
 }
+
+.users-link {
+  color: #83a598;
+}
+
+.posts-link {
+  color: #d3869b;
+}

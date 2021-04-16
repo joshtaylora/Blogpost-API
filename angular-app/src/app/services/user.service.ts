@@ -94,4 +94,6 @@ export class UserService {
       `${environment.BASE_URL}/Users/Posts/${userId}`
     );
   }
+
+  createNewUser(newUser: User): void {}
 }

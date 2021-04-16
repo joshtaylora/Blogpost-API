@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   faSignInAlt,
   faUserPlus,
@@ -23,10 +23,18 @@ export class NavbarComponent implements OnInit {
 
   currentUser: Token | null = null;
 
-  constructor(private userSvc: UserService, private router: Router) {}
+  constructor(
+    private userSvc: UserService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.getToken();
+  }
+
+  goToNewPost(): void {
+    this.router.navigate(['posts', 'New']);
   }
 
   getToken(): void {

@@ -1,1 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  background-color: #1d2021;
+  color: #ebdbb2;
+}
+
+p.text-muted {
+  color: #8ec07c;
+}
+li.selected-post-list-item a.userId-badge {
+  background-color: #689d6a;
+  color: #1d2021;
+}
+
+.user-home-title {
+  color: #fb4934;
+}
+
+.users-header {
+  color: #83a598;
+}
+
+a.posts-header {
+  color: #d3869b;
+}
+
+a.users-header {
+  color: #83a598;
+}
+
+a.userId-badge {
+  color: #1d2021;
+  background-color: #689d6a;
+}
+
+li.post-list-item {
+  background-color: #282828;
+}
+
+li.selected-post-list-item {
+  background-color: #928374;
+  color: #1d2021;
+}
+
+li.selected-post-list-item div.container div.row div.col-6 span.post-title {
+  color: #fabd2f;
+  font-weight: bold;
+}
+
+span.post-title {
+  color: #fabd2f;
+  font-weight: bold;
+}
+
+span.selected-post-title {
+  color: #fbf1c7;
+  font-weight: bold;
+}
+
+div.user-detail-card {
+  background-color: #282828;
+}
