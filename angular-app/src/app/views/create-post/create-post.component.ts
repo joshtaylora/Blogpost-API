@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { ViewChild, AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post.service';
-
+import { toDoc } from 'ngx-editor';
 import { Post } from 'src/app/models/post.model';
+import { EditorComponent } from 'src/app/comp/editor/editor.component';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements AfterViewInit {
   post: Post | null;
   success: boolean;
   newPost: {
@@ -18,10 +19,9 @@ export class CreatePostComponent implements OnInit {
     content: string;
     headerImage: string;
   };
+  @ViewChild(EditorComponent) editor;
 
-  constructor(private postService: PostService, private router: Router) {}
-
-  ngOnInit(): void {
+  constructor(private postService: PostService, private router: Router) {
     this.newPost = {
       title: '',
       userId: '',
@@ -30,7 +30,11 @@ export class CreatePostComponent implements OnInit {
     };
     this.success = false;
   }
+
+  ngAfterViewInit(): void {
+    this.newPost.content = JSON.stringify(toDoc(this.editor.html));
+  }
   onSubmit(): void {
-    this.success = true;
+    this.newPost;
   }
 }

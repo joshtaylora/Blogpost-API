@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   posts: Post[] | null = null;
   selectedPost?: Post;
   userIsLoggedIn: boolean = false;
+  noPosts = false;
 
   constructor(
     private router: Router,
@@ -40,11 +41,14 @@ export class HomeComponent implements OnInit {
       this.user = userToken.UserData;
       this.userSvc.getUsersPosts(userToken.UserData.userId).subscribe(
         (postArray) => {
-          this.posts = postArray;
+          if (postArray.length === 0) {
+            this.noPosts = true;
+          } else {
+            this.posts = postArray;
+          }
         },
         (err) => {
-          console.log(err);
-          this.router.navigate(['/login']);
+          this.noPosts = true;
         }
       );
     } else {

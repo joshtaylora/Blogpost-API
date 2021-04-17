@@ -9,6 +9,7 @@ import { UserHomeComponent } from './views/user-home/user-home.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 import { PostListComponent } from './views/post-list/post-list.component';
 import { CreatePostComponent } from './views/create-post/create-post.component';
+import { PostHomeComponent } from './views/post-home/post-home.component';
 
 const routes: Routes = [
   {
@@ -30,12 +31,12 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: 'posts/:postId',
-    component: PostDetailComponent,
-  },
-  {
     path: 'posts/new',
     component: CreatePostComponent,
+  },
+  {
+    path: 'posts/:postId',
+    component: PostHomeComponent,
   },
   {
     path: 'posts',
@@ -43,7 +44,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'users/Posts/:userId',
+    path: 'users/posts/:userId',
     component: UserHomeComponent,
   },
   {

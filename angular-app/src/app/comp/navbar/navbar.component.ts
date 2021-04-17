@@ -4,6 +4,7 @@ import {
   faSignInAlt,
   faUserPlus,
   faSignOutAlt,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Token } from 'src/app/models/token.model';
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
   faSignInIcon = faSignInAlt;
   faSignOutIcon = faSignOutAlt;
   faRegisterIcon = faUserPlus;
+  faNewPostIcon = faPlus;
 
   currentUser: Token | null = null;
 
@@ -34,7 +36,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToNewPost(): void {
-    this.router.navigate(['posts', 'New']);
+    this.router.navigate(['/posts', 'new']);
   }
 
   getToken(): void {

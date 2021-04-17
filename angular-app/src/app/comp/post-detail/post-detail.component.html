@@ -1,16 +1,38 @@
 <div *ngIf="post !== undefined">
   <div class="card user-detail-card" style="margin: 15px">
     <div class="card-header">
-      <span class="post-title">{{ post!.title }}</span> by
-      <a
-        class="badge userId-badge"
-        [routerLink]="['/users', 'posts', post.userId]"
-        >{{ post!.userId }}</a
-      >
-      <small class="text-muted m-2">created on {{ post!.createdDate }}</small>
+      <div class="row">
+        <span class="col-5">
+          <a
+            class="badge post-title-badge"
+            [routerLink]="['/posts', post.postId]"
+            >{{ post!.title }}</a
+          >
+          by
+          <a
+            class="badge userId-badge"
+            [routerLink]="['/users', 'posts', post.userId]"
+            >{{ post!.userId }}</a
+          >
+
+          <small class="text-muted m-2"
+            >created on {{ post!.createdDate }}</small
+          >
+        </span>
+        <span class="col-5  text-right">
+          <a class="badge delete-post-badge" >
+            <fa-icon [icon]="faDeletePostIcon"></fa-icon> Delete Post
+          </a>
+        </span>
+      </div>
     </div>
     <div class="card-body">
-      <p class="card-text">{{ post!.content }}</p>
+      <app-editor
+        [content]="post!.content"
+        [showMenu]="showMenu"
+        [isEditable]="isEditable"
+      ></app-editor>
+      <button class="btn save-content-btn mt-3 mb-3">Save Content</button>
     </div>
   </div>
 </div>

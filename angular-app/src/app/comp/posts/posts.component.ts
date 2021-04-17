@@ -45,6 +45,6 @@ export class PostsComponent implements OnInit {
 
   newPost(): void {
     // form submission for new post
-    this.router.navigate(['/']);
+    this.router.navigate(['/posts', 'new']);
   }
 }

@@ -1,5 +1,17 @@
-<h2 class="text-center">{{ userId }}</h2>
-
+<h2 class="text-center h2 user-home-title m-3">{{ userId }}</h2>
+<div clas="container-md" *ngIf="noPosts">
+  <div class="card user-detail-card">
+    <div class="card-body">
+      <p class="card-text">
+        There are no posts available for this user, create a new psot by
+        clicking the button below
+      </p>
+      <button class="btn btn-primary" [routerLink]="['/posts', 'new']">
+        Create new post
+      </button>
+    </div>
+  </div>
+</div>
 <div class="container-md" *ngFor="let post of posts">
   <app-post-detail *ngIf="post" [post]="post"></app-post-detail>
 </div>

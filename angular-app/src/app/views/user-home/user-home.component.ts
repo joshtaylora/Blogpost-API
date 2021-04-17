@@ -19,18 +19,23 @@ export class UserHomeComponent implements OnInit {
 
   userId: string = '';
   posts: Post[] | null = null;
-
+  noPosts = false;
   ngOnInit(): void {
     this.getPosts();
   }
 
   getPosts(): void {
     const userId = this.route.snapshot.paramMap.get('userId');
-    if (userId !== null) {
+    if (userId !== null && userId !== undefined) {
       this.userId = userId;
-      this.userService
-        .getUsersPosts(userId)
-        .subscribe((posts) => (this.posts = posts));
+      this.userService.getUsersPosts(userId).subscribe(
+        (posts) => {
+          this.posts = posts;
+        },
+        (error) => {
+          this.noPosts = true;
+        }
+      );
     } else {
       this.location.back();
     }

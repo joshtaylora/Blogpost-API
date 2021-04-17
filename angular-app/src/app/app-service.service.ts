@@ -6,8 +6,5 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppServiceService {
 
-  constructor(private httpClient: HttpClient) { }
-  getData() {
-    return this.httpClient.get('/Users/');
-  }
+  constructor() { }
 }

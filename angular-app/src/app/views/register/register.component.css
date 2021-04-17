@@ -1,0 +1,35 @@
+.userid-lbl {
+    color: #8ec07c;
+}
+
+.firstname-lbl {
+    color: #b8bb26;
+}
+
+.lastname-lbl {
+    color: #83a598;
+}
+
+.email-lbl {
+    color: #fabd2f;
+}
+
+.pass-lbl {
+    color: #fb4934;
+}
+
+input.form-control::placeholder {
+    color: #928374;
+}
+
+div.form-group input.form-control {
+  background-color: #3c3836;
+  color: #fbf1c7;
+  border-color: #665c54;
+}
+
+button.createUser-btn {
+    background-color: #689d6a;
+    border-color: #8ec07c;
+    color: #282828;
+}

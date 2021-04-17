@@ -30,6 +30,7 @@
     <div class="nav navbar-nav navbar-right">
       <button
         *ngIf="!userIsLoggedIn"
+        id="loginBtn"
         class="btn btn-secondary"
         [routerLink]="['/login']"
         type="button"
@@ -38,6 +39,7 @@
       </button>
       <button
         *ngIf="!userIsLoggedIn"
+        id="registerBtn"
         class="btn btn-secondary"
         [routerLink]="['/register']"
         type="button"
@@ -46,14 +48,17 @@
       </button>
       <button
         *ngIf="userIsLoggedIn"
+        id="createPostBtn"
         class="btn btn-secondary"
         (click)="goToNewPost()"
         type="button"
       >
+        <fa-icon [icon]="faNewPostIcon"></fa-icon>
         Create New Post
       </button>
       <button
         *ngIf="userIsLoggedIn"
+        id="logoutBtn"
         class="btn btn-secondary"
         (click)="logoutUser()"
         type="button"

@@ -48,32 +48,35 @@ export class RegisterComponent implements OnInit {
     this.message = 'An error has occurred';
   }
 
-  CreateUser(): void {
-    if (this.userInfo !== null) {
-      this.userService.CreateUser(this.userInfo).subscribe((response) => {
-        this.success = true;
-        // log in the user that was just created
-        this.userService
-          .Login(this.user.firstName, this.user.lastName)
-          .subscribe(
-            (loginResponse) => {
-              this.success = true;
-              this.userService.SetUserLoggedIn(loginResponse);
-              this.router.navigate(['/home']);
-            },
-            (error) => {
-              this.success = false;
-              this.message = error.message;
-              console.log(JSON.stringify(error.message));
-            }
-          );
-      });
-    } else {
-      this.changeAlert();
-    }
+  LoginNewUser(): void {
+    this.userService
+      .Login(this.userInfo?.userId, this?.userInfo.password)
+      .subscribe(
+        (loginResponse) => {
+          this.success = true;
+          this.userService.SetUserLoggedIn(loginResponse);
+          this.router.navigate(['/home']);
+        },
+        (error) => {
+          this.success = false;
+          this.message = error.message;
+          console.log(JSON.stringify(error.message));
+        }
+      );
   }
 
-  onSubmit(): void {
-    this.CreateUser();
+  CreateUser(): void {
+    if (this.userInfo !== null) {
+      let response = this.userService.CreateUser(this.userInfo).subscribe(
+        (registerResponse) => {
+          this.success = true;
+          this.LoginNewUser();
+        },
+        (error) => {
+          this.success = false;
+          this.message = error.message;
+        }
+      );
+    }
   }
 }

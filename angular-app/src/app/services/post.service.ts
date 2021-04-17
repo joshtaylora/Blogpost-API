@@ -13,14 +13,13 @@ export class PostService {
 
   constructor(private httpC: HttpClient) {}
 
-
   userIsLoggedIn: boolean = false;
 
   getPosts(): Observable<Post[]> {
-    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Posts`);
+    return this.httpC.get<Post[]>(`${environment.BASE_URL}/posts`);
   }
 
   getPost(postId: number): Observable<Post> {
-    return this.httpC.get<Post>(`${environment.BASE_URL}/Posts/${postId}`);
+    return this.httpC.get<Post>(`${environment.BASE_URL}/posts/${postId}`);
   }
 }

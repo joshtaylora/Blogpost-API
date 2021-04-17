@@ -1,21 +1,23 @@
 <div class="container-md">
   <div class="form-group">
-    <label for="txtUserId">UserName</label>
+    <label for="txtUserId" class="userid-lbl h4 mt-4">UserName</label>
     <input
       type="text"
       class="form-control"
       id="txtUserId"
       name="txtUserId"
       placeHolder="JohnDoeUserName"
+      appFormInput
       [(ngModel)]="userAuthInfo!.userName"
     />
     <div class="form-group">
-      <label for="pswdUserPassword">Password</label>
+      <label for="pswdUserPassword" class="pass-lbl h4 mt-4">Password</label>
       <input
         type="password"
         class="form-control"
         id="pswdUserPassword"
         name="pswdUserPassword"
+        appFormInput
         [(ngModel)]="userAuthInfo!.password"
       />
     </div>
@@ -27,7 +29,9 @@
     >
       {{ message }}
     </div>
-    <button (click)="LoginUser()" class="btn btn-success">Login</button>
+    <button (click)="LoginUser()" class="btn btn-success login-btn">
+      Login
+    </button>
     <!-- <button (click)="changeAlert()" type="submit" class="btn btn-success" routerLink="/users">Create User</button> -->
   </div>
 </div>

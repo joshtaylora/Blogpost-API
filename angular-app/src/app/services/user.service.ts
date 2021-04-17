@@ -34,7 +34,7 @@ export class UserService {
   Login(userId: string, password: string) {
     // CORS implementation in express app
     return this.httpC.get<{ Authorization: string }>(
-      `${environment.BASE_URL}/Users/${userId}/${password}`
+      `${environment.BASE_URL}/users/${userId}/${password}`
     );
   }
 
@@ -52,7 +52,7 @@ export class UserService {
       lastName: string;
       emailAddress: string;
       password: string;
-    }>(`${environment.BASE_URL}/Users`, userData);
+    }>(`${environment.BASE_URL}/users`, userData);
   }
 
   SetUserLoggedIn(userToken: { Authorization: string }) {
@@ -82,18 +82,16 @@ export class UserService {
   // }
 
   getUsers(): Observable<User[]> {
-    return this.httpC.get<User[]>(`${environment.BASE_URL}/Users`);
+    return this.httpC.get<User[]>(`${environment.BASE_URL}/users`);
   }
 
   getUser(userId: string): Observable<User> {
-    return this.httpC.get<User>(`${environment.BASE_URL}/Users/${userId}`);
+    return this.httpC.get<User>(`${environment.BASE_URL}/users/${userId}`);
   }
 
   getUsersPosts(userId: string): Observable<Post[]> {
     return this.httpC.get<Post[]>(
-      `${environment.BASE_URL}/Users/Posts/${userId}`
+      `${environment.BASE_URL}/users/posts/${userId}`
     );
   }
-
-  createNewUser(newUser: User): void {}
 }
