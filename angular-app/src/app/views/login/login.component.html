@@ -29,7 +29,13 @@
     >
       {{ message }}
     </div>
-    <button (click)="LoginUser()" class="btn btn-success login-btn">
+    <button
+      (click)="LoginUser()"
+      class="btn btn-success login-btn"
+      appButton
+      [mouseInColor]="'#689d6a'"
+      [mouseOutColor]="'#8ec07c'"
+    >
       Login
     </button>
     <!-- <button (click)="changeAlert()" type="submit" class="btn btn-success" routerLink="/users">Create User</button> -->

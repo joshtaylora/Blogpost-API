@@ -17,6 +17,9 @@
             <div class="col-3">
               <a
                 class="badge userId-badge"
+                appButton
+                [mouseOutColor]="'#8ec07c'"
+                [mouseInColor]="'#689d6a'"
                 [routerLink]="['/users', 'posts', post.userId]"
                 >{{ post.userId }}</a
               >
@@ -37,7 +40,11 @@
     </ul>
 
     <div class="col" *ngIf="selectedPost">
-      <app-post-detail [post]="selectedPost"></app-post-detail>
+      <app-post-detail
+        [post]="selectedPost"
+        [showMenu]="false"
+        [isEditable]="false"
+      ></app-post-detail>
     </div>
   </div>
 </div>

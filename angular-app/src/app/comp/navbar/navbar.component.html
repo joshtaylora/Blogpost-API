@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg" id="navbar-app">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/home']">Blogpost-App</a>
+    <p *ngIf='!userIsLoggedIn' class="navbar-brand" >Blogpost-App</p>
+    <a *ngIf='userIsLoggedIn' class="navbar-brand" [routerLink]="['/home']">{{currentUser.UserData.userId}}</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -32,6 +33,9 @@
         *ngIf="!userIsLoggedIn"
         id="loginBtn"
         class="btn btn-secondary"
+        appButton
+        [mouseOutColor]="'#8ec07c'"
+        [mouseInColor]="'#689d6a'"
         [routerLink]="['/login']"
         type="button"
       >
@@ -41,6 +45,9 @@
         *ngIf="!userIsLoggedIn"
         id="registerBtn"
         class="btn btn-secondary"
+        appButton
+        [mouseOutColor]="'#83a598'"
+        [mouseInColor]="'#458588'"
         [routerLink]="['/register']"
         type="button"
       >
@@ -50,6 +57,9 @@
         *ngIf="userIsLoggedIn"
         id="createPostBtn"
         class="btn btn-secondary"
+        appButton
+        [mouseInColor]="'#d79921'"
+        [mouseOutColor]="'#fabd2f'"
         (click)="goToNewPost()"
         type="button"
       >
@@ -60,6 +70,9 @@
         *ngIf="userIsLoggedIn"
         id="logoutBtn"
         class="btn btn-secondary"
+        appButton
+        [mouseInColor]="'#b16286'"
+        [mouseOutColor]="'#d3869b'"
         (click)="logoutUser()"
         type="button"
       >

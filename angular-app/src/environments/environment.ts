@@ -4,7 +4,16 @@
 
 export const environment = {
   production: false,
-  BASE_URL: 'http://localhost:3000'
+  BASE_URL: 'http://localhost:3000',
+  userBGColor: '#83a598',
+  userFocusColor: '#458588',
+  userIdBGColor: '#8ec07c',
+  userIdFocusColor: '#689d6a',
+  postBGColor: '#fabd2f',
+  postFocusColor: '#d79921',
+  deleteBGColor: '#fb4934',
+  deleteFocusColor: '#cc241d'
+
 };
 
 /*

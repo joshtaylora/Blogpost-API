@@ -4,6 +4,9 @@ import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
   selector: '[appUsersLink]',
 })
 export class UsersLinkDirective {
+  mouseInUserColor = '#458588';
+  mouseOutUserColor = '#83a598';
+
   @HostListener('mouseover')
   onMouseOver(): void {
     this.changeColor('#458588');

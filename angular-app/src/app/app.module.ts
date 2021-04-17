@@ -26,6 +26,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { EditorComponent } from './comp/editor/editor.component';
 import { FormInputDirective } from './directives/form-input.directive';
 import { PostHomeComponent } from './views/post-home/post-home.component';
+import { ButtonDirective } from './directives/button.directive';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { PostHomeComponent } from './views/post-home/post-home.component';
     EditorComponent,
     FormInputDirective,
     PostHomeComponent,
+    ButtonDirective,
   ],
   imports: [
     BrowserModule,

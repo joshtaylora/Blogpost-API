@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  userIsLoggedIn = false;
+  userIsLoggedIn:boolean;
 
   faSignInIcon = faSignInAlt;
   faSignOutIcon = faSignOutAlt;

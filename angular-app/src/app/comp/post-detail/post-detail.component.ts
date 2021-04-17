@@ -4,8 +4,10 @@ import { faRecycle } from '@fortawesome/free-solid-svg-icons';
 
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 import { EditorComponent } from '../../comp/editor/editor.component';
 import { Editor } from 'ngx-editor';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-post-detail',
@@ -18,14 +20,29 @@ export class PostDetailComponent implements OnInit {
   @Input() isEditable: boolean;
   editor: Editor;
   faDeletePostIcon = faRecycle;
-  constructor() {}
+  userLoggedIn: boolean;
+  loggedInUser: User;
+  constructor(private userSvc: UserService) {}
 
   ngOnInit(): void {
+    this.getLoggedInUser();
     if (this.showMenu === undefined || this.showMenu === null) {
       this.showMenu = false;
     }
     if (this.isEditable === undefined || this.isEditable === null) {
       this.isEditable = false;
+    }
+  }
+
+  private getLoggedInUser(): void {
+    // grab the user token from the user service
+    let userToken = this.userSvc.getLoggedInUser();
+    // check to ensure that a valid token was returned
+    if (userToken !== null && userToken.UserData !== undefined) {
+      this.loggedInUser = userToken.UserData;
+      this.userLoggedIn = true;
+    } else {
+      this.userLoggedIn = false;
     }
   }
 

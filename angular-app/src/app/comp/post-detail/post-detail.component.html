@@ -2,15 +2,26 @@
   <div class="card user-detail-card" style="margin: 15px">
     <div class="card-header">
       <div class="row">
-        <span class="col-5">
+        <span
+          [ngClass]="{
+            'col-5': +(loggedInUser.userId) === +(post.userId),
+            'col-10':+(loggedInUser.userId) !== +(post.userId)
+          }"
+          class="col-5">
           <a
             class="badge post-title-badge"
+            appButton
+            [mouseInColor]="'#d79921'"
+            [mouseOutColor]="'#fabd2f'"
             [routerLink]="['/posts', post.postId]"
             >{{ post!.title }}</a
           >
           by
           <a
             class="badge userId-badge"
+            appButton
+            [mouseOutColor]="'#8ec07c'"
+            [mouseInColor]="'#689d6a'"
             [routerLink]="['/users', 'posts', post.userId]"
             >{{ post!.userId }}</a
           >
@@ -19,8 +30,14 @@
             >created on {{ post!.createdDate }}</small
           >
         </span>
-        <span class="col-5  text-right">
-          <a class="badge delete-post-badge" >
+        <span class="col-5  text-right" >
+          <a
+            *ngIf="+loggedInUser.userId === post.postId"
+            class="badge delete-post-badge"
+            appButton
+            [mouseInColor]="'#cc241d'"
+            [mouseOutColor]="'#fb4934'"
+          >
             <fa-icon [icon]="faDeletePostIcon"></fa-icon> Delete Post
           </a>
         </span>
@@ -32,7 +49,13 @@
         [showMenu]="showMenu"
         [isEditable]="isEditable"
       ></app-editor>
-      <button class="btn save-content-btn mt-3 mb-3">Save Content</button>
+      <button
+        *ngIf="userLoggedIn"
+        class="btn save-content-btn mt-3 mb-3"
+        appButton
+        [mouseInColor]="'#458588'"
+        [mouseOutColor]="'#83a598'"
+      >Save Content</button>
     </div>
   </div>
 </div>
