@@ -6,9 +6,9 @@ body {
 }
 
 input.form-control {
-    background-color: #3c3836;
-    color: #fbf1c7;
-    border-color: #665c54;
+  background-color: #3c3836;
+  color: #fbf1c7;
+  border-color: #665c54;
 }
 
 p.text-muted {
@@ -56,9 +56,9 @@ li.selected-post-list-item div.container div.row div.col-6 span.post-title {
 }
 
 a.post-title-badge {
-    color: #1d2021;
-    background-color: #fabd2f;
-    font-weight: bold;
+  color: #1d2021;
+  background-color: #fabd2f;
+  font-weight: bold;
 }
 
 span.post-title {
@@ -76,7 +76,12 @@ div.user-detail-card {
 }
 
 div.NgxEditor__Wrapper div.NgxEditor {
-    border-color: #a89984;
-    background-color: #3c3836;
-    color: #fbf1c7;
+  border-color: #a89984;
+  background-color: #3c3836;
+  color: #fbf1c7;
+}
+
+span.name-badge {
+  background-color: #ebdbb2;
+  color: #282828;
 }

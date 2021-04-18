@@ -1,9 +1,9 @@
-import { ViewChild, AfterViewInit, Component, OnInit } from '@angular/core';
+import { ViewChild, AfterViewInit, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post.service';
 import { toDoc } from 'ngx-editor';
 import { Post } from 'src/app/models/post.model';
-import { EditorComponent } from 'src/app/comp/editor/editor.component';
+import { EditorComponent } from '../../comp/editor/editor.component';
 
 @Component({
   selector: 'app-create-post',
@@ -35,6 +35,6 @@ export class CreatePostComponent implements AfterViewInit {
     this.newPost.content = JSON.stringify(toDoc(this.editor.html));
   }
   onSubmit(): void {
-    this.newPost;
+    // this.postService.
   }
 }

@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup} from '@angular/forms';
 import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
 
 @Component({

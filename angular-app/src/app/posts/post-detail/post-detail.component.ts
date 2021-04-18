@@ -1,11 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { faRecycle } from '@fortawesome/free-solid-svg-icons';
 
 import { Post } from '../../models/post.model';
-import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
-import { EditorComponent } from '../../comp/editor/editor.component';
 import { Editor } from 'ngx-editor';
 import { User } from 'src/app/models/user.model';
 
@@ -36,7 +33,7 @@ export class PostDetailComponent implements OnInit {
 
   private getLoggedInUser(): void {
     // grab the user token from the user service
-    let userToken = this.userSvc.getLoggedInUser();
+    const userToken = this.userSvc.getLoggedInUser();
     // check to ensure that a valid token was returned
     if (userToken !== null && userToken.UserData !== undefined) {
       this.loggedInUser = userToken.UserData;
@@ -45,5 +42,8 @@ export class PostDetailComponent implements OnInit {
       this.userLoggedIn = false;
     }
   }
-
+  savePost(): void {
+    console.log('Post patch method');
+    // call the method from the post service
+  }
 }

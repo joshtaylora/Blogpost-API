@@ -4,10 +4,11 @@
       <div class="row">
         <span
           [ngClass]="{
-            'col-5': +(loggedInUser.userId) === +(post.userId),
-            'col-10':+(loggedInUser.userId) !== +(post.userId)
+            'col-5': +loggedInUser.userId === +post.userId,
+            'col-10': +loggedInUser.userId !== +post.userId
           }"
-          class="col-5">
+          class="col-5"
+        >
           <a
             class="badge post-title-badge"
             appButton
@@ -30,7 +31,7 @@
             >created on {{ post!.createdDate }}</small
           >
         </span>
-        <span class="col-5  text-right" >
+        <span *ngIf="isEditable" class="col-5 text-right">
           <a
             *ngIf="+loggedInUser.userId === post.postId"
             class="badge delete-post-badge"
@@ -50,12 +51,15 @@
         [isEditable]="isEditable"
       ></app-editor>
       <button
-        *ngIf="userLoggedIn"
+        *ngIf="isEditable"
         class="btn save-content-btn mt-3 mb-3"
         appButton
         [mouseInColor]="'#458588'"
         [mouseOutColor]="'#83a598'"
-      >Save Content</button>
+        (click)="savePost()"
+      >
+        Save Content
+      </button>
     </div>
   </div>
 </div>

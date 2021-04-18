@@ -6,10 +6,10 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostDetailComponent } from './comp/post-detail/post-detail.component';
-import { PostListComponent } from './views/post-list/post-list.component';
-import { CreatePostComponent } from './views/create-post/create-post.component';
-import { PostHomeComponent } from './views/post-home/post-home.component';
+import { PostsComponent} from './posts/posts.component';
+import { PostDetailComponent} from './posts/post-detail/post-detail.component';
+import { CreatePostComponent} from './posts/create-post/create-post.component';
+
 
 const routes: Routes = [
   {
@@ -31,25 +31,24 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: 'posts/new',
-    component: CreatePostComponent,
-  },
-  {
-    path: 'posts/:postId',
-    component: PostHomeComponent,
-  },
-  {
-    path: 'posts',
-    component: PostListComponent,
-  },
-
-  {
     path: 'users/posts/:userId',
     component: UserHomeComponent,
   },
   {
     path: 'users',
     component: UsersComponent,
+  },
+  {
+    path: 'posts',
+    component: PostsComponent,
+  },
+  {
+    path: 'posts/new',
+    component: CreatePostComponent,
+  },
+  {
+    path: 'posts/:postId',
+    component: PostDetailComponent,
   },
 ];
 

@@ -55,27 +55,28 @@ export class UserService {
     }>(`${environment.BASE_URL}/users`, userData);
   }
 
-  SetUserLoggedIn(userToken: { Authorization: string }) {
+  SetUserLoggedIn(userToken: { Authorization: string }): void {
     localStorage.setItem('token', JSON.stringify(userToken));
     this.UserStateChanged.emit(true);
   }
 
-  SetUserAsLoggedOff() {
+  SetUserAsLoggedOff(): void {
     localStorage.removeItem('token');
     this.UserStateChanged.emit(false);
   }
 
   getLoggedInUser(): Token | null {
-    let tokenStr = localStorage.getItem('token');
+    const tokenStr = localStorage.getItem('token');
     if (tokenStr !== null) {
-      let tokenObj = JSON.parse(tokenStr) as { Authorization: string };
-      let tokenInfo = <Token>jwt_decode(tokenObj.Authorization);
+      const tokenObj = JSON.parse(tokenStr) as { Authorization: string };
+      const tokenInfo = jwt_decode(tokenObj.Authorization) as Token;
       console.log(tokenInfo);
       return tokenInfo;
     } else {
       return null;
     }
   }
+
 
   // GetLoggedInUser(user: User): void {
   //   this.userSource.next(user);

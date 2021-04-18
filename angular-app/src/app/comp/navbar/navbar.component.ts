@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   faSignInAlt,
@@ -15,8 +15,8 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
-  userIsLoggedIn:boolean;
+export class NavbarComponent implements AfterViewInit {
+  userIsLoggedIn: boolean;
 
   faSignInIcon = faSignInAlt;
   faSignOutIcon = faSignOutAlt;
@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.getToken();
   }
 

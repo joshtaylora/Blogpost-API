@@ -1,8 +1,7 @@
-import { Location } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { toDoc } from 'ngx-editor';
+import { Editor, toDoc } from 'ngx-editor';
 /* Import dev defined models */
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
@@ -21,17 +20,16 @@ export class PostHomeComponent implements AfterViewInit {
   post: Post;
   canEdit: boolean;
   user: User | null = null;
-  @ViewChild(EditorComponent) editor;
+  @ViewChild(EditorComponent) editor: EditorComponent;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private location: Location,
     private postService: PostService
   ) {}
 
   ngAfterViewInit(): void {
-    let userToken = this.userService.getLoggedInUser();
+    const userToken = this.userService.getLoggedInUser();
     if (userToken !== null && userToken.UserData !== undefined) {
       this.canEdit = true;
       this.user = userToken.UserData;

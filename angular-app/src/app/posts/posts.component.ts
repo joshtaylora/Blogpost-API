@@ -1,13 +1,8 @@
 import { Input, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-// model imports
-import { Post } from '../../models/post.model';
-
-import { PostService } from '../../services/post.service';
-import { UserService } from '../../services/user.service';
-
-import { HighlightDirective } from 'src/app/directives/highlight.directive';
+import { Post } from 'src/app/models/post.model';
+import { UserService } from 'src/app/services/user.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-posts',

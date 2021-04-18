@@ -9,23 +9,23 @@ import { HomeComponent } from './views/home/home.component';
 import { NavbarComponent } from './comp/navbar/navbar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PostListComponent } from './views/post-list/post-list.component';
+import { PostListComponent } from './posts/post-list/post-list.component';
 import { UserListComponent } from './views/user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostDetailComponent } from './comp/post-detail/post-detail.component';
-import { PostsComponent } from './comp/posts/posts.component';
+import { PostDetailComponent } from './posts/post-detail/post-detail.component';
+import { PostsComponent } from './posts/posts.component';
 import { UsersComponent } from './comp/users/users.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { SelectPostDirective } from './directives/select-post.directive';
 import { UsersLinkDirective } from './directives/users-link.directive';
 import { PostsLinkDirective } from './directives/posts-link.directive';
 import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CreatePostComponent } from './views/create-post/create-post.component';
+import { CreatePostComponent } from './posts/create-post/create-post.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { EditorComponent } from './comp/editor/editor.component';
 import { FormInputDirective } from './directives/form-input.directive';
-import { PostHomeComponent } from './views/post-home/post-home.component';
+import { PostHomeComponent } from './posts/post-home/post-home.component';
 import { ButtonDirective } from './directives/button.directive';
 
 @NgModule({
@@ -100,3 +100,4 @@ import { ButtonDirective } from './directives/button.directive';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
