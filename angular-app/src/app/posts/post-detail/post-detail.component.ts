@@ -36,7 +36,7 @@ export class PostDetailComponent implements OnInit {
     const userToken = this.userSvc.getLoggedInUser();
     // check to ensure that a valid token was returned
     if (userToken !== null && userToken.UserData !== undefined) {
-      this.loggedInUser = userToken.UserData;
+      this.loggedInUser = userToken.UserData as User;
       this.userLoggedIn = true;
     } else {
       this.userLoggedIn = false;

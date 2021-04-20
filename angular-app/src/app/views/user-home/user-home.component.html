@@ -13,5 +13,5 @@
   </div>
 </div>
 <div class="container-md" *ngFor="let post of posts">
-  <app-post-detail *ngIf="post" [post]="post" [showMenu]="false" [isEditable]="false"></app-post-detail>
+  <app-posts-card-list [userId]="userId" [posts]="posts"></app-posts-card-list>
 </div>

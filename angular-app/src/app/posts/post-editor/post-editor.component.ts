@@ -8,26 +8,28 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
 
-
-
 @Component({
   selector: 'app-post-editor',
   templateUrl: './post-editor.component.html',
-  styleUrls: ['./post-editor.component.css']
+  styleUrls: ['./post-editor.component.css'],
 })
-export class PostEditorComponent implements OnInit {
+export class PostEditorComponent implements OnInit, OnDestroy {
   @Input()
-  get content(): string { return this._content}
+  get content(): string {
+    return this._content;
+  }
   set content(content: string) {
-    this._content = (content || '');
+    this._content = content || '';
   }
   private _content = '';
 
   @Input() showMenu: boolean;
   @Input()
-  get isEditable(): boolean { return this._isEditable }
+  get isEditable(): boolean {
+    return this._isEditable;
+  }
   set isEditable(isEditable: boolean) {
-    this._isEditable = (isEditable || false);
+    this._isEditable = isEditable || false;
   }
   private _isEditable = false;
   editor: Editor;
@@ -42,7 +44,7 @@ export class PostEditorComponent implements OnInit {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   form = new FormGroup({
-    editorContent: new FormControl('', { updateOn: 'submit'}),
+    editorContent: new FormControl('', { updateOn: 'submit' }),
   });
 
   html = '';

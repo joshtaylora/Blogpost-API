@@ -1,6 +1,6 @@
-<div class="container-md m-5">
-  <div class="row">
-    <ul class="col-5 list-group">
+<div class="row">
+  <div class="col-5">
+    <ul class="list-group">
       <li
         class="list-group-item"
         [ngClass]="{
@@ -38,13 +38,12 @@
         </div>
       </li>
     </ul>
-
-    <div class="col" *ngIf="selectedPost">
-      <app-post-detail
-        [post]="selectedPost"
-        [showMenu]="false"
-        [isEditable]="false"
-      ></app-post-detail>
-    </div>
+  </div>
+  <div class="col" *ngIf="selectedPost">
+    <app-post-detail
+      [post]="selectedPost"
+      [showMenu]="false"
+      [isEditable]="false"
+    ></app-post-detail>
   </div>
 </div>

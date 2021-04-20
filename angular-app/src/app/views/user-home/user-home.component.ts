@@ -16,7 +16,7 @@ export class UserHomeComponent implements OnInit {
     private location: Location
   ) {}
 
-  userId: string = '';
+  userId = '';
   posts: Post[] | null = null;
   noPosts = false;
   ngOnInit(): void {

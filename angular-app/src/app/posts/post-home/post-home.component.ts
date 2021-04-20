@@ -10,9 +10,9 @@ import { User } from '../../models/user.model';
 @Component({
   selector: 'app-post-home',
   templateUrl: './post-home.component.html',
-  styleUrls: ['./post-home.component.css']
+  styleUrls: ['./post-home.component.css'],
 })
-export class PostHomeComponent implements AfterViewInit {
+export class PostHomeComponent implements OnInit {
   post: Post;
   canEdit: boolean;
   user: User | null = null;
@@ -20,12 +20,12 @@ export class PostHomeComponent implements AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private UserService: UserService,
+    private userService: UserService,
     private postService: PostService
-  ) { }
+  ) {}
 
-  ngAfterViewInit(): void {
-    const userToken = this.UserService.getLoggedInUser();
+  ngOnInit(): void {
+    const userToken = this.userService.getLoggedInUser();
     if (userToken) {
       this.canEdit = true;
       this.user = userToken.UserData;
@@ -39,10 +39,9 @@ export class PostHomeComponent implements AfterViewInit {
   getPost(): void {
     const postId = this.route.snapshot.paramMap.get('postId');
     if (postId) {
-      this.postService.getPost(+postId).subscribe( (post) => {
+      this.postService.getPost(+postId).subscribe((post) => {
         this.post = post;
-      })
+      });
     }
   }
-
 }
