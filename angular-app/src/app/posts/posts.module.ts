@@ -6,17 +6,13 @@ import { PostComponent } from './post/post.component';
 import { PostsCardListComponent } from './posts-card-list/posts-card-list.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostEditorComponent } from './post-editor/post-editor.component';
-import { PostsService } from './services/posts.service';
 import { PostHomeComponent } from './post-home/post-home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ButtonDirective } from '../directives/button.directive';
-import { UsersLinkDirective } from '../directives/users-link.directive';
-import { PostsLinkDirective } from '../directives/posts-link.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
-import { HttpClientModule } from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { PostCreateComponent } from './post-create/post-create.component';
+import { PostsLandingComponent } from './posts-landing/posts-landing.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,16 +22,15 @@ import { PostCreateComponent } from './post-create/post-create.component';
     PostEditorComponent,
     PostHomeComponent,
     PostCreateComponent,
+    PostsLandingComponent,
   ],
   imports: [
     CommonModule,
     PostsRoutingModule,
     FontAwesomeModule,
-    ButtonDirective,
-    UsersLinkDirective,
-    PostsLinkDirective,
     ReactiveFormsModule,
     FormsModule,
+    SharedModule,
     NgxEditorModule.forRoot({
       locals: {
         // menu
@@ -60,7 +55,6 @@ import { PostCreateComponent } from './post-create/post-create.component';
         align_justify: 'Justify',
         text_color: 'Text Color',
         background_color: 'Background Color',
-
         // popups, forms, etc...
         url: 'URL',
         text: 'Text',
@@ -75,10 +69,14 @@ import { PostCreateComponent } from './post-create/post-create.component';
   exports: [
     CommonModule,
     FontAwesomeModule,
-    ButtonDirective,
-    UsersLinkDirective,
-    PostsLinkDirective,ReactiveFormsModule, FormsModule
-  ]
-  providers: [PostsService],
+    ReactiveFormsModule,
+    FormsModule,
+    PostCreateComponent,
+    PostsLandingComponent,
+    PostsCardListComponent,
+    PostHomeComponent,
+    PostDetailComponent,
+  ],
+  providers: [],
 })
 export class PostsModule {}

@@ -1,7 +1,7 @@
 <div *ngIf="user !== null && !noPosts" class="home-body">
   <h1 class="text-center user-home-title m-4">{{ user.userId }}</h1>
 
-  <app-posts [userId]="user.userId"></app-posts>
+  <app-posts-card-list [userId]="user.userId"></app-posts-card-list>
 </div>
 <div *ngIf="noPosts" class="home-body container-md">
   <h1 class="m-3">Welcome, {{ user.userId }}</h1>

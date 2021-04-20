@@ -39,8 +39,4 @@ export class HighlightDirective {
     this.renderer.setStyle(title, 'color', '#928374');
   }
   constructor(private elr: ElementRef, private renderer: Renderer2) {}
-
-  updateItem(bColor: string | null, tColor: string | null): void {
-    // let postTitle = this.elr.nativeElement
-  }
 }

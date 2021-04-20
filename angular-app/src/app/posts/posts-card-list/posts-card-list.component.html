@@ -1,1 +1,50 @@
-<p>posts-card-list works!</p>
+<div class="container-md m-5">
+  <div class="row">
+    <ul class="col-5 list-group">
+      <li
+        class="list-group-item"
+        [ngClass]="{
+          'selected-post-list-item': selectedPost === post,
+          'post-list-item': selectedPost !== post
+        }"
+        appHighlight
+        *ngFor="let post of posts"
+        [class.selected]="post === selectedPost"
+        (click)="onSelect(post)"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-3">
+              <a
+                class="badge userId-badge"
+                appButton
+                [mouseOutColor]="'#8ec07c'"
+                [mouseInColor]="'#689d6a'"
+                [routerLink]="['/users', 'posts', post.userId]"
+                >{{ post.userId }}</a
+              >
+            </div>
+            <div class="col-7">
+              <span
+                [ngClass]="{
+                  'selected-post-title': selectedPost === post,
+                  'post-title': selectedPost !== post
+                }"
+                class="post-title"
+                >{{ post.title }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="col" *ngIf="selectedPost">
+      <app-post-detail
+        [post]="selectedPost"
+        [showMenu]="false"
+        [isEditable]="false"
+      ></app-post-detail>
+    </div>
+  </div>
+</div>

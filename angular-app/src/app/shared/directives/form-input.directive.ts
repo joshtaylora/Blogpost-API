@@ -18,16 +18,16 @@ export class FormInputDirective {
     this.changeBoxShadow(null);
   }
   constructor(private elr: ElementRef, private renderer: Renderer2) {}
-  private changeTextColor(color: string) {
+  private changeTextColor(color: string): void {
     this.renderer.setStyle(this.elr.nativeElement, 'color', color);
   }
-  private changeBgColor(bgColor: string) {
+  private changeBgColor(bgColor: string): void {
     this.renderer.setStyle(this.elr.nativeElement, 'background-color', bgColor);
   }
-  private changeBoxShadow(boxShadow: string) {
+  private changeBoxShadow(boxShadow: string): void {
     this.renderer.setStyle(this.elr.nativeElement, 'box-shadow', boxShadow);
   }
-  private changeBorderColor(borderColor: string) {
+  private changeBorderColor(borderColor: string): void {
     this.renderer.setStyle(this.elr.nativeElement, 'border-color', borderColor);
   }
 }

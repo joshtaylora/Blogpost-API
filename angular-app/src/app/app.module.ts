@@ -13,18 +13,11 @@ import { PostListComponent } from './views/post-list/post-list.component';
 import { UserListComponent } from './views/user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostsComponent } from './views/posts/posts.component';
 import { UsersComponent } from './comp/users/users.component';
-import { HighlightDirective } from './directives/highlight.directive';
-import { SelectPostDirective } from './directives/select-post.directive';
-import { UsersLinkDirective } from './directives/users-link.directive';
-import { PostsLinkDirective } from './directives/posts-link.directive';
 import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxEditorModule } from 'ngx-editor';
-import { FormInputDirective } from './directives/form-input.directive';
-import { PostHomeComponent } from './posts/post-home/post-home.component';
-import { ButtonDirective } from './directives/button.directive';
 import { PostsModule } from '@posts/posts.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -36,9 +29,6 @@ import { PostsModule } from '@posts/posts.module';
     UserListComponent,
     UserHomeComponent,
     UsersComponent,
-    HighlightDirective,
-    SelectPostDirective,
-    UsersLinkDirective,
   ],
   imports: [
     BrowserModule,
@@ -47,9 +37,9 @@ import { PostsModule } from '@posts/posts.module';
     NgbCollapseModule,
     NgbModule,
     PostsModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
