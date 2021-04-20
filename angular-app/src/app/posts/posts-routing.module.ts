@@ -1,26 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostsComponent } from './posts.component';
-import { CreatePostComponent } from './create-post/create-post.component';
-import { PostDetailComponent } from './post-detail/post-detail.component';
+import { AuthService } from '../services/auth.service';
+import { PostHomeComponent } from './post-home/post-home.component';
+import { PostComponent } from './post/post.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PostsComponent,
-  },
-  {
-    path: 'new',
-    component: CreatePostComponent,
+    component: PostHomeComponent
   },
   {
     path: ':postId',
-    component: PostDetailComponent,
-  },
+    component: PostComponent,
+    canActivate: [AuthService]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class PostsRoutingModule {}
+export class PostsRoutingModule { }

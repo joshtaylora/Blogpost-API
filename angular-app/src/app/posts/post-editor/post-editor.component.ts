@@ -5,20 +5,31 @@ import {
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
 
-@Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css'],
-  encapsulation: ViewEncapsulation.None,
-})
-export class EditorComponent implements OnInit, OnDestroy {
-  @Input() content: string | undefined;
-  @Input() showMenu: boolean;
-  @Input() isEditable: boolean;
 
+
+@Component({
+  selector: 'app-post-editor',
+  templateUrl: './post-editor.component.html',
+  styleUrls: ['./post-editor.component.css']
+})
+export class PostEditorComponent implements OnInit {
+  @Input()
+  get content(): string { return this._content}
+  set content(content: string) {
+    this._content = (content || '');
+  }
+  private _content = '';
+
+  @Input() showMenu: boolean;
+  @Input()
+  get isEditable(): boolean { return this._isEditable }
+  set isEditable(isEditable: boolean) {
+    this._isEditable = (isEditable || false);
+  }
+  private _isEditable = false;
   editor: Editor;
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -31,7 +42,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   form = new FormGroup({
-    editorContent: new FormControl('', Validators.required()),
+    editorContent: new FormControl('', { updateOn: 'submit'}),
   });
 
   html = '';
@@ -42,8 +53,8 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.isEditable = true;
       this.showMenu = true;
     }
-    if (this.content !== undefined) {
-      this.editor.setContent(toHTML(JSON.parse(this.content)));
+    if (this.content !== undefined && this.content !== null) {
+      this.editor.setContent(this.content);
     } else {
       this.content = '';
     }
@@ -52,5 +63,4 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.editor.destroy();
   }
-
 }

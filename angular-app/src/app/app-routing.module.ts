@@ -6,9 +6,10 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostsComponent} from './posts/posts.component';
-import { PostDetailComponent} from './posts/post-detail/post-detail.component';
-import { CreatePostComponent} from './posts/create-post/create-post.component';
+import { PostsComponent} from './views/posts/posts.component';
+import { PostDetailComponent} from './views/post-detail/post-detail.component';
+import { CreatePostComponent} from './views/create-post/create-post.component';
+import { PostHomeComponent } from './views/post-home/post-home.component';
 
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
   },
   {
     path: 'posts/:postId',
-    component: PostDetailComponent,
+    component: PostHomeComponent,
   },
 ];
 

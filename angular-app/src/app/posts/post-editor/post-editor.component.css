@@ -80,3 +80,9 @@ div.NgxEditor__Dropdown--Item {
 }
 
 
+
+button.save-content-btn {
+  background-color: #83a598;
+  border-color: #458588;
+  color: #282828;
+}
