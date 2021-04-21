@@ -77,7 +77,6 @@ export class UserService {
     }
   }
 
-
   // GetLoggedInUser(user: User): void {
   //   this.userSource.next(user);
   // }

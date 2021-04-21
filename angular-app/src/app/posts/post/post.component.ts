@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Post } from '../../models/post.model';
 
 @Component({
@@ -7,10 +8,9 @@ import { Post } from '../../models/post.model';
   styleUrls: ['./post.component.css'],
 })
 export class PostComponent implements OnInit {
-  // Takes in a post item from the parent element
-  @Input() post: Post;
+  post: Post;
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
 }
