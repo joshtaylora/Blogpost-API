@@ -15,7 +15,6 @@ export class PostsService {
 
   constructor(
     private httpClient: HttpClient,
-    private userService: UserService
   ) {}
 
   getPostById(postId: number): Observable<Post> {
