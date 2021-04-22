@@ -1,7 +1,7 @@
 import { Input, Output, Component, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from '@posts/models/post.model';
-import { PostService } from '@services/post.service';
+import { PostsService } from '../services/posts.service';
 import { UserService } from '@services/user.service';
 
 @Component({
@@ -10,12 +10,12 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./posts-card-list.component.css'],
 })
 export class PostsCardListComponent implements OnInit {
-  @Input() posts: Post[] | null = null;
+  @Input() posts: Post[] = [];
   selectedPost?: Post;
   @Input() userId?: string;
 
   constructor(
-    private postSvc: PostService,
+    private postSvc: PostsService,
     private userSvc: UserService,
     private router: Router
   ) {}
@@ -32,7 +32,7 @@ export class PostsCardListComponent implements OnInit {
     } else {
       // if no userId is passed, get all of the posts
       this.postSvc
-        .getPosts()
+        .getAllPosts()
         .subscribe((posts: Post[]) => (this.posts = posts));
     }
   }

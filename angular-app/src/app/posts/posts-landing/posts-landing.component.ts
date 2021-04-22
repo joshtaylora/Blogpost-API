@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Post } from '@posts/models/post.model';
-import { PostService } from '@services/post.service';
+import { PostsService } from '@posts/services/posts.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-posts-landing',
@@ -10,17 +11,19 @@ import { PostService } from '@services/post.service';
   styleUrls: ['./posts-landing.component.css'],
 })
 export class PostsLandingComponent implements OnInit {
-  constructor(private router: Router, private postSvc: PostService) {}
+  posts$: Observable<Post[]>;
+
+  constructor(private postsService: PostsService) {}
   postToDisplay: Post;
   selectedPost?: Post;
 
   ngOnInit(): void {}
 
-  onSelect(post: Post): void {
-    this.selectedPost = post;
+  reloadPosts() {
+    const posts$ = this.postsService.getAllPosts();
   }
 
-  newPost(): void {
-    this.router.navigate(['/posts', 'new']);
+  onSelect(post: Post): void {
+    this.selectedPost = post;
   }
 }

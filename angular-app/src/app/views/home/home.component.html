@@ -1,7 +1,23 @@
 <div *ngIf="user !== null && !noPosts" class="home-body">
-  <h1 class="text-center user-home-title m-4">{{ user.userId }}</h1>
+  <h1 class="text-center m-2">Welcome, {{ user.userId }}</h1>
 
-  <div class="container-md m-5">
+  <div class="container-lg-1 m-3">
+    <div class="card user-detail-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-2">
+            <p>Go to User's posts</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <p>Edit User account settings</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-lg-1 m-3">
     <app-posts-card-list [userId]="user.userId"></app-posts-card-list>
   </div>
   <div *ngIf="noPosts" class="home-body container-md">

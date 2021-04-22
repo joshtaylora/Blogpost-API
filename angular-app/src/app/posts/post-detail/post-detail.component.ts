@@ -42,8 +42,5 @@ export class PostDetailComponent implements OnInit {
       this.userLoggedIn = false;
     }
   }
-  savePost(): void {
-    console.log('Post patch method');
-    // call the method from the post service
-  }
+
 }

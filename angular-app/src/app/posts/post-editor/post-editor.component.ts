@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
 
 @Component({
@@ -24,6 +24,7 @@ export class PostEditorComponent implements OnInit, OnDestroy {
   private _content = '';
 
   @Input() showMenu: boolean;
+
   @Input()
   get isEditable(): boolean {
     return this._isEditable;
@@ -32,6 +33,7 @@ export class PostEditorComponent implements OnInit, OnDestroy {
     this._isEditable = isEditable || false;
   }
   private _isEditable = false;
+
   editor: Editor;
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -43,23 +45,38 @@ export class PostEditorComponent implements OnInit, OnDestroy {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
-  form = new FormGroup({
-    editorContent: new FormControl('', { updateOn: 'submit' }),
-  });
+  form = new FormGroup({});
+
+  myForm: FormGroup;
 
   html = '';
 
+  constructor(private formBuilder: FormBuilder) {}
+
   ngOnInit(): void {
+    this.myForm = this.formBuilder.group({
+      editorContent: new FormControl('', { updateOn: 'change' }),
+      save: new FormControl(''),
+    });
+
     this.editor = new Editor();
     if (this.isEditable === undefined) {
       this.isEditable = true;
       this.showMenu = true;
     }
-    if (this.content !== undefined && this.content !== null) {
+    if (this.content !== undefined || this.content !== null) {
       this.editor.setContent(this.content);
     } else {
       this.content = '';
     }
+
+    this.onChanges();
+  }
+
+  onChanges() {
+    this.myForm.get('save').valueChanges.subscribe(content => {
+
+    })
   }
 
   ngOnDestroy(): void {

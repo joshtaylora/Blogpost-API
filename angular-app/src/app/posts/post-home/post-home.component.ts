@@ -2,10 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from '@posts/models/post.model';
 import { PostEditorComponent } from '@posts/post-editor/post-editor.component';
-import { PostService } from '@services/post.service';
 import { UserService } from '@services/user.service';
 import { toDoc } from 'ngx-editor';
 import { User } from '../../models/user.model';
+import { Observable } from 'rxjs';
+import { PostService } from '@services/post.service';
 
 @Component({
   selector: 'app-post-home',
@@ -27,10 +28,12 @@ export class PostHomeComponent implements OnInit {
   ngOnInit(): void {
     const userToken = this.userService.getLoggedInUser();
     if (userToken) {
+
       this.canEdit = true;
       this.user = userToken.UserData;
+
       this.getPost();
-      this.editor.content = JSON.stringify(toDoc(this.post.content));
+
     } else {
       this.canEdit = false;
     }
@@ -39,9 +42,7 @@ export class PostHomeComponent implements OnInit {
   getPost(): void {
     const postId = this.route.snapshot.paramMap.get('postId');
     if (postId) {
-      this.postService.getPost(+postId).subscribe((post) => {
-        this.post = post;
-      });
+      this.postService.getPost(+postId).subscribe((post) => this.post = post);
     }
   }
 }

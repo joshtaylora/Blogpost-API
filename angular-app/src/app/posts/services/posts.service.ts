@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from '@env';
 import { shareReplay } from 'rxjs/operators';
 import { Post } from '../models/post.model';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,20 +13,33 @@ export class PostsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  loadPostById(postId: string): Observable<Post> {
+  getPostById(postId: number): Observable<Post> {
     return this.httpClient
       .get<Post>(`${this.postsURL}/${postId}`)
       .pipe(shareReplay());
   }
 
-  loadAllPosts(): Observable<Post[]> {
+  getAllPosts(): Observable<Post[]> {
     return this.httpClient.get<Post[]>(`${this.postsURL}`);
   }
 
-  updatePost(postId: string, changes: Partial<Post>): Observable<any> {
+  creatPost(postId: number, post: Post): Observable<any> {
+    return this.httpClient.post(`${this.postsURL}/${postId}`, {
+      title: post.title,
+      content: post.content,
+      userId: post.userId,
+      headerImage: post.headerImage
+    });
+  }
+
+  patchPost(postId: number, changes: Partial<Post>): Observable<any> {
     return this.httpClient.patch(`${this.postsURL}/${postId}`, {
       content: changes?.content,
       headerImage: changes?.headerImage,
     });
+  }
+
+  deletePost(postId: number): Observable<any> {
+    return this.httpClient.delete(`${this.postsURL}/${postId}`);
   }
 }

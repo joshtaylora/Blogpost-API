@@ -13,6 +13,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { PostCreateComponent } from './post-create/post-create.component';
 import { PostsLandingComponent } from './posts-landing/posts-landing.component';
 import { SharedModule } from '../shared/shared.module';
+import { PostsService } from './services/posts.service';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,6 @@ import { SharedModule } from '../shared/shared.module';
     PostHomeComponent,
     PostDetailComponent,
   ],
-  providers: [],
+  providers: [ PostsService],
 })
 export class PostsModule {}

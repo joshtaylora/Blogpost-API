@@ -91,7 +91,7 @@ export class UserService {
 
   getUsersPosts(userId: string): Observable<Post[]> {
     return this.httpC.get<Post[]>(
-      `${environment.BASE_URL}/users/posts/${userId}`
+      `${environment.BASE_URL}/Users/Posts/${userId}`
     );
   }
 }

@@ -40,8 +40,18 @@ userRouter.get("/", (req, res, next) => {
             res.status(400).send({ error: err.message });
             return;
         }
-        console.log({ method: "get", route: "/Users/", message: rows });
-        res.status(200).send(rows);
+        let rowArray = [];
+        rows.forEach((row) => {
+            const rowJSON = {
+                userId: row["userId"],
+                firstName: row["firstName"],
+                lastName: row["lastName"],
+                emailAddress: row["emailAddress"],
+            };
+            rowArray.push(rowJSON);
+        });
+        console.log(rowArray);
+        res.status(200).send(rowArray);
     });
 });
 userRouter.get("/Posts/:userId", (req, res, next) => {
@@ -124,8 +134,14 @@ userRouter.get("/:userId", (req, res, next) => {
             return;
         }
         else {
-            console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-            res.status(201).send(row[0]);
+            const rowJSON = {
+                userId: row[0]["userId"],
+                firstName: row[0]["firstName"],
+                lastName: row[0]["lastName"],
+                emailAddress: row[0]["emailAddress"],
+            };
+            console.log(rowJSON);
+            res.status(201).send(rowJSON);
             return;
         }
     });
