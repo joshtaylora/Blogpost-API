@@ -1,6 +1,50 @@
 <nav class="navbar navbar-expand-lg" id="navbar-app">
   <div class="container-fluid">
-    <p class="navbar-brand" >Blogpost-App</p>
+    <p class="navbar-brand" *ngIf="!userIsLoggedIn">Blogpost-App</p>
+    <a
+      *ngIf="userIsLoggedIn"
+      id="userHomeButton"
+      appButton
+      [mouseInColor]="''"
+      [mouseOutColor]="''"
+      [routerLink]="['/home']"
+    >
+      <fa-icon [icon]="faHomeIcon"></fa-icon> Home
+    </a>
+
+    <div ngbDropdown class="ml-2 nav-item dropdown">
+      <a
+        *ngIf="userIsLoggedIn"
+        id="logoutBtn"
+        type="button"
+        data-toggle="dropdown"
+        aria-expanded="false"
+        role="button"
+        arai-haspopup="true"
+        ngbDropdownToggle
+      >
+        <fa-icon [icon]="faSignOutIcon"></fa-icon> Logout
+      </a>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="logoutBtn">
+        <a
+          ngDropdownItem
+          appButton
+          [mouseInColor]="'#8ec07c'"
+          [mouseOutColor]="'#689d6a'"
+          class="dropdown-item"
+          >User Settings</a
+        >
+        <a
+          ngDropdownItem
+          appButton
+          [mouseInColor]="'#8ec07c'"
+          [mouseOutColor]="'#689d6a'"
+          class="dropdown-item"
+          >Posts Settings</a
+        >
+      </div>
+    </div>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -64,18 +108,6 @@
       >
         <fa-icon [icon]="faNewPostIcon"></fa-icon>
         Create New Post
-      </button>
-      <button
-        *ngIf="userIsLoggedIn"
-        id="logoutBtn"
-        class="btn btn-secondary"
-        appButton
-        [mouseInColor]="'#b16286'"
-        [mouseOutColor]="'#d3869b'"
-        (click)="logoutUser()"
-        type="button"
-      >
-        <fa-icon [icon]="faSignOutIcon"></fa-icon> Logout
       </button>
     </div>
   </div>

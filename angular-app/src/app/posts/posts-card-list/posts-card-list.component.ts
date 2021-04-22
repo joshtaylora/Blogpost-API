@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Post } from '@posts/models/post.model';
 import { PostsService } from '../services/posts.service';
 import { UserService } from '@services/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-posts-card-list',
@@ -11,30 +12,33 @@ import { UserService } from '@services/user.service';
 })
 export class PostsCardListComponent implements OnInit {
   @Input() posts: Post[] = [];
+  posts$: Observable<Post[]>;
   selectedPost?: Post;
   @Input() userId?: string;
 
   constructor(
-    private postSvc: PostsService,
+    private postsService: PostsService,
     private userSvc: UserService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.getPosts();
+    if (this.userId !== null && this.userId !== undefined) {
+      this.getPostsByUser();
+    } else {
+      this.getPosts();
+    }
   }
 
   getPosts(): void {
-    if (!!this.userId) {
-      this.userSvc
-        .getUsersPosts(this.userId)
-        .subscribe((posts: Post[]) => (this.posts = posts));
-    } else {
-      // if no userId is passed, get all of the posts
-      this.postSvc
-        .getAllPosts()
-        .subscribe((posts: Post[]) => (this.posts = posts));
-    }
+    // if no userId is passed, get all of the posts
+    this.postsService.getAllPosts().subscribe((posts) => (this.posts = posts));
+  }
+
+  getPostsByUser(): void {
+    this.postsService
+      .getPostsByUserId(this.userId)
+      .subscribe((posts) => (this.posts = posts));
   }
 
   onSelect(post: Post): void {

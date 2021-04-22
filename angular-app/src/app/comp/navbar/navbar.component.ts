@@ -5,6 +5,7 @@ import {
   faUserPlus,
   faSignOutAlt,
   faPlus,
+  faHome,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Token } from 'src/app/models/token.model';
@@ -22,6 +23,7 @@ export class NavbarComponent implements AfterViewInit {
   faSignOutIcon = faSignOutAlt;
   faRegisterIcon = faUserPlus;
   faNewPostIcon = faPlus;
+  faHomeIcon = faHome;
 
   currentUser: Token | null = null;
 
