@@ -47,17 +47,25 @@
     <div class="card-body">
       <app-post-editor
         [post]="post"
+<<<<<<< HEAD
         (saveContentEvent)="saveContent($event)"
         [showSaveButton]="true"
+=======
+>>>>>>> 388d57456a10310a520d04d0a73b2424504db49d
         [content]="post!.content"
         [showMenu]="showMenu"
         [isEditable]="isEditable"
       ></app-post-editor>
+<<<<<<< HEAD
       <div *ngIf="saveSuccess !== undefined">
         <div *ngIf="saveSuccess">
           <span class="alert alert-success">{{ message }}</span>
         </div>
       </div>
+=======
+
+
+>>>>>>> 388d57456a10310a520d04d0a73b2424504db49d
     </div>
   </div>
 </div>

@@ -29,6 +29,7 @@ export class NavbarComponent implements AfterViewInit {
   faSettingsIcon = faCog;
   currentUser: Token | null = null;
 
+
   constructor(
     private auth: AuthTokenStore,
     private router: Router,

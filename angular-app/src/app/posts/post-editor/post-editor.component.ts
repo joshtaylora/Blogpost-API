@@ -93,6 +93,7 @@ export class PostEditorComponent implements OnInit, OnDestroy {
     this.saveContentEvent.emit(savedContent);
   }
 
+
   ngOnDestroy(): void {
     this.editor.destroy();
   }

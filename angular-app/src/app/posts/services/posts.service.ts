@@ -79,7 +79,7 @@ export class PostsService {
       )
       .pipe(
         tap(() => {
-          'Patch post method call';
+          console.log('Patch post method call');
         })
       );
   }

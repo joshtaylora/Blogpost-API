@@ -9,8 +9,13 @@ import { Observable, Subscription } from 'rxjs';
 import { PostsService } from '@posts/services/posts.service';
 import { AuthTokenStore } from '@services/auth/auth-token.store';
 import { Token } from 'src/app/models/token.model';
+<<<<<<< HEAD
 import { PostDataService } from '@posts/services/post-data.service';
 import { PostStore } from '@posts/services/post.store';
+=======
+import { PostDataService} from '@posts/services/post-data.service';
+
+>>>>>>> 388d57456a10310a520d04d0a73b2424504db49d
 
 @Component({
   selector: 'app-post-detail',
@@ -26,6 +31,7 @@ export class PostDetailComponent implements OnInit {
   faDeletePostIcon = faRecycle;
   userLoggedIn: boolean;
   loggedInUser: User;
+<<<<<<< HEAD
   // used to display success alert upon successful save, and error message otherwise
   saveSuccess: boolean;
   // message displayed in the alert box
@@ -35,6 +41,22 @@ export class PostDetailComponent implements OnInit {
   token: Token;
 
   constructor(private auth: AuthTokenStore, private postStore: PostStore) {
+=======
+
+  subscription: Subscription;
+
+  editorContent$: Observable<string>;
+
+  token: Token;
+
+  constructor(
+    private auth: AuthTokenStore,
+    private postsSvc: PostsService,
+    private postContentSvc: PostDataService
+  ) {
+    this.editorContent$ = this.postContentSvc.getPost();
+
+>>>>>>> 388d57456a10310a520d04d0a73b2424504db49d
     this.auth.token$.subscribe((token) => {
       this.token = token;
     });
@@ -55,6 +77,7 @@ export class PostDetailComponent implements OnInit {
       this.isEditable = false;
     }
 
+<<<<<<< HEAD
     if (this.showSaveButton === undefined || this.showSaveButton === null) {
       this.showSaveButton = false;
     }
@@ -78,5 +101,13 @@ export class PostDetailComponent implements OnInit {
         this.message = `Error occurred while attempting to save post with postId = ${this.post.postId} and title = ${this.post.title}`;
       }
     );
+=======
+  saveContent() {
+    this.subscription = this.postContentSvc.getPost().subscribe(content => {
+      this.post.content = content;
+    })
+
+    this.postsSvc.patchPost(this.post.postId, this.post);
+>>>>>>> 388d57456a10310a520d04d0a73b2424504db49d
   }
 }
