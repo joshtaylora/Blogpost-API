@@ -1,8 +1,7 @@
-import { Input, Output, Component, OnInit, EventEmitter } from '@angular/core';
+import { Input, Component, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from '@posts/models/post.model';
 import { PostsService } from '../services/posts.service';
-import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -16,15 +15,11 @@ export class PostsCardListComponent implements OnInit {
   selectedPost?: Post;
   @Input() userId?: string;
 
-  constructor(
-    private postsService: PostsService,
-    private userSvc: UserService,
-    private router: Router
-  ) {}
+  constructor(private postsService: PostsService, private router: Router) {}
 
   ngOnInit(): void {
     if (this.userId !== null && this.userId !== undefined) {
-      this.getPostsByUser();
+      this.getPostsByUser(this.userId);
     } else {
       this.getPosts();
     }
@@ -32,12 +27,14 @@ export class PostsCardListComponent implements OnInit {
 
   getPosts(): void {
     // if no userId is passed, get all of the posts
-    this.postsService.getAllPosts().subscribe((posts) => (this.posts = posts));
+    this.postsService.getAllPosts().subscribe((posts) => {
+      this.posts = posts;
+    });
   }
 
-  getPostsByUser(): void {
+  getPostsByUser(userId: string): void {
     this.postsService
-      .getPostsByUserId(this.userId)
+      .getPostsByUserId(userId)
       .subscribe((posts) => (this.posts = posts));
   }
 

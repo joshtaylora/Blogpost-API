@@ -18,6 +18,7 @@ import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxEditorModule } from 'ngx-editor';
 import { PostsModule } from '@posts/posts.module';
 import { SharedModule } from './shared/shared.module';
+import { UsersModule } from '@users/users.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SharedModule } from './shared/shared.module';
     NgbCollapseModule,
     NgbModule,
     PostsModule,
+    UsersModule,
     SharedModule,
   ],
   providers: [],

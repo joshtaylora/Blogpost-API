@@ -32,7 +32,8 @@ const routes: Routes = [
   },
   {
     path: 'users',
-    component: UsersComponent,
+    loadChildren: () =>
+      import('./users/users.module').then((m) => m.UsersModule),
   },
   {
     path: 'posts',
@@ -40,21 +41,6 @@ const routes: Routes = [
       import('./posts/posts.module').then((m) => m.PostsModule),
   },
 ];
-/*
-  {
-    path: 'posts',
-    component: PostsComponent,
-  },
-  {
-    path: 'posts/new',
-    component: CreatePostComponent,
-  },
-  {
-    path: 'posts/:postId',
-    component: PostHomeComponent,
-  },
-
-*/
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

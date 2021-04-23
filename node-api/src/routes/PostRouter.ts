@@ -57,17 +57,19 @@ postRouter.post("/", (req, res, next) => {
     try {
       let token = req.headers.authorization.split(" ")[1];
       // verify that the token passed in the authorization header can be authenticated
-      let tokenVerify = jwt.verify(
-        token,
-        secret
-      ) as { UserData: {
-        userId: string,
-        firstName: string,
-        lastname: string,
-        emailAddress: string,
-        password: string
-      }; exp: number; sub: string };
+      let tokenVerify = jwt.verify(token, secret) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
       let tokenPayload = tokenVerify.UserData;
+      // query the Users database to see if the user exists
       db.all(
         "select * from Users where userId = $userId",
         { $userId: tokenPayload.userId },
@@ -130,6 +132,7 @@ postRouter.post("/", (req, res, next) => {
                       });
                     } else {
                       let row = rows[0];
+                      // console.log(row);
                       let postId = JSON.stringify(row.postId).replace(
                         /['"]+/g,
                         ""
@@ -293,16 +296,17 @@ postRouter.patch("/:postId", (req, res, next) => {
   } else {
     let token = req.headers.authorization.split(" ")[1];
     // verify that the token passed in the authorization header can be authenticated
-    let tokenVerify = jwt.verify(
-      token,
-      secret
-    ) as { UserData: {
-      userId: string,
-      firstName: string,
-      lastname: string,
-      emailAddress: string,
-      password: string
-    }; exp: number; sub: string };
+    let tokenVerify = jwt.verify(token, secret) as {
+      UserData: {
+        userId: string;
+        firstName: string;
+        lastName: string;
+        emailAddress: string;
+        password: string;
+      };
+      exp: number;
+      sub: string;
+    };
     let tokenPayload = tokenVerify.UserData;
     db.all(
       "select * from Users where userId = $userID",
@@ -430,19 +434,20 @@ postRouter.delete("/:postId", (req, res, next) => {
   // check that the authorization header is not undefined
   if (req.headers.authorization) {
     try {
-    let token = req.headers.authorization.split(" ")[1];
-    // verify that the token passed in the authorization header can be authenticated
-    let tokenVerify = jwt.verify(
-      token,
-      secret
-    ) as { UserData: {
-      userId: string,
-      firstName: string,
-      lastname: string,
-      emailAddress: string,
-      password: string
-    }; exp: number; sub: string };
-    let tokenPayload = tokenVerify.UserData;
+      let token = req.headers.authorization.split(" ")[1];
+      // verify that the token passed in the authorization header can be authenticated
+      let tokenVerify = jwt.verify(token, secret) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
+      let tokenPayload = tokenVerify.UserData;
       db.all(
         "select * from Users where userId = $userId",
         { $userId: tokenPayload.userId },

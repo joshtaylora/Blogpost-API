@@ -1,21 +1,27 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { environment } from '@env';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
 import { Post } from '../models/post.model';
 
 import { UserService } from '@services/user.service';
+import { AuthTokenStore } from '@services/auth/auth-token.store';
+import { Token } from 'src/app/models/token.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostsService {
-  postsURL = `${environment.BASE_URL}/posts`;
+  postsURL = `${environment.BASE_URL}/Posts`;
 
-  constructor(
-    private httpClient: HttpClient,
-  ) {}
+  currentUser: Token | null;
+
+  constructor(private httpClient: HttpClient, private auth: AuthTokenStore) {
+    this.auth.token$.subscribe((token) => {
+      this.currentUser = token;
+    });
+  }
 
   getPostById(postId: number): Observable<Post> {
     return this.httpClient
@@ -33,29 +39,61 @@ export class PostsService {
       .pipe(shareReplay());
   }
 
-  creatPost(postId: number, post: Post): Observable<any> {
-    return this.httpClient
-      .post(`${this.postsURL}/${postId}`, {
+  createPost(post: Partial<Post>): Observable<Post> {
+    const token = localStorage.getItem('token');
+    const authBearer = JSON.parse(token) as { Authorization: string };
+    return this.httpClient.post<Post>(
+      `${this.postsURL}/`,
+      {
         title: post.title,
         content: post.content,
         userId: post.userId,
         headerImage: post.headerImage,
-      })
-      .pipe(shareReplay());
+      },
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `${authBearer.Authorization}`
+        ),
+      }
+    );
   }
 
   patchPost(postId: number, changes: Partial<Post>): Observable<any> {
+    const token = localStorage.getItem('token');
+    const authBearer = JSON.parse(token) as { Authorization: string };
     return this.httpClient
-      .patch(`${this.postsURL}/${postId}`, {
-        content: changes?.content,
-        headerImage: changes?.headerImage,
-      })
-      .pipe(shareReplay());
+      .patch(
+        `${this.postsURL}/${postId}`,
+        {
+          userId: `${changes.userId}`,
+          content: changes?.content,
+          headerImage: changes?.headerImage,
+        },
+        {
+          headers: new HttpHeaders().set(
+            `Authorization`,
+            `${authBearer.Authorization}`
+          ),
+        }
+      )
+      .pipe(
+        tap(() => {
+          'Patch post method call';
+        })
+      );
   }
 
   deletePost(postId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const authBearer = JSON.parse(token) as { Authorization: string };
     return this.httpClient
-      .delete(`${this.postsURL}/${postId}`)
+      .delete(`${this.postsURL}/${postId}`, {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `${authBearer.Authorization}`
+        ),
+      })
       .pipe(shareReplay());
   }
 }

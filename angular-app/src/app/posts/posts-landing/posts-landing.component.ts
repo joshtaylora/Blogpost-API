@@ -11,16 +11,22 @@ import { Observable } from 'rxjs';
   styleUrls: ['./posts-landing.component.css'],
 })
 export class PostsLandingComponent implements OnInit {
-  posts$: Observable<Post[]>;
+  posts: Post[];
 
   constructor(private postsService: PostsService) {}
   postToDisplay: Post;
   selectedPost?: Post;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.posts === undefined || this.posts === null) {
+      this.reloadPosts();
+    }
+  }
 
-  reloadPosts() {
-    const posts$ = this.postsService.getAllPosts();
+  reloadPosts(): void {
+    this.postsService.getAllPosts().subscribe((posts) => {
+      this.posts = posts;
+    });
   }
 
   onSelect(post: Post): void {

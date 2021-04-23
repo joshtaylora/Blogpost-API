@@ -6,8 +6,8 @@ import { HighlightDirective } from './directives/highlight.directive';
 import { PostsLinkDirective } from './directives/posts-link.directive';
 import { SelectPostDirective } from './directives/select-post.directive';
 import { UsersLinkDirective } from './directives/users-link.directive';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PostsLinkDirective,
     SelectPostDirective,
     UsersLinkDirective,
+    AlertComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -26,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PostsLinkDirective,
     SelectPostDirective,
     UsersLinkDirective,
+    AlertComponent,
   ],
 })
 export class SharedModule {}

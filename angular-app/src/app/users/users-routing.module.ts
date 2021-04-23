@@ -3,12 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserComponent } from './user/user.component';
-import { AuthService} from '@services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserHomeComponent
+    component: UserHomeComponent,
+  },
+  {
+    path: 'posts/:userId',
+    component: UserHomeComponent,
   },
   {
     path: ':userId',
@@ -17,15 +21,15 @@ const routes: Routes = [
     canActivateChild: [AuthService],
     children: [
       {
-        path: "",
-        component: UserProfileComponent
+        path: '',
+        component: UserProfileComponent,
       },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class UsersRoutingModule { }
+export class UsersRoutingModule {}

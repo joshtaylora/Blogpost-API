@@ -285,7 +285,17 @@ userRouter.patch("/:userId", (req, res, next) => {
     let tokenPayload = jwt.verify(
       req.headers.authorization.toString().split(" ")[1],
       secret
-    ) as { userId: string; exp: number; sub: string };
+    ) as {
+      UserData: {
+        userId: string;
+        firstName: string;
+        lastName: string;
+        emailAddress: string;
+        password: string;
+      };
+      exp: number;
+      sub: string;
+    };
     db.all(
       "select * from Users where userId = $userId",
       { $userId: req.params.userId },
@@ -313,7 +323,7 @@ userRouter.patch("/:userId", (req, res, next) => {
           let user = userIdQueryStr.replace(/['"]+/g, "");
 
           // compare authorization header with user's entry in the database
-          if (tokenPayload.userId === user) {
+          if (tokenPayload.UserData.userId === user) {
             // Determine which values the user filled out that they want to update their User with
             let sql = "update Users set";
             let commaCheck: boolean = false;
@@ -420,7 +430,17 @@ userRouter.delete("/:userId", (req, res, next) => {
       let tokenPayload = jwt.verify(
         req.headers.authorization.toString().split(" ")[1],
         secret
-      ) as { userId: string; exp: number; sub: string };
+      ) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
       db.all(
         "select * from Users where userId = $userId",
         { $userId: req.params.userId },
@@ -448,7 +468,7 @@ userRouter.delete("/:userId", (req, res, next) => {
           } else {
             let userIdQueryStr = JSON.stringify(row[0].userId);
             let user = userIdQueryStr.replace(/['"]+/g, "");
-            if (tokenPayload.userId === user) {
+            if (tokenPayload.UserData.userId === user) {
               db.all(sql, params, (err: any) => {
                 if (err) {
                   console.log({

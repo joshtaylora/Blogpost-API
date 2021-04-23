@@ -1,1 +1,9 @@
-<p>user-home works!</p>
+<h2 class="text-center h2 user-home-title m-3">{{ user.userId }}</h2>
+<div *ngIf="user">
+  <div class="container-lg-1 m-3">
+    <app-posts-card-list
+      [userId]="user.userId"
+      [posts]="posts$ | async"
+    ></app-posts-card-list>
+  </div>
+</div>

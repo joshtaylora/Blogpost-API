@@ -46,10 +46,18 @@
     </div>
     <div class="card-body">
       <app-post-editor
+        [post]="post"
+        (saveContentEvent)="saveContent($event)"
+        [showSaveButton]="true"
         [content]="post!.content"
         [showMenu]="showMenu"
         [isEditable]="isEditable"
       ></app-post-editor>
+      <div *ngIf="saveSuccess !== undefined">
+        <div *ngIf="saveSuccess">
+          <span class="alert alert-success">{{ message }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
