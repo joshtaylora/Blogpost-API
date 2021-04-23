@@ -46,10 +46,13 @@
     </div>
     <div class="card-body">
       <app-post-editor
+        [post]="post"
         [content]="post!.content"
         [showMenu]="showMenu"
         [isEditable]="isEditable"
       ></app-post-editor>
+
+
     </div>
   </div>
 </div>

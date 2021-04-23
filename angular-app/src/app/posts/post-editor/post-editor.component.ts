@@ -6,7 +6,10 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { PostDataService } from '@posts/services/post-data.service';
+import { PostsService } from '@posts/services/posts.service';
 import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
+import { Post } from 'src/app/models/post.model';
 
 @Component({
   selector: 'app-post-editor',
@@ -14,6 +17,7 @@ import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
   styleUrls: ['./post-editor.component.css'],
 })
 export class PostEditorComponent implements OnInit, OnDestroy {
+  @Input() post: Post;
   @Input()
   get content(): string {
     return this._content;
@@ -51,12 +55,13 @@ export class PostEditorComponent implements OnInit, OnDestroy {
 
   html = '';
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private postsSvc: PostsService) {
+
+  }
 
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       editorContent: new FormControl('', { updateOn: 'change' }),
-      save: new FormControl(''),
     });
 
     this.editor = new Editor();
@@ -70,13 +75,24 @@ export class PostEditorComponent implements OnInit, OnDestroy {
       this.content = '';
     }
 
-    this.onChanges();
   }
 
   onChanges() {
-    this.myForm.get('save').valueChanges.subscribe(content => {
-
+    this.editor.valueChanges.subscribe(val => {
+      this.post.content = JSON.stringify((val));
     })
+  }
+
+  saveContent() {
+    console.log(this.post);
+    this.postsSvc.patchPost(+this.post.postId, this.post).subscribe(()=> {
+      (res) => {
+        console.log(res);
+      }
+      (error) => {
+        console.log(error);
+      }
+    });
   }
 
   ngOnDestroy(): void {

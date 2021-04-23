@@ -14,6 +14,7 @@ import { PostCreateComponent } from './post-create/post-create.component';
 import { PostsLandingComponent } from './posts-landing/posts-landing.component';
 import { SharedModule } from '../shared/shared.module';
 import { PostsService } from './services/posts.service';
+import { PostStore } from './services/post.store';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,6 @@ import { PostsService } from './services/posts.service';
     PostHomeComponent,
     PostDetailComponent,
   ],
-  providers: [ PostsService],
+  providers: [PostsService, PostStore],
 })
 export class PostsModule {}

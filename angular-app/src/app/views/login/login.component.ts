@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '@users/services/user.service';
+import { AuthTokenStore } from '@services/auth/auth-token.store';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,11 @@ export class LoginComponent implements OnInit {
   userAuthInfo: { userName: string; password: string } | null = null;
   message = '';
   success = false;
-  constructor(private userService: UserService, private router: Router) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private auth: AuthTokenStore
+  ) {
     this.userAuthInfo = { userName: '', password: '' };
   }
 
@@ -22,12 +27,12 @@ export class LoginComponent implements OnInit {
       this.userAuthInfo?.userName !== undefined &&
       this.userAuthInfo.password !== undefined
     ) {
-      this.userService
-        .Login(this.userAuthInfo?.userName, this.userAuthInfo?.password)
+      this.auth
+        .loginUser(this.userAuthInfo?.userName, this.userAuthInfo?.password)
         .subscribe(
-          (response) => {
+          (token) => {
+            console.log(token)
             this.success = true;
-            this.userService.SetUserLoggedIn(response);
             this.router.navigate(['/home']);
           },
           (error) => {

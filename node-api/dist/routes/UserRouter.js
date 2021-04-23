@@ -324,7 +324,7 @@ userRouter.patch("/:userId", (req, res, next) => {
                 let userIdQueryStr = JSON.stringify(row[0].userId);
                 let user = userIdQueryStr.replace(/['"]+/g, "");
                 // compare authorization header with user's entry in the database
-                if (tokenPayload.userId === user) {
+                if (tokenPayload.UserData.userId === user) {
                     // Determine which values the user filled out that they want to update their User with
                     let sql = "update Users set";
                     let commaCheck = false;
@@ -450,7 +450,7 @@ userRouter.delete("/:userId", (req, res, next) => {
                 else {
                     let userIdQueryStr = JSON.stringify(row[0].userId);
                     let user = userIdQueryStr.replace(/['"]+/g, "");
-                    if (tokenPayload.userId === user) {
+                    if (tokenPayload.UserData.userId === user) {
                         database_1.db.all(sql, params, (err) => {
                             if (err) {
                                 console.log({

@@ -7,6 +7,7 @@ import {
   faPlus,
   faHome,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthTokenStore } from '@services/auth/auth-token.store';
 
 import { Token } from 'src/app/models/token.model';
 import { UserService } from 'src/app/services/user.service';
@@ -27,8 +28,9 @@ export class NavbarComponent implements AfterViewInit {
 
   currentUser: Token | null = null;
 
+
   constructor(
-    private userSvc: UserService,
+    private auth: AuthTokenStore,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -42,20 +44,18 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   getToken(): void {
-    const userLoggedIn = this.userSvc.getLoggedInUser();
-    if (userLoggedIn !== null) {
-      this.userIsLoggedIn = true;
-      this.currentUser = userLoggedIn;
-    }
-    this.userSvc.UserStateChanged.subscribe((userLoggedInMsg) => {
-      this.userIsLoggedIn = userLoggedInMsg;
-      this.currentUser = userLoggedIn;
+    this.auth.token$.subscribe((token)=> {
+      this.currentUser = token;
+      if (token) {
+        this.userIsLoggedIn = true;
+      } else {
+        this.userIsLoggedIn = false;
+      }
     });
   }
 
   logoutUser(): void {
-    this.userSvc.SetUserAsLoggedOff();
-    this.userIsLoggedIn = false;
+    this.auth.logoutUser();
     this.router.navigate(['/login']);
   }
 }

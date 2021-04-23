@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { User } from '@users/models/user.model';
 import { Observable } from 'rxjs';
 import { environment } from '@env';
-import { shareReplay, tap } from 'rxjs/operators';
-import { Token } from 'src/app/models/token.model';
-
+import { shareReplay } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  @Output() UserStateChanged = new EventEmitter<boolean>();
+
+  userIsLoggedIn = false;
   usersURL = `${environment.BASE_URL}/Users`;
   constructor(private httpClient: HttpClient) {}
 
@@ -29,22 +30,7 @@ export class UserService {
     lastName: string;
     emailAddress: string;
     password: string;
-  }) {
+  }): Observable<unknown> {
     return this.httpClient.post(`${this.usersURL}/${newUser.userId}`, newUser);
-  }
-
-  loginUser(userId: string, password: string) {
-    return this.httpClient
-      .get<{ Authorization: string }>(`${this.usersURL}/${userId}/${password}`)
-      .pipe(
-        tap((token) => {
-          // store the returned auth token in local storage
-          localStorage.setItem('token', JSON.stringify(token));
-        })
-      );
-  }
-
-  logoutUser() {
-    localStorage.removeItem('token');
   }
 }
