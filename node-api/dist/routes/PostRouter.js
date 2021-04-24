@@ -29,12 +29,21 @@ postRouter.get("/", (req, res, next) => {
             return;
         }
         else {
-            console.log({
-                method: "get",
-                route: "/Posts/",
-                data: rows,
+            let rowArray = [];
+            rows.forEach((row) => {
+                const rowJSON = {
+                    postId: row["postId"],
+                    createdDate: row["createdDate"],
+                    title: row["title"],
+                    content: row["content"],
+                    userId: row["userId"],
+                    headerImage: row["headerImage"],
+                    lastUpdated: row["lastUpdated"],
+                };
+                rowArray.push(rowJSON);
             });
-            res.status(200).send(rows);
+            console.log(rowArray);
+            res.status(200).send(rowArray);
             return;
         }
     });
@@ -62,6 +71,7 @@ postRouter.post("/", (req, res, next) => {
             // verify that the token passed in the authorization header can be authenticated
             let tokenVerify = jsonwebtoken_1.default.verify(token, index_1.secret);
             let tokenPayload = tokenVerify.UserData;
+            // query the Users database to see if the user exists
             database_1.db.all("select * from Users where userId = $userId", { $userId: tokenPayload.userId }, (err, row) => {
                 if (err) {
                     // if an error occurred, log the error and send the 404 status code
@@ -126,6 +136,7 @@ postRouter.post("/", (req, res, next) => {
                                     }
                                     else {
                                         let row = rows[0];
+                                        // console.log(row);
                                         let postId = JSON.stringify(row.postId).replace(/['"]+/g, "");
                                         let createdDate = JSON.stringify(row.createdDate).replace(/['"]+/g, "");
                                         let title = JSON.stringify(row.title).replace(/['"]+/g, "");
@@ -231,7 +242,7 @@ postRouter.get("/:postId", (req, res, next) => {
         }
         else {
             console.log({ data: row[0] });
-            res.status(200).send(row[0]);
+            res.status(200).send(row[0].toJSON());
             return;
         }
     });

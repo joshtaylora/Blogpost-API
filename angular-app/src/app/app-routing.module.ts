@@ -6,11 +6,6 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { UserHomeComponent } from './views/user-home/user-home.component';
-import { PostsComponent} from './views/posts/posts.component';
-import { PostDetailComponent} from './views/post-detail/post-detail.component';
-import { CreatePostComponent} from './views/create-post/create-post.component';
-import { PostHomeComponent } from './views/post-home/post-home.component';
-
 
 const routes: Routes = [
   {
@@ -32,27 +27,16 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: 'users/posts/:userId',
-    component: UserHomeComponent,
-  },
-  {
     path: 'users',
-    component: UsersComponent,
+    loadChildren: () =>
+      import('./users/users.module').then((m) => m.UsersModule),
   },
   {
     path: 'posts',
-    component: PostsComponent,
-  },
-  {
-    path: 'posts/new',
-    component: CreatePostComponent,
-  },
-  {
-    path: 'posts/:postId',
-    component: PostHomeComponent,
+    loadChildren: () =>
+      import('./posts/posts.module').then((m) => m.PostsModule),
   },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

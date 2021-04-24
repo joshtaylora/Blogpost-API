@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
@@ -11,10 +11,12 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
   constructor() {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     const token = localStorage.getItem('token');
     if (token === null) {
       return null;
@@ -23,12 +25,11 @@ export class AuthInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application.json',
-          'Authorization': `${tokenObj.Authorization}`
-        }
+          Accept: 'application.json',
+          Authorization: `${tokenObj.Authorization}`,
+        },
       });
       return next.handle(request);
-
     }
   }
 }

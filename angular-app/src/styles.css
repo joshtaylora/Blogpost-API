@@ -85,3 +85,112 @@ span.name-badge {
   background-color: #ebdbb2;
   color: #282828;
 }
+
+button.save-content-btn {
+  color: #282828;
+  background-color: #83a598;
+  border-color: #83a598;
+}
+
+button.submit-btn {
+  color: #282828;
+  background-color: #b8bb26;
+  border-color: #b8bb26;
+}
+
+div.form-group input.form-control {
+  color: #fbf1c7;
+  background-color: #3c3836;
+  border-color: #665c54;
+}
+
+div.NgxEditor__Wrapper {
+  border-color: #665c54;
+}
+
+div.NgxEditor__Wrapper div .editor-menu {
+  color: #fbf1c7;
+  background-color: #3c3836;
+
+  border-color: #665c54;
+}
+div.ProseMirror.NgxEditor__Content p.NgxEditor__Placeholder::before {
+  border-color: #665c54;
+  color: #fbf1c7;
+}
+
+
+form.ng-untouched.ng-pristine.ng-invalid
+  div.NgxEditor__Wrapper
+  div
+  #editor-menu
+  div.NgxEditor__MenuBar {
+  background-color: #3c3836;
+  color: #fbf1c7;
+  border-color: #665c54;
+}
+
+div.NgxEditor__Wrapper .NgxEditor__MenuBar {
+  border-color: #665c54;
+}
+
+div.NgxEditor__Seperator {
+  border-color: #665c54;
+}
+
+div.NgxEditor__MenuBar
+  .NgxEditor__MenuItem
+  .NgxEditor__MenuItem--IconContainer {
+  background-color: #3c3836;
+  border-color: #a89984;
+}
+
+#editor-menu > div > ngx-toggle-command {
+  border-color: #a89984;
+  background-color: #3c3836;
+}
+
+.NgxEditor__Wrapper .NgxEditor__MenuBar {
+  border-color: #a89984;
+  background-color: #3c3836;
+}
+
+div.NgxEditor {
+  border-color: #a89984;
+  background-color: #3c3836;
+}
+div.NgxEditor ::placeholder {
+  color: #928374;
+}
+
+input.form-control::placeholder {
+  color: #928374;
+}
+
+div.NgxEditor__Dropdown--Text {
+  background-color: #3c3836;
+  color: #fbf1c7;
+}
+
+div.NgxEditor__Dropdown--Item {
+  background-color: #3c3836;
+  color: #fbf1c7;
+}
+
+.alert-success {
+  color: #282828;
+  background-color: #8ec07c;
+  border-color: #689d6a;
+}
+
+.alert-error {
+  color: #282828;
+  background-color: #fb4934;
+  border-color: #cc241d;
+}
+
+.alert-info {
+  color: #282828;
+  background-color: #fabd2f;
+  border-color: #d79921;
+}

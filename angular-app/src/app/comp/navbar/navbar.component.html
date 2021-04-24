@@ -1,7 +1,51 @@
 <nav class="navbar navbar-expand-lg" id="navbar-app">
   <div class="container-fluid">
-    <p *ngIf='!userIsLoggedIn' class="navbar-brand" >Blogpost-App</p>
-    <a *ngIf='userIsLoggedIn' class="navbar-brand" [routerLink]="['/home']">{{currentUser.UserData.userId}}</a>
+    <p class="navbar-brand" *ngIf="!userIsLoggedIn">Blogpost-App</p>
+    <div ngbDropdown class="ml-2 nav-item dropdown">
+      <a
+        *ngIf="userIsLoggedIn"
+        id="logoutBtn"
+        type="button"
+        class="navbar-brand"
+        data-toggle="dropdown"
+        aria-expanded="false"
+        role="button"
+        arai-haspopup="true"
+        ngbDropdownToggle
+      >
+        {{ currentUser.UserData.userId }}
+      </a>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="logoutBtn">
+        <a
+          ngbDropdownItem
+          appButton
+          [mouseInColor]="'#8ec07c'"
+          [mouseOutColor]="'#689d6a'"
+          class="dropdown-item"
+          (click)="goToUsersPost()"
+        >
+          <fa-icon [icon]="faHomeIcon"></fa-icon> Home</a
+        >
+        <a
+          ngDropdownItem
+          appButton
+          [mouseInColor]="'#8ec07c'"
+          [mouseOutColor]="'#689d6a'"
+          class="dropdown-item"
+          ><fa-icon [icon]="faSettingsIcon"></fa-icon> Settings</a
+        >
+        <a
+          ngDropdownItem
+          appButton
+          [mouseInColor]="'#8ec07c'"
+          [mouseOutColor]="'#689d6a'"
+          class="dropdown-item"
+          (click)="logoutUser()"
+          ><fa-icon [icon]="faSignOutIcon"></fa-icon> Logout</a
+        >
+      </div>
+    </div>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -16,7 +60,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a appUsersLink class="nav-link users-link" [routerLink]="['/users']"
+          <a appUsersLink class="nav-link users-link" (click)="goToUserList()"
             >Users</a
           >
         </li>
@@ -65,18 +109,6 @@
       >
         <fa-icon [icon]="faNewPostIcon"></fa-icon>
         Create New Post
-      </button>
-      <button
-        *ngIf="userIsLoggedIn"
-        id="logoutBtn"
-        class="btn btn-secondary"
-        appButton
-        [mouseInColor]="'#b16286'"
-        [mouseOutColor]="'#d3869b'"
-        (click)="logoutUser()"
-        type="button"
-      >
-        <fa-icon [icon]="faSignOutIcon"></fa-icon> Logout
       </button>
     </div>
   </div>

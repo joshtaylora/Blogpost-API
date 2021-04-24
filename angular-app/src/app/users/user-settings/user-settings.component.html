@@ -1,0 +1,25 @@
+<div>
+  <ul class="list-group">
+
+    <li class="list-group-item post-list-item ">
+      <label for="emailUpdate-txt">Update emailAddress</label>
+      <input type="text" class="form-control" name="emailUpdate-txt" [(ngModel)]="user.emailAddress">
+    </li>
+    <li class="list-group-item post-list-item">
+      <label for="firstName-txt">Update first name</label>
+      <input type="text" class="form-control" name="firstName-txt" [(ngModel)]="user.firstName">
+    </li>
+
+    <li class="list-group-item post-list-item">
+      <label for="lastName-txt">Update first name</label>
+      <input type="text" class="form-control" name="lastName-txt" [(ngModel)]="user.lastName">
+    </li>
+    <li class="list-group-item post-list-item">
+      <button type="submit" class="btn btn-success" (click)="update.emit(user)">Update User</button>
+    </li>
+
+    <li class="list-group-item post-list-item text-center">
+      <button class="btn btn-danger" (click)="remove.emit()">Delete user</button>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,57 @@
+<div class="container-lg">
+  <h1 class="text-center posts-title mt-3 mb-3">Create a new post</h1>
+  <form (ngSubmit)="postStore.addPost(newPost)">
+    <div class="form-group">
+      <label for="txtTitle" class="h3 mt-3 mb-3 title-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="txtTitle"
+        name="txtTitle"
+        placeHolder="My New Post"
+        [(ngModel)]="newPost!.title"
+      />
+      <label for="editor-content" class="h3 mt-4 mb-3 content-label"
+        >Content</label
+      >
+      <app-post-editor
+        id="editor-content"
+        [showMenu]="true"
+        [isEditable]="true"
+        (saveContentEvent)="saveContent($event)"
+        [showSaveButton]="true"
+        [content]=""
+      ></app-post-editor>
+      <label for="txtHeaderImage" class="h3 mt-4 mb-3 content-header-image"
+        >Header Image</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="txtHeaderImage"
+        name="txtHeaderImage"
+        placeholder="Put the URL for your image here!"
+        [(ngModel)]="newPost!.headerImage"
+      />
+      <button
+        type="submit"
+        class="btn submit-btn mt-3 mb-3"
+        appButton
+        [mouseInColor]="'#98971a'"
+        [mouseOutColor]="'#b8bb26'"
+      >
+        Submit
+      </button>
+    </div>
+
+    <div *ngIf="success === false">
+      <div
+        [ngClass]="{ 'alert-danger': !success, 'alert-success': success }"
+        class="alert"
+        role="alert"
+      >
+        Alert!
+      </div>
+    </div>
+  </form>
+</div>

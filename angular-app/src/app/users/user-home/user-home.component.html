@@ -1,1 +1,8 @@
-<p>user-home works!</p>
+
+<div *ngIf="user !== undefined" class="home-body">
+  <h1 class="text-center m-2">Welcome, {{ user.userId }}</h1>
+  <div class="container-lg-1 m-3">
+    <app-posts-card-list [userId]="userId" ></app-posts-card-list>
+  </div>
+</div>
+

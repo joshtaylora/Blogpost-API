@@ -1,0 +1,39 @@
+<div>
+  <form>
+    <div class="NgxEditor__Wrapper">
+      <div *ngIf="showMenu">
+        <ngx-editor-menu id="editor-menu" [editor]="editor"></ngx-editor-menu>
+      </div>
+      <ngx-editor
+        class="editor"
+        name="content"
+        [(ngModel)]="content"
+        [editor]="editor"
+        [enabled]="isEditable"
+      >
+      </ngx-editor>
+    </div>
+
+    <div *ngIf="isEditable && showSaveButton">
+      <button
+        class="btn save-content-btn mt-3 mb-3"
+        appButton
+        [mouseInColor]="'#458588'"
+        [mouseOutColor]="'#83a598'"
+        (click)="saveContent(this.content)"
+      >
+        Save Content
+      </button>
+
+      <button
+        class="btn delete-post-badge"
+        appButton
+        [mouseInColor]="'#cc241d'"
+        [mouseOutColor]="'#fb4934'"
+        (click)="delete.emit(post.postId)"
+      >
+        <fa-icon [icon]="faDeletePostIcon"></fa-icon> Delete Post
+      </button>
+    </div>
+  </form>
+</div>

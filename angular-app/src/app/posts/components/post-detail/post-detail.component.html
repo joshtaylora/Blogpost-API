@@ -1,0 +1,59 @@
+<div *ngIf="post !== undefined && loggedInUser">
+  <div class="card user-detail-card" style="margin: 15px">
+    <div class="card-header">
+      <div class="row">
+        <span
+          [ngClass]="{
+            'col-5': +loggedInUser.userId === +post.userId,
+            'col-10': +loggedInUser.userId !== +post.userId
+          }"
+          class="col-5"
+        >
+          <a
+            class="badge post-title-badge"
+            appButton
+            [mouseInColor]="'#d79921'"
+            [mouseOutColor]="'#fabd2f'"
+            [routerLink]="['/posts', postId]"
+            [state]="{post: post}"
+            >{{ post!.title }}</a
+          >
+          by
+          <a
+            class="badge userId-badge"
+            appButton
+            [mouseOutColor]="'#8ec07c'"
+            [mouseInColor]="'#689d6a'"
+            [routerLink]="['/users', 'posts', post.userId]"
+            >{{ post!.userId }}</a
+          >
+
+          <small class="text-muted m-2"
+            >created on {{ post!.createdDate }}</small
+          >
+
+
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <app-post-editor
+        [post]="post"
+        (saveContentEvent)="saveContent($event)"
+        (delete)="postStore.deletePost($event)"
+        [showSaveButton]="true"
+        [content]="post!.content"
+        [showMenu]="showMenu"
+        [isEditable]="isEditable"
+      ></app-post-editor>
+      <div *ngIf="saveSuccess !== undefined">
+        <div *ngIf="saveSuccess">
+          <span class="alert alert-success">{{ message }}</span>
+        </div>
+        <div *ngIf="!saveSuccess">
+          <span class="alert alert-danger">{{message }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

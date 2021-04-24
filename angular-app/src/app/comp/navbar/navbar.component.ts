@@ -5,7 +5,10 @@ import {
   faUserPlus,
   faSignOutAlt,
   faPlus,
+  faHome,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthTokenStore } from '@services/auth/auth-token.store';
 
 import { Token } from 'src/app/models/token.model';
 import { UserService } from 'src/app/services/user.service';
@@ -22,38 +25,49 @@ export class NavbarComponent implements AfterViewInit {
   faSignOutIcon = faSignOutAlt;
   faRegisterIcon = faUserPlus;
   faNewPostIcon = faPlus;
-
+  faHomeIcon = faHome;
+  faSettingsIcon = faCog;
   currentUser: Token | null = null;
 
+
   constructor(
-    private userSvc: UserService,
+    private auth: AuthTokenStore,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngAfterViewInit(): void {
     this.getToken();
+    this.auth.userLoggedIn$.subscribe((status) => {
+      this.userIsLoggedIn = status;
+    });
   }
 
   goToNewPost(): void {
     this.router.navigate(['/posts', 'new']);
   }
 
+  goToUsersPost(): void {
+    this.router.navigate(['/users', 'posts', this.currentUser.UserData.userId]);
+  }
+
+  goToUserList(): void {
+    this.router.navigate(['/users']);
+  }
+
   getToken(): void {
-    const userLoggedIn = this.userSvc.getLoggedInUser();
-    if (userLoggedIn !== null) {
-      this.userIsLoggedIn = true;
-      this.currentUser = userLoggedIn;
-    }
-    this.userSvc.UserStateChanged.subscribe((userLoggedInMsg) => {
-      this.userIsLoggedIn = userLoggedInMsg;
-      this.currentUser = userLoggedIn;
+    this.auth.token$.subscribe((token) => {
+      this.currentUser = token;
+      if (token) {
+        this.userIsLoggedIn = true;
+      } else {
+        this.userIsLoggedIn = false;
+      }
     });
   }
 
   logoutUser(): void {
-    this.userSvc.SetUserAsLoggedOff();
-    this.userIsLoggedIn = false;
+    this.auth.logoutUser();
     this.router.navigate(['/login']);
   }
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { UserStore } from '@users/services/user.store';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-user',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  @Input() user: User;
+
+  constructor(public userStore: UserStore) { }
 
   ngOnInit(): void {
+  }
+
+  onUpdateUser(userId: string, user:Partial<User>) {
+    this.userStore.patchUser(userId, user);
+  }
+
+  onDeleteUser(userId: string) {
+    this.userStore.deleteUser(userId);
+
   }
 
 }

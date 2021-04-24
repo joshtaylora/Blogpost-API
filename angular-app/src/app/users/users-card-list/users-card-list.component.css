@@ -1,0 +1,21 @@
+.userId-badge {
+  background-color: #8ec07c;
+  color: #282828;
+}
+
+.post-title-badge {
+  background-color: #fabd2f;
+}
+
+#userId-title {
+  color: #8ec07c;
+}
+
+#email-title {
+  color: #ebdbb2;
+}
+
+#posts-title {
+  color: #fabd2f;
+}
+

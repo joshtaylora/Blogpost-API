@@ -1,19 +1,8 @@
-<div *ngIf="user !== null && !noPosts" class="home-body">
-  <h1 class="text-center user-home-title m-4">{{ user.userId }}</h1>
-
-  <app-posts [userId]="user.userId"></app-posts>
-</div>
-<div *ngIf="noPosts" class="home-body container-md">
-  <h1 class="m-3">Welcome, {{ user.userId }}</h1>
+<div class="container-lg">
+  <h1 class="text-center m-3">CIS4930 Assignment 4</h1>
   <div class="card user-detail-card">
     <div class="card-body">
-      <p class="h-3">
-        User: "{{ user.userId }}" does not have any posts, please create a new
-        one using the button below
-      </p>
-      <button class="btn btn-primary" [routerLink]="['/posts', 'new']">
-        Create new post
-      </button>
+      <p class="card-text">Please use the above buttons and links in the nav bar to explore the site</p>
     </div>
   </div>
 </div>

@@ -1,1 +1,7 @@
-<p>user works!</p>
+<div class="container-lg-1">
+  <app-user-settings
+    [user]="user"
+    (update)="userStore.patchUser(user.userId, $event)"
+    (remove)="userStore.deleteUser($event.userId)"
+    ></app-user-settings>
+</div>

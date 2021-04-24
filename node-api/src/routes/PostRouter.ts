@@ -24,12 +24,21 @@ postRouter.get("/", (req, res, next) => {
         .send({ error: "Posts could not be retrieved from the Posts table" });
       return;
     } else {
-      console.log({
-        method: "get",
-        route: "/Posts/",
-        data: rows,
+      let rowArray = [];
+      rows.forEach((row) => {
+        const rowJSON = {
+          postId: row["postId"],
+          createdDate: row["createdDate"],
+          title: row["title"],
+          content: row["content"],
+          userId: row["userId"],
+          headerImage: row["headerImage"],
+          lastUpdated: row["lastUpdated"],
+        };
+        rowArray.push(rowJSON);
       });
-      res.status(200).send(rows);
+      console.log(rowArray);
+      res.status(200).send(rowArray);
       return;
     }
   });
@@ -57,17 +66,19 @@ postRouter.post("/", (req, res, next) => {
     try {
       let token = req.headers.authorization.split(" ")[1];
       // verify that the token passed in the authorization header can be authenticated
-      let tokenVerify = jwt.verify(
-        token,
-        secret
-      ) as { UserData: {
-        userId: string,
-        firstName: string,
-        lastname: string,
-        emailAddress: string,
-        password: string
-      }; exp: number; sub: string };
+      let tokenVerify = jwt.verify(token, secret) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
       let tokenPayload = tokenVerify.UserData;
+      // query the Users database to see if the user exists
       db.all(
         "select * from Users where userId = $userId",
         { $userId: tokenPayload.userId },
@@ -130,6 +141,7 @@ postRouter.post("/", (req, res, next) => {
                       });
                     } else {
                       let row = rows[0];
+                      // console.log(row);
                       let postId = JSON.stringify(row.postId).replace(
                         /['"]+/g,
                         ""
@@ -270,7 +282,7 @@ postRouter.get("/:postId", (req, res, next) => {
       return;
     } else {
       console.log({ data: row[0] });
-      res.status(200).send(row[0]);
+      res.status(200).send(row[0].toJSON());
       return;
     }
   });
@@ -293,16 +305,17 @@ postRouter.patch("/:postId", (req, res, next) => {
   } else {
     let token = req.headers.authorization.split(" ")[1];
     // verify that the token passed in the authorization header can be authenticated
-    let tokenVerify = jwt.verify(
-      token,
-      secret
-    ) as { UserData: {
-      userId: string,
-      firstName: string,
-      lastname: string,
-      emailAddress: string,
-      password: string
-    }; exp: number; sub: string };
+    let tokenVerify = jwt.verify(token, secret) as {
+      UserData: {
+        userId: string;
+        firstName: string;
+        lastName: string;
+        emailAddress: string;
+        password: string;
+      };
+      exp: number;
+      sub: string;
+    };
     let tokenPayload = tokenVerify.UserData;
     db.all(
       "select * from Users where userId = $userID",
@@ -430,19 +443,20 @@ postRouter.delete("/:postId", (req, res, next) => {
   // check that the authorization header is not undefined
   if (req.headers.authorization) {
     try {
-    let token = req.headers.authorization.split(" ")[1];
-    // verify that the token passed in the authorization header can be authenticated
-    let tokenVerify = jwt.verify(
-      token,
-      secret
-    ) as { UserData: {
-      userId: string,
-      firstName: string,
-      lastname: string,
-      emailAddress: string,
-      password: string
-    }; exp: number; sub: string };
-    let tokenPayload = tokenVerify.UserData;
+      let token = req.headers.authorization.split(" ")[1];
+      // verify that the token passed in the authorization header can be authenticated
+      let tokenVerify = jwt.verify(token, secret) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
+      let tokenPayload = tokenVerify.UserData;
       db.all(
         "select * from Users where userId = $userId",
         { $userId: tokenPayload.userId },

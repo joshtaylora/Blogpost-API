@@ -21,8 +21,18 @@ userRouter.get("/", (req, res, next) => {
       res.status(400).send({ error: err.message });
       return;
     }
-    console.log({ method: "get", route: "/Users/", message: rows });
-    res.status(200).send(rows);
+    let rowArray = [];
+    rows.forEach((row) => {
+      const rowJSON = {
+        userId: row["userId"],
+        firstName: row["firstName"],
+        lastName: row["lastName"],
+        emailAddress: row["emailAddress"],
+      };
+      rowArray.push(rowJSON);
+    });
+    console.log(rowArray);
+    res.status(200).send(rowArray);
   });
 });
 
@@ -78,7 +88,20 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
           res.status(404).send(errorMsg);
           return;
         } else {
-          res.status(200).send(rows);
+          let rowArray = [];
+          rows.forEach((row)=> {
+            const rowJSON = {
+              postId: row['postId'],
+              createdDate: row['createdDate'],
+              title: row['title'],
+              content: row['content'],
+              userId: row['userId'],
+              headerImage: row['headerImage'],
+              lastUpdated: row['lastUpdated']
+            };
+            rowArray.push(rowJSON);
+          })
+          res.status(200).send(rowArray);
           return;
         }
       });
@@ -103,8 +126,14 @@ userRouter.get("/:userId", (req, res, next) => {
       });
       return;
     } else {
-      console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-      res.status(201).send(row[0]);
+      const rowJSON = {
+        userId: row[0]["userId"],
+        firstName: row[0]["firstName"],
+        lastName: row[0]["lastName"],
+        emailAddress: row[0]["emailAddress"],
+      };
+      console.log(rowJSON);
+      res.status(201).send(rowJSON);
       return;
     }
   });
@@ -269,7 +298,17 @@ userRouter.patch("/:userId", (req, res, next) => {
     let tokenPayload = jwt.verify(
       req.headers.authorization.toString().split(" ")[1],
       secret
-    ) as { userId: string; exp: number; sub: string };
+    ) as {
+      UserData: {
+        userId: string;
+        firstName: string;
+        lastName: string;
+        emailAddress: string;
+        password: string;
+      };
+      exp: number;
+      sub: string;
+    };
     db.all(
       "select * from Users where userId = $userId",
       { $userId: req.params.userId },
@@ -297,7 +336,7 @@ userRouter.patch("/:userId", (req, res, next) => {
           let user = userIdQueryStr.replace(/['"]+/g, "");
 
           // compare authorization header with user's entry in the database
-          if (tokenPayload.userId === user) {
+          if (tokenPayload.UserData.userId === user) {
             // Determine which values the user filled out that they want to update their User with
             let sql = "update Users set";
             let commaCheck: boolean = false;
@@ -404,7 +443,17 @@ userRouter.delete("/:userId", (req, res, next) => {
       let tokenPayload = jwt.verify(
         req.headers.authorization.toString().split(" ")[1],
         secret
-      ) as { userId: string; exp: number; sub: string };
+      ) as {
+        UserData: {
+          userId: string;
+          firstName: string;
+          lastName: string;
+          emailAddress: string;
+          password: string;
+        };
+        exp: number;
+        sub: string;
+      };
       db.all(
         "select * from Users where userId = $userId",
         { $userId: req.params.userId },
@@ -432,7 +481,7 @@ userRouter.delete("/:userId", (req, res, next) => {
           } else {
             let userIdQueryStr = JSON.stringify(row[0].userId);
             let user = userIdQueryStr.replace(/['"]+/g, "");
-            if (tokenPayload.userId === user) {
+            if (tokenPayload.UserData.userId === user) {
               db.all(sql, params, (err: any) => {
                 if (err) {
                   console.log({
