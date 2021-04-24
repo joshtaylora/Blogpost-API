@@ -24,12 +24,21 @@ postRouter.get("/", (req, res, next) => {
         .send({ error: "Posts could not be retrieved from the Posts table" });
       return;
     } else {
-      console.log({
-        method: "get",
-        route: "/Posts/",
-        data: rows,
+      let rowArray = [];
+      rows.forEach((row) => {
+        const rowJSON = {
+          postId: row["postId"],
+          createdDate: row["createdDate"],
+          title: row["title"],
+          content: row["content"],
+          userId: row["userId"],
+          headerImage: row["headerImage"],
+          lastUpdated: row["lastUpdated"],
+        };
+        rowArray.push(rowJSON);
       });
-      res.status(200).send(rows);
+      console.log(rowArray);
+      res.status(200).send(rowArray);
       return;
     }
   });
@@ -273,7 +282,7 @@ postRouter.get("/:postId", (req, res, next) => {
       return;
     } else {
       console.log({ data: row[0] });
-      res.status(200).send(row[0]);
+      res.status(200).send(row[0].toJSON());
       return;
     }
   });

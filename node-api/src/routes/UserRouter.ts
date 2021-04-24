@@ -88,7 +88,20 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
           res.status(404).send(errorMsg);
           return;
         } else {
-          res.status(200).send(rows);
+          let rowArray = [];
+          rows.forEach((row)=> {
+            const rowJSON = {
+              postId: row['postId'],
+              createdDate: row['createdDate'],
+              title: row['title'],
+              content: row['content'],
+              userId: row['userId'],
+              headerImage: row['headerImage'],
+              lastUpdated: row['lastUpdated']
+            };
+            rowArray.push(rowJSON);
+          })
+          res.status(200).send(rowArray);
           return;
         }
       });
