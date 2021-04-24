@@ -119,8 +119,6 @@ div.ProseMirror.NgxEditor__Content p.NgxEditor__Placeholder::before {
   color: #fbf1c7;
 }
 
-div.NgxEditor__Wrapper div .editor-menu ::placeholder {
-}
 
 form.ng-untouched.ng-pristine.ng-invalid
   div.NgxEditor__Wrapper

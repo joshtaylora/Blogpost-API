@@ -40,8 +40,9 @@ import { UsersModule } from '@users/users.module';
     PostsModule,
     UsersModule,
     SharedModule,
+    FontAwesomeModule
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

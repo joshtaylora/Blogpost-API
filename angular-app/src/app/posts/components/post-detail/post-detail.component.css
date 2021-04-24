@@ -13,7 +13,7 @@ button.save-content-btn {
   color: #282828;
 }
 
-a.delete-post-badge {
+button.delete-post-badge {
   color: #282828;
   background-color: #fb4934;
   border-color: #cc241d;

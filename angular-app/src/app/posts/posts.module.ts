@@ -2,29 +2,31 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PostsRoutingModule } from './posts-routing.module';
-import { PostComponent } from './post/post.component';
-import { PostsCardListComponent } from './posts-card-list/posts-card-list.component';
-import { PostDetailComponent } from './post-detail/post-detail.component';
-import { PostEditorComponent } from './post-editor/post-editor.component';
-import { PostHomeComponent } from './post-home/post-home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
-import { PostCreateComponent } from './post-create/post-create.component';
-import { PostsLandingComponent } from './posts-landing/posts-landing.component';
 import { SharedModule } from '../shared/shared.module';
 import { PostsService } from './services/posts.service';
 import { PostStore } from './services/post.store';
+import { PostComponent } from './components/post/post.component';
+import { PostCreateComponent } from './components/post-create/post-create.component';
+import { PostDetailComponent} from './components/post-detail/post-detail.component';
+import {  PostEditorComponent} from './components/post-editor/post-editor.component';
+import {  PostHomeComponent} from './components/post-home/post-home.component';
+import {  PostsCardListComponent } from './components/posts-card-list/posts-card-list.component';
+import {  PostsLandingComponent } from './components/posts-landing/posts-landing.component';
+import { PostsCardListItemComponent } from './components/posts-card-list-item/posts-card-list-item.component';
 
 @NgModule({
   declarations: [
     PostComponent,
-    PostsCardListComponent,
     PostDetailComponent,
     PostEditorComponent,
-    PostHomeComponent,
     PostCreateComponent,
+    PostsCardListComponent,
+    PostHomeComponent,
     PostsLandingComponent,
+    PostsCardListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -73,11 +75,13 @@ import { PostStore } from './services/post.store';
     FontAwesomeModule,
     ReactiveFormsModule,
     FormsModule,
+    PostComponent,
+    PostDetailComponent,
+    PostEditorComponent,
     PostCreateComponent,
-    PostsLandingComponent,
     PostsCardListComponent,
     PostHomeComponent,
-    PostDetailComponent,
+    PostsLandingComponent,
   ],
   providers: [PostsService, PostStore],
 })

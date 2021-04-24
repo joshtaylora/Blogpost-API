@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
           (token) => {
             console.log(token)
             this.success = true;
-            this.router.navigate(['/home']);
+            this.router.navigate(['/users', 'posts', this.userAuthInfo.userName]);
           },
           (error) => {
             this.success = false;

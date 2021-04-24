@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { EventEmitter, Output, Input, Component, OnInit } from '@angular/core';
 import { UserService } from '@users/services/user.service';
 import { User } from '@users/models/user.model';
 import { AuthTokenStore } from '@services/auth/auth-token.store';
 import { UserStore } from '@users/services/user.store';
-
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
@@ -11,7 +10,10 @@ import { UserStore } from '@users/services/user.store';
 })
 export class UserSettingsComponent implements OnInit {
   constructor(private auth: AuthTokenStore, private userStore: UserStore) {}
-  user: User;
+  @Input() user: User;
+  @Output() remove = new EventEmitter<User>();
+  @Output() update = new EventEmitter<User>();
+
   ngOnInit(): void {
     this.auth.token$.subscribe((token) => {
       if (token) {
@@ -20,5 +22,4 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  //deleteUser();
 }

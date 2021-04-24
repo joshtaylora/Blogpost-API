@@ -1,15 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { PostEditorComponent } from '@posts/post-editor/post-editor.component';
 import { Post } from '@posts/models/post.model';
-import { Editor, toDoc, Toolbar } from 'ngx-editor';
-import { PostsService } from '@posts/services/posts.service';
-import { Observable } from 'rxjs';
-import { PostDataService } from '@posts/services/post-data.service';
+import { toDoc} from 'ngx-editor';
 import { AuthTokenStore } from '@services/auth/auth-token.store';
 import { Token } from 'src/app/models/token.model';
 import { User } from 'src/app/models/user.model';
-import { error } from '@angular/compiler/src/util';
 import { PostStore } from '@posts/services/post.store';
+import { PostEditorComponent } from '@posts/components/post-editor/post-editor.component';
 
 @Component({
   selector: 'app-post-create',
@@ -25,13 +21,13 @@ export class PostCreateComponent implements AfterViewInit {
     content: string;
     headerImage: string;
   };
-
+  message: string;
   currentUserToken: Token;
   currentUser: User;
 
   @ViewChild(PostEditorComponent) editor: PostEditorComponent;
 
-  constructor(private auth: AuthTokenStore, private postStore: PostStore) {
+  constructor(private auth: AuthTokenStore, public postStore: PostStore) {
     this.newPost = { title: '', userId: '', content: '', headerImage: '' };
   }
 
@@ -53,9 +49,16 @@ export class PostCreateComponent implements AfterViewInit {
     this.newPost.content = JSON.stringify(toDoc(this.editor.html));
   }
 
-  onSubmit(): void {
-    this.postStore.addPost(this.newPost);
-    console.log(this.editor.html);
-    console.log(this.currentUser.userId);
+  saveContent(savedContent: string) {
+    this.newPost.content = savedContent;
+    this.postStore.addPost(this.newPost).subscribe((res)=> {
+      this.success = true;
+      this.message = "Post successfully created";
+    }, (err)=> {
+      this.success=false;
+      this.message = `Error occurred while creating post: ${err}`
+    })
   }
+
+
 }

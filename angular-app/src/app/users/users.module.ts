@@ -2,22 +2,29 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UsersRoutingModule } from './users-routing.module';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UsersCardListComponent } from './users-card-list/users-card-list.component';
-import { UserComponent } from './user/user.component';
-import { UserHomeComponent } from './user-home/user-home.component';
-import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { PostsModule } from '@posts/posts.module';
-import { PostsCardListComponent } from '@posts/posts-card-list/posts-card-list.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { UserService } from './services/user.service';
+import { UserStore } from './services/user.store';
+import { UserHomeComponent } from './user-home/user-home.component';
+import { UsersCardListComponent } from './users-card-list/users-card-list.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
-    UserProfileComponent,
-    UsersCardListComponent,
     UserComponent,
     UserHomeComponent,
-    UserSettingsComponent,
+    UsersCardListComponent,
+    UserSettingsComponent
   ],
-  imports: [CommonModule, UsersRoutingModule, PostsModule],
+  imports: [CommonModule, UsersRoutingModule, SharedModule, PostsModule],
+  exports: [
+    UserComponent,
+    UserHomeComponent,
+    UsersCardListComponent,
+    UserSettingsComponent
+  ],
+  providers: [UserService, UserStore],
 })
 export class UsersModule {}

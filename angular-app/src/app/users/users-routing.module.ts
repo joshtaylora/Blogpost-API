@@ -4,21 +4,22 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserComponent } from './user/user.component';
 import { AuthService } from '@services/auth.service';
+import { UsersCardListComponent } from './users-card-list/users-card-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserHomeComponent,
+    component: UsersCardListComponent,
   },
   {
     path: 'posts/:userId',
     component: UserHomeComponent,
+    canActivate: [AuthService]
   },
   {
     path: ':userId',
     component: UserComponent,
     canActivate: [AuthService],
-    canActivateChild: [AuthService],
     children: [
       {
         path: '',

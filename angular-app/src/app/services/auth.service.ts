@@ -5,27 +5,34 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { UserService } from './user.service';
+import { AuthTokenStore } from './auth/auth-token.store';
+import { Token } from 'src/app/models/token.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements CanActivate {
-  constructor(private userSvc: UserService, private router: Router) {}
+  token$: Observable<Token>;
+  token: Token;
+  constructor(private auth: AuthTokenStore, private router: Router) {
+    this.token$ = this.auth.token$;
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    let userInfo = this.userSvc.getLoggedInUser();
-    console.log(userInfo);
+    this.token$.subscribe((token)=> {
+      this.token = token;
+    })
     if (
-      userInfo === null ||
-      new Date(userInfo!.exp * 1000) < new Date() ||
-      userInfo === undefined
+      this.token === null ||
+      new Date(this.token!.exp * 1000) < new Date() ||
+      this.token === undefined
     ) {
       // emit that the user has been logged off
-      this.userSvc.SetUserAsLoggedOff();
+      this.auth.logoutUser();
       this.router.navigate(['/login']);
       return false;
     } else {

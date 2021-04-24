@@ -1,6 +1,6 @@
 <div class="container-lg">
   <h1 class="text-center posts-title mt-3 mb-3">Create a new post</h1>
-  <form (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="postStore.addPost(newPost)">
     <div class="form-group">
       <label for="txtTitle" class="h3 mt-3 mb-3 title-label">Title</label>
       <input
@@ -18,6 +18,7 @@
         id="editor-content"
         [showMenu]="true"
         [isEditable]="true"
+        (saveContentEvent)="saveContent($event)"
         [showSaveButton]="true"
         [content]=""
       ></app-post-editor>

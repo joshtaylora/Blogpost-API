@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Post } from '@posts/models/post.model';
+import { PostStore } from '@posts/services/post.store';
 import { PostsService } from '@posts/services/posts.service';
 import { Observable } from 'rxjs';
 
@@ -10,24 +11,14 @@ import { Observable } from 'rxjs';
   templateUrl: './posts-landing.component.html',
   styleUrls: ['./posts-landing.component.css'],
 })
-export class PostsLandingComponent implements OnInit {
+export class PostsLandingComponent {
   posts: Post[];
 
-  constructor(private postsService: PostsService) {}
   postToDisplay: Post;
   selectedPost?: Post;
 
-  ngOnInit(): void {
-    if (this.posts === undefined || this.posts === null) {
-      this.reloadPosts();
-    }
-  }
+  constructor(public postStore: PostStore) {}
 
-  reloadPosts(): void {
-    this.postsService.getAllPosts().subscribe((posts) => {
-      this.posts = posts;
-    });
-  }
 
   onSelect(post: Post): void {
     this.selectedPost = post;

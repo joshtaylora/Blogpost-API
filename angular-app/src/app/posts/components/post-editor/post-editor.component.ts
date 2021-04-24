@@ -8,9 +8,9 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { PostDataService } from '@posts/services/post-data.service';
+import { faRecycle} from '@fortawesome/free-solid-svg-icons';
 import { PostsService } from '@posts/services/posts.service';
-import { Editor, Validators, Toolbar, toDoc, toHTML } from 'ngx-editor';
+import { Editor, Toolbar } from 'ngx-editor';
 import { Post } from 'src/app/models/post.model';
 
 @Component({
@@ -21,6 +21,9 @@ import { Post } from 'src/app/models/post.model';
 export class PostEditorComponent implements OnInit, OnDestroy {
   @Output() saveContentEvent = new EventEmitter<string>();
 
+  @Output() delete = new EventEmitter<number>();
+
+  faDeletePostIcon = faRecycle;
   @Input() post: Post;
   @Input()
   get content(): string {

@@ -36,6 +36,14 @@ div.NgxEditor__Wrapper .NgxEditor__MenuBar {
   border-color: #665c54;
 }
 
+
+button.delete-post-badge {
+  color: #282828;
+  background-color: #fb4934;
+  border-color: #cc241d;
+}
+
+
 div.NgxEditor__Seperator {
   border-color: #665c54;
 }

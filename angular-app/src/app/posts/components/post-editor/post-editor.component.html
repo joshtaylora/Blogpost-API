@@ -12,8 +12,6 @@
         [enabled]="isEditable"
       >
       </ngx-editor>
-
-
     </div>
 
     <div *ngIf="isEditable && showSaveButton">
@@ -26,7 +24,16 @@
       >
         Save Content
       </button>
-    </div>
 
+      <button
+        class="btn delete-post-badge"
+        appButton
+        [mouseInColor]="'#cc241d'"
+        [mouseOutColor]="'#fb4934'"
+        (click)="delete.emit(post.postId)"
+      >
+        <fa-icon [icon]="faDeletePostIcon"></fa-icon> Delete Post
+      </button>
+    </div>
   </form>
 </div>

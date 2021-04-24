@@ -27,10 +27,6 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: 'users/posts/:userId',
-    component: UserHomeComponent,
-  },
-  {
     path: 'users',
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),

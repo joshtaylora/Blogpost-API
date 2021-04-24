@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <a
+        class="badge userId-badge"
+        appButton
+        [mouseOutColor]="'#8ec07c'"
+        [mouseInColor]="'#689d6a'"
+        [routerLink]="['/users',  post.userId]"
+        >{{ post.userId }}</a
+      >
+    </div>
+    <div class="col-lg-7">
+      <span
+        class="post-title"
+        >{{ post.title }}</span
+      >
+    </div>
+  </div>
+</div>

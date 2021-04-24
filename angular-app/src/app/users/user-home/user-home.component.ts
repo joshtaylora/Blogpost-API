@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, EventEmitter, Component, OnInit, Output } from '@angular/core';
 import { PostStore } from '@posts/services/post.store';
 import { UserStore } from '@users/services/user.store';
 import { AuthTokenStore } from '@services/auth/auth-token.store';
@@ -8,6 +8,7 @@ import { User } from '@users/models/user.model';
 import { Post } from '@posts/models/post.model';
 import { PostsService } from '@posts/services/posts.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@services/user.service';
 
 @Component({
   selector: 'app-user-home',
@@ -17,34 +18,34 @@ import { ActivatedRoute } from '@angular/router';
 export class UserHomeComponent implements OnInit {
   posts: Post[];
   posts$: Observable<Post[]>;
-  user: User;
+  @Input() user: User;
+  @Output() userId: string;
   constructor(
     private auth: AuthTokenStore,
-    private postsSvc: PostsService,
+    public postStore: PostStore,
+    private userStore: UserStore,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.auth.token$.subscribe((token) => {
-      if (token) {
-        this.user = token.UserData;
-      }
+    this.userId = this.route.snapshot.paramMap.get('userId');
+    this.userStore.getUser(this.userId).subscribe((user)=> {
+      this.user = user;
     });
-    this.getUsersPosts();
   }
 
-  getUsersPosts(): void {
-    const userId = this.route.snapshot.paramMap.get('userId');
-    if (userId !== null && userId !== undefined) {
-      this.posts$ = this.postsSvc.getPostsByUserId(userId);
-      this.posts$.subscribe(
-        (posts) => {
-          this.posts = posts;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+
+  getUserData(): void {
+    this.userId = this.route.snapshot.paramMap.get('userId');
+
+    this.userStore.getUser(this.userId).subscribe((user) => {
+      this.user = user;
+    });
   }
+
+  // getUsersPosts(): void {
+  //   this.postStore.getUsersPosts(this.userId).subscribe((posts) => {
+  //     this.posts = posts;
+  //   });
+  // }
 }

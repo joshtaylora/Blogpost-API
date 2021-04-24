@@ -47,6 +47,14 @@ export class NavbarComponent implements AfterViewInit {
     this.router.navigate(['/posts', 'new']);
   }
 
+  goToUsersPost(): void {
+    this.router.navigate(['/users', 'posts', this.currentUser.UserData.userId]);
+  }
+
+  goToUserList(): void {
+    this.router.navigate(['/users']);
+  }
+
   getToken(): void {
     this.auth.token$.subscribe((token) => {
       this.currentUser = token;

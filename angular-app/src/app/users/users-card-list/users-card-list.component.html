@@ -1,1 +1,54 @@
-<p>users-card-list works!</p>
+<h2 class="text-center">Users</h2>
+<div class="container-lg-1 m-3">
+  <ul class="list-group">
+    <li class="list-group-item post-list-item">
+      <div class="container">
+        <div class="row">
+          <span class="h5 col-4" id="userId-title"> UserId </span>
+          <span class="h5 col-4" id="email-title">Email Address</span>
+          <span class="h5 col-3" id="posts-title">Posts Link</span>
+        </div>
+      </div>
+    </li>
+    <li
+      class="list-group-item post-list-item"
+      *ngFor="let user of users"
+      [class.selected]="user === selectedUser"
+      (click)="onSelect(user)"
+    >
+      <div class="container">
+        <div class="row">
+          <span class="col-4"
+            ><span
+              class="badge userId-badge"
+              appButton
+              [mouseOutColor]="'#8ec07c'"
+              [mouseInColor]="'#689d6a'"
+              >{{ user.userId }}
+            </span></span
+          >
+          <span class="col-4">
+            <span
+              class="name-badge"
+              class="badge name-badge"
+              appButton
+              [mouseOutColor]="'#ebdbb2'"
+              [mouseInColor]="'#a89984'"
+              >{{ user.emailAddress }}</span
+            >
+          </span>
+          <span class="col-3">
+            <a
+              class="badge post-title-badge"
+              appButton
+              [mouseInColor]="'#d79921'"
+              [mouseOutColor]="'#fabd2f'"
+              [routerLink]="['/users', 'posts', user.userId]"
+              >{{ user.userId }}'s Posts</a
+            >
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

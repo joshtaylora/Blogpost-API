@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-lg-5">
+    <ul class="list-group">
+      <div *ngIf="userId !== null">
+      <li
+        class="list-group-item"
+        [ngClass]="{
+          'selected-post-list-item': selectedPost === post,
+          'post-list-item': selectedPost !== post
+        }"
+        appHighlight
+        *ngFor="let post of postStore.posts$ | async"
+        [class.selected]="post === selectedPost"
+        (click)="onSelect(post)"
+      ><app-posts-card-list-item [post]="post"
+        [ngClass]="{
+          'selected-post-title': selectedPost === post,
+          'post-title': selectedPost !== post
+        }"
+></app-posts-card-list-item>
+      </li></div>
+
+    </ul>
+  </div>
+  <div class="col-lg-7" *ngIf="selectedPost">
+    <app-post-detail
+      [post]="selectedPost"
+      [showMenu]="false"
+      [isEditable]="false"
+    ></app-post-detail>
+  </div>
+</div>
