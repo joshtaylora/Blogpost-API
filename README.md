@@ -6,4 +6,4 @@ The src directory contains the <strong>BlogPostAPI_DB.db</strong> file that serv
 
 
 ## angular-app
-
+This directory contains all of the front-end code, implemented using the Angular front-end framework.
